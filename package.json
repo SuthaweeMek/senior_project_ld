@@ -12,7 +12,11 @@
   "dependencies": {
     "@terrylinla/react-native-sketch-canvas": "^0.8.0",
     "react": "16.13.1",
-    "react-native": "0.63.2"
+    "react-native": "0.63.2",
+    "react-native-gesture-handler": "^1.7.0",
+    "react-native-reanimated": "^1.13.0",
+    "react-native-router-flux": "^4.2.0",
+    "react-native-screens": "^2.10.1"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
