@@ -10,17 +10,20 @@ import React from 'react';
 
 
 
-import writingscene from './scene/WritingScene'
-import App from './App'
+import WritingScene from './scene/WritingScene'
+import SecondScene from './scene/SecondScene'
+import ThirdScene from './scene/ThirdScene'
 import { Router ,Scene, Stack } from 'react-native-router-flux';
 
 const RouterComponent = () => {
 
 return (
         <Router >
-          <Scene key="root">
-            <Scene key="WritingScene" component={writingscene} title="Register" />
-          </Scene>
+          <Stack key="root">
+            <Scene key="SecondScene" component={SecondScene} title="SecondScene" initial/>
+            <Scene key="thirdscene" component={ThirdScene} title="ThirdScene" />
+            <Scene key="writingscene" component={WritingScene} title="WritingScene" />
+          </Stack>
         </Router>
 );
 
