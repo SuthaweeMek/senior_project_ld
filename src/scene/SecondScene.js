@@ -21,7 +21,7 @@ import {Actions} from 'react-native-router-flux';
 const SecondScene = () => {
   function handleClick (input)
   {
-    if(input == 'ThirdScene') Actions.thirdscene();
+    if(input == 'HomeScene') Actions.homescene();
     if(input == 'WritingScene') Actions.writingscene();
   }
 
@@ -32,7 +32,7 @@ return (
         justifyContent: "center",
         alignItems: "center"
       }}>
-      <Button title="Go to  ThirdScene" onPress={() => {handleClick('ThirdScene')}}/>
+      <Button title="Go to  HomeScene" onPress={() => {handleClick('HomeScene')}}/>
       <Button title="Go to  WritingScene" onPress={() => {handleClick('WritingScene')}}/>
     </View>
 );

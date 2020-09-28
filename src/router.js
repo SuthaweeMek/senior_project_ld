@@ -12,7 +12,7 @@ import React from 'react';
 
 import WritingScene from './scene/WritingScene'
 import SecondScene from './scene/SecondScene'
-import ThirdScene from './scene/ThirdScene'
+import HomeScene from './scene/HomeScene'
 import { Router ,Scene, Stack } from 'react-native-router-flux';
 
 const RouterComponent = () => {
@@ -21,7 +21,7 @@ return (
         <Router >
           <Stack key="root">
             <Scene key="SecondScene" component={SecondScene} title="SecondScene" initial/>
-            <Scene key="thirdscene" component={ThirdScene} title="ThirdScene" />
+            <Scene key="homescene" component={HomeScene} title="HomeScene" />
             <Scene key="writingscene" component={WritingScene} title="WritingScene" />
           </Stack>
         </Router>
