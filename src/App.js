@@ -25,13 +25,13 @@ import {
   ReloadInstructions,tt
 } from 'react-native/Libraries/NewAppScreen';
 
-import RouterComponent from './router'
+import HomeScene from './scene/HomeScene'
 
 
 const App = () => {
 
 return (
-  <RouterComponent></RouterComponent>
+  <HomeScene/>
 );
 }
 
