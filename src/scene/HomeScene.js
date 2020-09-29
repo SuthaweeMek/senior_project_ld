@@ -33,7 +33,8 @@ const HomeScene = () => {
 
         <ImageBackground source={backgroundMenu} style={styles.backgroundMenu}>
           <View style={styles.containerMenuProfile}>
-           
+
+          
               <Image source={imageProfile} style={styles.imageProfile}></Image>
               <Link to="/" >
               <Text style={styles.fontMenuProfile}>Pig Piggy</Text>

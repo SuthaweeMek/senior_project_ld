@@ -7,11 +7,6 @@
  */
 
 import React from 'react';
-
-
-
-import WritingScene from './scene/WritingScene'
-import HomeScene from './scene/HomeScene'
 import {
   SafeAreaView,
   StyleSheet,
@@ -21,44 +16,34 @@ import {
   StatusBar,
   Button,
   ImageBackground,
-  Image
+  Image,
+  Alert
 } from 'react-native';
 import { NativeRouter, Route, Link } from "react-router-native";
+import backgroundMenu from '../resource/image/backgroundMenu.png';
+import imageProfile from '../resource/image/dummyProfile.jpg';
+import WritingScene from './WritingScene';
+import backgroundLogin from '../resource/image/backgroundLogin.png'
+import Router from '../router'
+import ButtonCurve from '../component/buttonCurve';
 
 
-function Home() {
-  return <Text style={styles.header}>Home</Text>;
-}
+const LoginScene = () => {
 
-function Test() {
-  return WritingScene;
-}
-
-
-function Result() {
-  return <Text style={styles.header}>Result</Text>;
-}
-
-function Stat() {
-  return <Text style={styles.header}>Stat</Text>;
-}
-
-function Logout() {
-  return <Text style={styles.header}>Logout</Text>;
-}
-
-const RouterComponent = () => {
+    const onPress = () => {
+        alert("clicked");
+    }
 
   return (
-    <React.Fragment>
-      <Route exact path="/" component={Home} />
-      <Route path="/test" component={Test} />
-      <Route path="/result" component={Result} />
-      <Route path="/stat" component={Stat} />
-      <Route path="/logout" component={Logout} />
-    </React.Fragment>
+    <NativeRouter>
+        <ImageBackground source = {backgroundLogin} style = {styles.background}>
+            <View style={styles.container}>
+                <ButtonCurve  text="MOO" onPress={onPress}/>
+            <Router/>
+            </View>
+        </ImageBackground>
+    </NativeRouter>
   );
-
 }
 
 const styles = StyleSheet.create({
@@ -114,7 +99,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  backgroundMenu: {
+  background: {
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
@@ -132,4 +117,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RouterComponent;
+
+export default LoginScene;

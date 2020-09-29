@@ -25,13 +25,13 @@ import {
   ReloadInstructions,tt
 } from 'react-native/Libraries/NewAppScreen';
 
-import HomeScene from './scene/HomeScene'
-
+import HomeScene from './scene/HomeScene';
+import LoginScene from './scene/LoginScene';
 
 const App = () => {
 
 return (
-  <HomeScene/>
+  <LoginScene/>
 );
 }
 
