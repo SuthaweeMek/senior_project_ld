@@ -27,11 +27,11 @@ import {
 
 import HomeScene from './scene/HomeScene';
 import LoginScene from './scene/LoginScene';
-
+import Test from './scene/TestSprite';
 const App = () => {
 
 return (
-  <LoginScene/>
+  <Test/>
 );
 }
 

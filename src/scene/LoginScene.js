@@ -20,9 +20,6 @@ import {
   Alert
 } from 'react-native';
 import { NativeRouter, Route, Link } from "react-router-native";
-import backgroundMenu from '../resource/image/backgroundMenu.png';
-import imageProfile from '../resource/image/dummyProfile.jpg';
-import WritingScene from './WritingScene';
 import backgroundLogin from '../resource/image/backgroundLogin.png'
 import Router from '../router'
 import ButtonCurve from '../component/buttonCurve';
