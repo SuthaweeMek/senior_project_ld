@@ -33,30 +33,32 @@ const TestSprite = () => {
   //const { fps, loop, resetAfterFinish } = this.state; 
     return (
         //<Text>Hello2</Text>  
-      <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+     // <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+     <View style={{flex : 1}}>
+
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            
+
             <SpriteSheet
               ref={ref => (mummy = ref)}
-              source={require('../resource/sprite_sheet/mummy.png')}
+              source={require('../resource/sprite_sheet/player_character/player_character2.png')}
               columns={9}
               rows={6}
-               height={200} // set either, none, but not both
-               width={200}
+               //height={185} // set either, none, but not both
+               //ywidth={281}
               imageStyle={{ marginTop: -1 }}
               animations={{
-                walk: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
-                appear: Array.from({ length: 15 }, (v, i) => i + 18),
+                idle: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
+                walk: Array.from({ length: 12 }, (v, i) => i + 18),
                 die: Array.from({ length: 21 }, (v, i) => i + 33)
               }}
             />
           </View>
           <View style={{ paddingVertical: 30, paddingHorizontal: 30 }}>
             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+              <Button onPress={() => play('idle')} title="idle" />
               <Button onPress={() => play('walk')} title="walk" />
-              <Button onPress={() => play('appear')} title="appear" />
               <Button onPress={() => play('die')} title="die" />
-              <Button onPress={() => play('die')} title="die same but need to stop" />
+              <Button onPress={() => stop()} title="die same but need to stop" />
             </View>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <Text style={{ fontSize: 16, marginRight: 10 }}>FPS</Text>
@@ -79,7 +81,8 @@ const TestSprite = () => {
               />
             </View>
           </View>
-      </KeyboardAvoidingView>
+        </View>
+     // </KeyboardAvoidingView>
      );
     
 
