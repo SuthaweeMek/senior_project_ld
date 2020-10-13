@@ -31,7 +31,7 @@ import Test from './scene/TestSprite';
 const App = () => {
 
 return (
-  <Test/>
+  <LoginScene/>
 );
 }
 

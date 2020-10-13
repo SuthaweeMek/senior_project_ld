@@ -12,10 +12,9 @@ import { Text, View, TouchableOpacity, Dimensions, StyleSheet } from 'react-nati
 
 const width = Dimensions.get('window').width
 
-
 const ButtonCurve = ({ text, onPress }) => {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} >
       <View style={styles.btnStyle}>
         <Text style={styles.btnTextStyle}> {text} </Text>
       </View>

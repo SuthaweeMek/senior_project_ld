@@ -17,35 +17,39 @@ import {
   Button,
   ImageBackground,
   Image,
-  Alert
+  Alert,
+  Dimensions
 } from 'react-native';
 import { NativeRouter, Route, Link } from "react-router-native";
 import backgroundLogin from '../resource/image/backgroundLogin.png'
 import Router from '../router'
 import ButtonCurve from '../component/buttonCurve';
 
+const width = Dimensions.get('window').width
+const height = Dimensions.get('window').height
 
 const LoginScene = () => {
-
-    const onPress = () => {
-        alert("clicked");
+  const onPress = () => {
+          alert("clicked");
     }
+
 
   return (
     <NativeRouter>
-        <ImageBackground source = {backgroundLogin} style = {styles.background}>
-            <View style={styles.container}>
-                <ButtonCurve  text="MOO" onPress={onPress}/>
-            <Router/>
-            </View>
-        </ImageBackground>
+     <ImageBackground source = {backgroundLogin} style = {styles.background}>
+       <View style = {styles.card}>
+          <Text>เข้าสู่ระบบ</Text>
+          <ButtonCurve text = "Moo" onPress= {onPress}/>
+       </View>
+      </ImageBackground>
     </NativeRouter>
   );
+  
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    //flex: 1,
     //justifyContent: 'center', 
     //alignItems: 'center',
     flexDirection: 'row',
@@ -53,66 +57,23 @@ const styles = StyleSheet.create({
     //flex: 1 1 auto,
     //marginTop: 22
   },
-  containerMenuProfile: {
-    flex: 4,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
-  fontMenuProfile: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: "bold",
-    paddingTop: 10,
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  fontMenuContent: {
-    color: 'white',
-    fontSize: 15,
-    alignItems: 'center',
-    paddingLeft: 5,
-  },
-  containerMenuContent: {
-    marginTop: 10,
-    flex: 5,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
-  },
-  containerMenuContentRow: {
-    marginTop: 10,
+  card: {
     justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row'
-  },
-  containerMenuFooter: {
-    flex: 1,
-    paddingBottom: 10,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
-  containerContent: {
-    backgroundColor: "blue",
-    flex: 4,
-    justifyContent: 'center',
-    alignItems: 'center',
+    alignItems : 'center',
+    flexDirection :'column',
+    backgroundColor : 'white',
+    borderRadius : 10,
+    width : width/1.96,
+    height : height/1.56,
   },
   background: {
     justifyContent: 'center',
     alignItems: 'center',
     flex: 1,
     resizeMode: "cover",
-  },
-  imageProfile: {
-    width: 100,
-    height: 100,
-    borderRadius: 50
-  },
-  icon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20
-  },
+  }
 });
+
 
 
 export default LoginScene;
