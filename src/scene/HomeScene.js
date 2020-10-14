@@ -78,7 +78,6 @@ const HomeScene = () => {
           </View>
 
 
-
         </ImageBackground>
         <View style={styles.containerContent}>
           <Router/>

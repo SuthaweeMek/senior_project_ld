@@ -52,8 +52,8 @@ const RouterComponent = () => {
 
   return (
     <React.Fragment>
-      <Route exact path="/" component={HomeScene} />
-      <Route path="/testSprote" component={Home} />
+      <Route exact path="/" component={Home} />
+      <Route path="/test" component={WritingScene} />
       <Route path="/result" component={Result} />
       <Route path="/stat" component={Stat} />
       <Route path="/logout" component={Logout} />

@@ -28,10 +28,12 @@ import {
 import HomeScene from './scene/HomeScene';
 import LoginScene from './scene/LoginScene';
 import Test from './scene/TestSprite';
+import WritingScene from './scene/WritingScene';
+import ImageScene from './scene/ImageScene';
 const App = () => {
 
 return (
-  <Test/>
+  <WritingScene/>
 );
 }
 

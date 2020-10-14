@@ -37,7 +37,11 @@ const WritingScene = () => {
   const Undo = () => { 
     canvasRef.current.undo()
   }
-
+  const Save = () => {
+    console.log("YES");
+    canvasRef.current.save()
+    console.log("check")
+  }
   const [modalVisible, setModalVisible] = useState(false);
 
 return (
@@ -50,6 +54,24 @@ return (
             strokeColor={'black'}
             strokeWidth={3}
             ref={canvasRef}
+            onSketchSaved={(success, filepath) => {console.log('filePath : ',filepath)}}
+            localSourceImage={{
+              filename: 'image.png',  // e.g. 'image.png' or '/storage/sdcard0/Pictures/image.png'
+              directory: '/storage/sdcard0/Pictures/', // e.g. SketchCanvas.MAIN_BUNDLE or '/storage/sdcard0/Pictures/'
+              mode: 'AspectFill'
+            }}
+            savePreference={
+              {
+                folder: 'RNSketchCanvas',
+                filename: 'image',
+                transparent: true,
+                imageType: 'jpg',
+                includeImage: true,
+                includeText: false,
+                cropToImageSize: true
+              }
+            }
+            permissionDialogTitle={'Try'}
           />        
         </ImageBackground>
         <View style={{ flexDirection: 'column' ,backgroundColor:'blue' ,justifyContent: "flex-end"}}>
@@ -62,6 +84,12 @@ return (
             onPress={Undo}
             title="Undo"
             color="#841584"
+            accessibilityLabel="Learn more about this purple button"
+            />
+             <Button
+            onPress={Save}
+            title="Save"
+            color="#631584"
             accessibilityLabel="Learn more about this purple button"
             />
         </View>

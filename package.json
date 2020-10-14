@@ -11,11 +11,12 @@
   },
   "dependencies": {
     "@terrylinla/react-native-sketch-canvas": "^0.8.0",
+    "axios": "^0.20.0",
     "react": "16.13.1",
     "react-native": "0.63.2",
+    "react-native-document-picker": "^4.0.0",
     "react-native-gesture-handler": "^1.7.0",
     "react-native-reanimated": "^1.13.0",
-    "react-native-router-flux": "^4.2.0",
     "react-native-screens": "^2.10.1",
     "react-router-native": "^5.2.0",
     "rn-sprite-sheet": "^1.1.11"
