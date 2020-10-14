@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -19,14 +19,6 @@ import {
   ImageBackground,
 } from 'react-native';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
 import { SketchCanvas } from '@terrylinla/react-native-sketch-canvas';
 
 import imageBook from '../resource/image/book.png';
@@ -34,7 +26,7 @@ import imageBook from '../resource/image/book.png';
 const WritingScene = () => {
   const canvasRef = React.createRef()
 
-  const Undo = () => { 
+  const Undo = () => {
     canvasRef.current.undo()
   }
   const Save = () => {
@@ -44,65 +36,66 @@ const WritingScene = () => {
   }
   const [modalVisible, setModalVisible] = useState(false);
 
-return (
-  <View style={styles.container}>
-    <Modal  animationType="fade" transparent={true} visible={modalVisible}>
-    <View style={styles.centeredView}>
-        <ImageBackground source={imageBook} style = {styles.image}>
-          <SketchCanvas
-            style={{ flex: 1,justifyContent: "center",flexDirection: 'row'}}
-            strokeColor={'black'}
-            strokeWidth={3}
-            ref={canvasRef}
-            onSketchSaved={(success, filepath) => {console.log('filePath : ',filepath)}}
-            localSourceImage={{
-              filename: 'image.png',  // e.g. 'image.png' or '/storage/sdcard0/Pictures/image.png'
-              directory: '/storage/sdcard0/Pictures/', // e.g. SketchCanvas.MAIN_BUNDLE or '/storage/sdcard0/Pictures/'
-              mode: 'AspectFill'
-            }}
-            savePreference={
-              {
+  return (
+    <View style={styles.container}>
+      <Modal animationType="fade" transparent={true} visible={modalVisible}>
+        <View style={styles.centeredView}>
+          <ImageBackground source={imageBook} style={styles.image}>
+            <SketchCanvas
+              style={{ flex: 1, justifyContent: "center", flexDirection: 'row' }}
+              strokeColor={'black'}
+              strokeWidth={3}
+              ref={canvasRef}
+              onSketchSaved={(success, path) => { console.log("filePath : ", path,"success or not",success) }}
+              // localSourceImage={{
+              //   filename: 'image.png',  // e.g. 'image.png' or '/storage/sdcard0/Pictures/image.png'
+              //   directory: 'SketchCanvas.MAIN_BUNDLE', // e.g. SketchCanvas.MAIN_BUNDLE or '/storage/sdcard0/Pictures/'
+              //   mode: 'AspectFill'
+              // }}
+              savePreference={{
+
                 folder: 'RNSketchCanvas',
-                filename: 'image',
-                transparent: true,
-                imageType: 'jpg',
+                filename: 'image233',
+                transparent: false,
+                imageType: 'png',
                 includeImage: true,
                 includeText: false,
-                cropToImageSize: true
-              }
-            }
-            permissionDialogTitle={'Try'}
-          />        
-        </ImageBackground>
-        <View style={{ flexDirection: 'column' ,backgroundColor:'blue' ,justifyContent: "flex-end"}}>
-            <Button  onPress={() => {
-                setModalVisible(!modalVisible);
-              }} title="Close"
+                cropToImageSize: false
+
+              }}
+              permissionDialogTitle='Try'
+              permissionDialogMessage='try2'
+            />
+          </ImageBackground>
+          <View style={{ flexDirection: 'column', backgroundColor: 'blue', justifyContent: "flex-end" }}>
+            <Button onPress={() => {
+              setModalVisible(!modalVisible);
+            }} title="Close"
               color="#841123"
-              />
+            />
             <Button
-            onPress={Undo}
-            title="Undo"
-            color="#841584"
-            accessibilityLabel="Learn more about this purple button"
+              onPress={Undo}
+              title="Undo"
+              color="#841584"
+              accessibilityLabel="Learn more about this purple button"
             />
-             <Button
-            onPress={Save}
-            title="Save"
-            color="#631584"
-            accessibilityLabel="Learn more about this purple button"
+            <Button
+              onPress={Save}
+              title="Save"
+              color="#631584"
+              accessibilityLabel="Learn more about this purple button"
             />
+          </View>
         </View>
+      </Modal>
+
+      <Button onPress={() => {
+        setModalVisible(true);
+      }} title="Modal"
+        color="#841123" />
+
     </View>
-    </Modal>
-
-      <Button  onPress={() => {
-          setModalVisible(true);
-        }} title="Modal"
-        color="#841123"/>
-
-  </View>
-);
+  );
 
 }
 
