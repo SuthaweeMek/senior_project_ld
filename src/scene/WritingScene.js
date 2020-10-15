@@ -31,7 +31,7 @@ const WritingScene = () => {
   }
   const Save = () => {
     console.log("YES");
-    canvasRef.current.save()
+    canvasRef.current.save('jpg',false,'RNSketchCanvas','image',true,false,false)
     console.log("check")
   }
   const [modalVisible, setModalVisible] = useState(false);
