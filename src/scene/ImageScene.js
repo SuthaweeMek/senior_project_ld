@@ -7,7 +7,7 @@ import DocumentPicker from 'react-native-document-picker';
 
 const App = () => {
   let [singleFile, setSingleFile] = useState(null);
-
+  
   let uploadImage = async () => {
     //Check if any file is selected or not
     if (singleFile != null) {
