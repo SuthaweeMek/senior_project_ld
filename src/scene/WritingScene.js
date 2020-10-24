@@ -31,16 +31,44 @@ const WritingScene = () => {
   const Undo = () => {
     canvasRef.current.undo()
   }
+  const CheckCallback = async (success, base64) => {
+    var image = `data:image/png;base64,` + base64
+    const data = new FormData();
+    data.append('prediction', 1);
+    data.append('img', image);
 
+    //Please change file upload URL
+    let res = await fetch(
+      'http://10.0.2.2:8000/classifications/',
+      {
+        method: 'post',
+        body: data,
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'multipart/form-data; ',
+        },
+      }
+    );
+    let responseJson = await res.json();
+    console.log(responseJson)
+    if (res.status == 201) {
+      console.log('Upload Successful');
+    }
+    else {
+      //if no file selected the show alert
+      console.log('Please Select File first');
+    }
+  }
   const Save = () => {
     console.log("YES");
-    canvasRef.current.save('jpg',false,'RNSketchCanvas','image',true,false,false)
+    canvasRef.current.save('jpg', false, 'RNSketchCanvas', 'image', true, false, false)
     console.log("check")
+    canvasRef.current.getBase64("jpg", false, false, false, false, CheckCallback)
   }
 
   const Upload = () => {
     console.log("YES");
-    ImageScene("test","moo");
+    ImageScene("test", "moo");
   }
 
   let uploadImage = async () => {
@@ -71,7 +99,7 @@ const WritingScene = () => {
       alert('Please Select File first');
     }
   };
-  
+
   let selectFile = async () => {
     //Opening Document Picker to select one file
     try {
@@ -114,7 +142,7 @@ const WritingScene = () => {
               strokeColor={'black'}
               strokeWidth={3}
               ref={canvasRef}
-              onSketchSaved={(success, path) => { console.log("filePath : ", path,"success or not : ",success) }}
+              onSketchSaved={(success, path) => { console.log("filePath : ", path, "success or not : ", success) }}
               // localSourceImage={{
               //   filename: 'image.png',  // e.g. 'image.png' or '/storage/sdcard0/Pictures/image.png'
               //   directory: 'SketchCanvas.MAIN_BUNDLE', // e.g. SketchCanvas.MAIN_BUNDLE or '/storage/sdcard0/Pictures/'
