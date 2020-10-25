@@ -33,7 +33,11 @@ import ImageScene from './scene/ImageScene';
 const App = () => {
 
 return (
+<<<<<<< HEAD
   <Test/>
+=======
+  <WritingScene/>
+>>>>>>> 75198e1c7fc7e35704d3888da5a118eb85d6f2e7
 );
 }
 
