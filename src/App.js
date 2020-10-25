@@ -33,7 +33,7 @@ import ImageScene from './scene/ImageScene';
 const App = () => {
 
 return (
-  <ImageScene/>
+  <Test/>
 );
 }
 

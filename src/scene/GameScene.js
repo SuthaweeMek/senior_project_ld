@@ -10,8 +10,11 @@ import {
 } from 'react-native';
 import SpriteSheet from 'rn-sprite-sheet';
 import Image from '../resource/sprite_sheet/mummy.png';
+import Orientation from 'react-native-orientation';
 
-const TestSprite = () => {
+Orientation.lockToLandscape();
+
+const GameScene = () => {
 
   const [fps , setFps] = useState(16);
   const [loop , setLoop] = useState(false);
@@ -111,4 +114,4 @@ const TestSprite = () => {
   
 
 
-  export default TestSprite;
+  export default GameScene;
