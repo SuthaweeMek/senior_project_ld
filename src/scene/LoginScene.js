@@ -24,7 +24,7 @@ import { NativeRouter, Route, Link } from "react-router-native";
 import backgroundLogin from '../resource/image/backgroundLogin.png'
 import Router from '../router'
 import ButtonCurve from '../component/buttonCurve';
-
+import InputBox from '../component/inputbox';
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
 
@@ -38,8 +38,19 @@ const LoginScene = () => {
     <NativeRouter>
      <ImageBackground source = {backgroundLogin} style = {styles.background}>
        <View style = {styles.card}>
-          <Text>เข้าสู่ระบบ</Text>
-          <ButtonCurve text = "Moo" onPress= {onPress}/>
+         <View style ={{marginBottom : 40}}>
+            <Text style={{fontWeight: "bold",fontSize:27}}>เข้าสู่ระบบ</Text>
+          </View>
+          <View style ={{marginRight :130}}>
+            <Text >ชื่อ</Text>
+          </View>
+          <InputBox text= "ชื่อ" />
+          <View style ={{marginRight :100}}>
+           <Text>รหัสผ่าน</Text>
+          </View>
+          <InputBox text= "รหัสผ่าน" />
+          <ButtonCurve text = "เข้าสู่ระบบ" onPress= {onPress}/>
+          <Text>สมัครสมาชิกใหม่</Text>
        </View>
       </ImageBackground>
     </NativeRouter>
@@ -49,6 +60,7 @@ const LoginScene = () => {
 
 const styles = StyleSheet.create({
   container: {
+  
     //flex: 1,
     //justifyContent: 'center', 
     //alignItems: 'center',
@@ -58,6 +70,7 @@ const styles = StyleSheet.create({
     //marginTop: 22
   },
   card: {
+    fontFamily: "lucida grande",
     justifyContent: 'center',
     alignItems : 'center',
     flexDirection :'column',

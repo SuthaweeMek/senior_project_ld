@@ -24,9 +24,11 @@ const ButtonCurve = ({ text, onPress }) => {
 
 const styles = StyleSheet.create({
   btnStyle: {
+    marginTop:20,
+    marginBottom:10,
     backgroundColor: 'linear-gradient(121deg, rgba(0,241,157,1) 100%, rgba(67,87,199,1) 100%);',
     paddingVertical: 10,
-    width: 200,
+    width: 170,
     borderRadius: width/10
   },
   btnTextStyle: {
