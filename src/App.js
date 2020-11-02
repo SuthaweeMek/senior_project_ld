@@ -30,14 +30,11 @@ import LoginScene from './scene/LoginScene';
 import Test from './scene/TestSprite';
 import WritingScene from './scene/WritingScene';
 import ImageScene from './scene/ImageScene';
+import GameFirstScene from './scene/GameFirstScene';
 const App = () => {
 
 return (
-<<<<<<< HEAD
-  <Test/>
-=======
-  <WritingScene/>
->>>>>>> 75198e1c7fc7e35704d3888da5a118eb85d6f2e7
+  <GameFirstScene/>
 );
 }
 

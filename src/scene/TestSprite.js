@@ -9,7 +9,7 @@ import {
   Switch
 } from 'react-native';
 import SpriteSheet from 'rn-sprite-sheet';
-import Image from '../resource/sprite_sheet/mummy.png';
+import Image from '../resource/sprite_sheet/effect1.png';
 
 const TestSprite = () => {
 
@@ -23,7 +23,7 @@ const TestSprite = () => {
       fps: Number(fps),
       loop: loop,
       resetAfterFinish: resetAfterFinish,
-      onFinish: () => console.log('hi')
+      onFinish: () => console.log('Play ',type)
     });
   };
 
@@ -40,16 +40,16 @@ const TestSprite = () => {
 
             <SpriteSheet
               ref={ref => (mummy = ref)}
-              source={require('../resource/sprite_sheet/enemy1_character.png')}
+              source={require('../resource/sprite_sheet/player_character.png')}
               columns={9}
               rows={6}
                //height={185} // set either, none, but not both
                //ywidth={281}
               imageStyle={{ marginTop: -1 }}
               animations={{
-                idle: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-                walk: Array.from({ length: 18 }, (v, i) => i + 18),
-                die: Array.from({ length: 18 }, (v, i) => i + 36)
+                idle: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
+                walk: Array.from({ length: 12 }, (v, i) => i + 18),
+                die: Array.from({ length: 15 }, (v, i) => i + 30)
               }}
             />
           </View>
