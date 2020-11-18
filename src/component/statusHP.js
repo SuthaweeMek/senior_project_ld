@@ -21,7 +21,7 @@ const height = Dimensions.get('window').height
 const StatusHP = ({ heart,heartEmpty,side }) => {
     const items = []
     var sideRight = { flexDirection : 'row' , paddingTop : 20,paddingLeft : 20}
-    console.log(heart-heartEmpty)
+    //console.log(heart-heartEmpty)
     if (heart-heartEmpty >=0){
         for (let i = 0; i < heart-heartEmpty; i++){
             //console.log("i = ",i)

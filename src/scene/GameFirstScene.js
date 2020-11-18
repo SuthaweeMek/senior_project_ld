@@ -20,7 +20,8 @@ import imageBackground from '../resource/image/LDSpotGameScene1.png'
 import imageHeart from '../resource/image/heartEmpty.png'
 import imagePlayer from '../resource/image/player_circle.png'
 import imageEnemy from '../resource/image/enemy1_circle.png'
-
+import imageGameSceneBG1 from '../resource/games/LDSpotGameSceneBG1.png'
+import imageGameSceneFG1 from '../resource/games/LDSpotGameSceneFG1.png'
 //dimesions
 const height = Dimensions.get('window').height //1:4.65
 const width = Dimensions.get('window').width
@@ -57,17 +58,17 @@ const GameFirstScene = () => {
     var speed = 0
     const time = 0.1 // 1 second per loop
     //mummy.stop(() => console.log('stopped'));
-    play('idle')
+    play('walk')
     const interval = setInterval(()=>{
         setBackgroundTransition({left : -speed})
         
         loop = loop+1
         speed = speed+5
         
-        console.log('This 1 second',-Transition)//-Dimensions.get('window').width
+        //console.log('This 1 second',-speed)//-Dimensions.get('window').width
         if (speed >= Dimensions.get('window').width){
           clearInterval(interval)
-          play('walk')
+          play('idle')
         }
         return () => clearInterval(interval)
        },time);
@@ -78,7 +79,7 @@ const GameFirstScene = () => {
      // resizeMode cover stretch
      <View style={styles.container}>
 
-       <Image source={imageBackground} resizeMode="stretch" style = {[styles.background]}/>
+       <Image source={imageGameSceneBG1} resizeMode="stretch" style = {[styles.background,backgroundTransition]}/>
 
         <View style={styles.statusHP} >
           <View style={{flexDirection : 'row'}}>
@@ -90,8 +91,8 @@ const GameFirstScene = () => {
             <Image source={imageEnemy} style={styles.imageCircle}/>
           </View>
         </View>
-        <View style={{ flex: 1, flexDirection:'row',backgroundColor:'red',justifyContent:'space-around'}}>
-         
+
+        <View style={styles.field}>
           <View>
             <SpriteSheet
               ref={ref => (player = ref)}
@@ -124,12 +125,13 @@ const GameFirstScene = () => {
               }}
             />
           </View>
-
-          
         </View>
 
-        <View style={{ height:height/5.6 ,flexDirection:'row'}}></View>
-          {/* <View style={{ paddingVertical: 30, paddingHorizontal: 30 }}>
+        
+
+        <Image source={imageGameSceneFG1} resizeMode="stretch" style = {[styles.foreground]} />
+        
+        <View style={{ paddingVertical: 30, paddingHorizontal: 30,position:'absolute'}}>
             <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
               <Button onPress={() => play('idle')} title="idle" />
               <Button onPress={() => play('walk')} title="walk" />
@@ -156,7 +158,8 @@ const GameFirstScene = () => {
                 onValueChange={val => setResetAfterFinish(val )}
               />
             </View>
-          </View> */}
+          </View>
+
       </View>
      // </KeyboardAvoidingView>
      );
@@ -168,6 +171,7 @@ const GameFirstScene = () => {
   container: {
     flex: 1,
     backgroundColor : "green", 
+    flexDirection : "column"
     //justifyContent: 'center', 
     //alignItems: 'center',
     //backgroundColor : "gray"
@@ -178,6 +182,14 @@ const GameFirstScene = () => {
     flexDirection : 'row',
     justifyContent : 'space-between'
   },
+  field : {
+    flex: 1,
+    top:7,
+    zIndex:2,
+    flexDirection:'row',
+    alignItems : 'flex-end',
+    justifyContent:'space-around'
+  },
   background: {
     // justifyContent: 'center',
     // alignItems: 'center',
@@ -187,6 +199,16 @@ const GameFirstScene = () => {
     left : 0,
     width: width*2,
     height: height,
+  },
+  foreground: {
+    // justifyContent: 'center',
+    // alignItems: 'center',
+
+    // resizeMode: "cover",
+    backgroundColor:'black',
+    justifyContent:'flex-end',
+    width: width*2,
+    height: height/4.26,
   },
   imageCircle: {
     width: height/5,
