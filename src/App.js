@@ -34,7 +34,7 @@ import GameFirstScene from './scene/GameFirstScene';
 const App = () => {
 
 return (
-  <GameFirstScene/>
+  <HomeScene/>
 );
 }
 
