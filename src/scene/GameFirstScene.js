@@ -1,4 +1,4 @@
-import React, { useCallback,useRef, useState, useEffect } from 'react';
+import React, { useCallback,useRef, useState, useEffect ,componentDidMount} from 'react';
 import {
   SafeAreaView,
   View,
@@ -6,6 +6,7 @@ import {
   TextInput,
   KeyboardAvoidingView,
   ImageBackground,
+  Modal,
   Animated,
   Image,
   Text,
@@ -17,6 +18,8 @@ import SpriteSheet from 'rn-sprite-sheet'
 import StatusHP from '../component/statusHP'
 import Orientation from 'react-native-orientation';
 import Device from '../utils/Device';
+import Rand from '../utils/Rand';
+import Writing from '../component/writing'
 
 //image
 import imageBackground from '../resource/image/LDSpotGameScene1.png'
@@ -40,28 +43,42 @@ console.log("Device height = ", height, " and width = ", width)
 
 //const spriteSize = height
 const GameFirstScene = () => {
-
+  //HP Parameters
+  const playerHeart = 5
+  const enemyHeart = 5
   //State
-  //const [backgroundTransition, setBackgroundTransition] = useState({ left: 0 });
   const [Transition, SetTransition] = useState(1);
   const [fps, setFps] = useState(16);
   const [loop, setLoop] = useState(false);
   const [resetAfterFinish, setResetAfterFinish] = useState(false);
   const [playerHeartEmpty, setPlayerHeartEmpty] = useState(0);
   const [enemyHeartEmpty, setEnemyHeartEmpty] = useState(0);
+  const [modalVisible, setModalVisible] = useState(false);
 
   //Animation Parameters
   const effectFade = useRef(new Animated.Value(0)).current; // Initial value for opacity: 0
   const effectSpeed = useRef(new Animated.Value(0)).current;
+  const enemyFade = useRef(new Animated.Value(1)).current; 
   const backgroundTransition = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     // code to run on component mount
     Orientation.lockToLandscape();
+    if(enemyHeartEmpty == 5 ){
+      console.log("The enemy is dead")
+      Animated.timing(
+        enemyFade,
+        {
+          toValue: 0,
+          duration: 1000,
+          useNativeDriver:false
+        }
+      ).start();
+    }
     return () => {
       Orientation.unlockAllOrientations();
     }
-  }, [])
+  }, [enemyHeartEmpty])
 
   playPlayer = (type) => {
     player.play({
@@ -79,7 +96,7 @@ const GameFirstScene = () => {
       fps: Number(fps),
       loop: loop,
       resetAfterFinish: resetAfterFinish,
-      onFinish: () => console.log('Effect Play')
+      onFinish: () => console.log('Effect Play')  
     });
   };
 
@@ -93,15 +110,9 @@ const GameFirstScene = () => {
     });
   };
 
-  stop = () => {
-    var loop = 0
-    //var speed = 0
-    const time = 0.1 // 1 second per loop
-    //const speed = useRef(new Animated.Value(0)) // Initial value for opacity: 0
-
-    //mummy.stop(() => console.log('stopped'));
-    playPlayer('walk')
-    console.log("backgroundTransition = ",backgroundTransition)
+  bgTransition = () => {
+    
+    
     Animated.timing(
       backgroundTransition,
       {
@@ -109,7 +120,10 @@ const GameFirstScene = () => {
         duration: 5000,
         useNativeDriver:false
       }
+      
     ).start();
+    //setLoop(true)
+    playPlayer('walk')
 
     // const interval = setInterval(() => {
     //   setBackgroundTransition({ left: -speed })
@@ -130,7 +144,10 @@ const GameFirstScene = () => {
   Attack = () => {
     var loop = 0
     const time = 1000 // 1 second per loop
+    const effectArrays = [["redstart","redidle","redend"],["bluestart","blueidle","blueend"]];
+    const effectProb = Rand.Int(0,2) //random 0 , 1
     //mummy.stop(() => console.log('stopped'));
+    console.log("effect1 ",effectArrays[effectProb][0],"effect2 ",effectArrays[effectProb][1],"effect3 ",effectArrays[effectProb][2])
     playPlayer('attack')
     const interval = setInterval(() => {
       loop = loop + 1
@@ -146,12 +163,12 @@ const GameFirstScene = () => {
         playPlayer('idle')
         setLoop(false)
         setFps(5)
-        playEffect('redstart')
+        playEffect(effectArrays[effectProb][0])
       }
       if (loop == 2) {
         setLoop(true)
         setFps(16)
-        playEffect('redidle')
+        playEffect(effectArrays[effectProb][1])
       }
       if (loop == 3) {
         Animated.timing(effectSpeed,{
@@ -165,7 +182,7 @@ const GameFirstScene = () => {
       }
       if (loop == 4) {
         playEnemy('attacked')
-        playEffect('redend')
+        playEffect(effectArrays[effectProb][2])
       }
       if (loop == 5) {
         setLoop(true)
@@ -180,20 +197,24 @@ const GameFirstScene = () => {
           duration:0,
           useNativeDriver:false
         }).start()
+        setEnemyHeartEmpty(enemyHeartEmpty+1)
         clearInterval(interval)
       }
       return () => clearInterval(interval)
     }, time);
 
   };
-  const moveEffect = () => {
+  const modalOpen = () => {
     // Will change fadeAnim value to 1 in 5 seconds
-    Animated.timing(effectSpeed, {
-      toValue: 1000,
-      duration: 5000,
-      useNativeDriver:false
-    }).start();
+    setModalVisible(true)
+    // return (
+    //   <Writing modal={true}/>
+    // );
   };
+
+  const HandleCloseModal = () => {
+    setModalVisible(false)
+  }
 
   const FadeInView = (props) => {
      const fadeAnim = useRef(new Animated.Value(0)).current  // Initial value for opacity: 0
@@ -219,10 +240,11 @@ const GameFirstScene = () => {
       >
         {props.children}
       </Animated.View>
+      
     );
   }
 
-  
+
 
 
   return (
@@ -235,16 +257,16 @@ const GameFirstScene = () => {
       <View style={styles.statusHP} >
         <View style={{ flexDirection: 'row' }}>
           <Image source={imagePlayer} style={styles.imageCircle} />
-          <StatusHP heart={5} heartEmpty={0} side={"left"} />
+          <StatusHP heart={playerHeart} heartEmpty={playerHeartEmpty} side={"left"} />
         </View>
         <View style={{ flexDirection: 'row' }}>
-          <StatusHP heart={5} heartEmpty={1} side={"right"} />
+          <StatusHP heart={enemyHeart} heartEmpty={enemyHeartEmpty} side={"right"} />
           <Image source={imageEnemy} style={styles.imageCircle} />
         </View>
       </View>
 
       <View style={styles.field}>
-        <View style={{left:"20%"}}>
+        <View style={{left:"50%"}}>
           <SpriteSheet
             ref={ref => (player = ref)}
             source={spritePlayer}
@@ -260,7 +282,6 @@ const GameFirstScene = () => {
             }}
           />
         </View>
-        {/* <FadeInView style={{transform: [{ rotate: '-90deg'},{scale: 1}]}}>  */}
         <Animated.View style={[styles.effect,{left:effectSpeed ,opacity:effectFade}]}>
             <SpriteSheet
               ref={ref => (effect = ref)}
@@ -274,12 +295,15 @@ const GameFirstScene = () => {
                 red : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,],
                 redstart: [0, 1, 2, 3, 4,],
                 redidle: Array.from({ length: 5 }, (v, i) => i + 5),
-                redend: Array.from({ length: 7 }, (v, i) => i + 10)
+                redend: Array.from({ length: 7 }, (v, i) => i + 10),
+                blue : [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,],
+                bluestart: [18, 19, 20, 21, 22,],
+                blueidle: Array.from({ length: 5 }, (v, i) => i + 23),
+                blueend: Array.from({ length: 7 }, (v, i) => i + 28)
               }}
             />
             </Animated.View>
-        {/* </FadeInView> */}
-        <View style={{alignItems:"flex-end",flex:1,right:"20%"}}>
+        <Animated.View style={[styles.enemy,{opacity:enemyFade}]}>
           <SpriteSheet
             ref={ref => (enemy = ref)}
             source={spriteEnemy}
@@ -294,7 +318,13 @@ const GameFirstScene = () => {
               die: Array.from({ length: 18 }, (v, i) => i + 36)
             }}
           />
-        </View>
+        </Animated.View>
+        
+        <Modal animationType="fade" transparent={true} visible={modalVisible}>
+          <Writing closeModal={HandleCloseModal}/>
+          {/* <Button onPress={()=> setModalVisible(false)} title="cloas modal"/> */}
+        </Modal>
+        
       </View>
 
 
@@ -305,8 +335,8 @@ const GameFirstScene = () => {
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
           <Button onPress={() => playPlayer('idle')} title="Player" />
           <Button onPress={() => playEnemy('attacked')} title="Enemy" />
-          <Button onPress={() => stop('die')} title="BG Move" />
-          <Button onPress={() => moveEffect()} title="don't click" />
+          <Button onPress={() => bgTransition()} title="BG Move" />
+          <Button onPress={() => setModalVisible(true)} title="Modal" />
           <Button onPress={() => Attack()} title="Attack" />
         </View>
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -364,6 +394,11 @@ const styles = StyleSheet.create({
     transform: [{ rotate: '-90deg'},{scale: 1}],
     top : '5%',
     zIndex : 3
+  },
+  enemy:{
+    alignItems:"flex-end",
+    flex:1,
+    right:"50%"
   },
   background: {
     // justifyContent: 'center',

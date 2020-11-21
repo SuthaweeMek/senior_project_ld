@@ -10,14 +10,12 @@ import React from 'react'
 import { Text, View, TouchableOpacity, Dimensions, StyleSheet ,Image} from 'react-native'
 import imageHeart from '../resource/image/heart.png'
 import imageHeartEmpty from '../resource/image/heartEmpty.png'
+import Device from '../utils/Device'
 
-const height = Dimensions.get('window').height
+//dimesions
+width = Device.isPortrait() ? Dimensions.get('screen').height : Dimensions.get('screen').width //1:4.65
+height = Device.isPortrait() ? Dimensions.get('screen').width : Dimensions.get('screen').height //1:4.65
 
-// const imageLength = ({length}) =>{
-//     for (i = 0; i <= length; i++){
-//         <Image source={imageHeart}></Image>   
-//     }
-// }
 const StatusHP = ({ heart,heartEmpty,side }) => {
     const items = []
     var sideRight = { flexDirection : 'row' , paddingTop : 20,paddingLeft : 20}
