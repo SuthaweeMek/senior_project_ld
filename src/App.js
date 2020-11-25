@@ -28,6 +28,7 @@ import {
 import HomeScene from './scene/HomeScene';
 import LoginScene from './scene/LoginScene';
 import Test from './scene/TestSprite';
+import TestSound from './scene/TestSound';
 import WritingScene from './scene/WritingScene';
 import ImageScene from './scene/ImageScene';
 import GameFirstScene from './scene/GameFirstScene';
@@ -35,7 +36,7 @@ const App = () => {
 
 return (
   
-  <GameFirstScene/>
+  <TestSound/>
 );
 }
 

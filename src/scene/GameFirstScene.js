@@ -322,7 +322,6 @@ const GameFirstScene = () => {
         
         <Modal animationType="fade" transparent={true} visible={modalVisible}>
           <Writing closeModal={HandleCloseModal}/>
-          {/* <Button onPress={()=> setModalVisible(false)} title="cloas modal"/> */}
         </Modal>
         
       </View>
