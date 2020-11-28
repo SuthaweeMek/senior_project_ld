@@ -19,14 +19,32 @@ import Sound from 'react-native-sound'
 
 
 var ary_th_alphabet = Array.CreatePlattern("th_alphabet_",44)
+Array.Shuffle(ary_th_alphabet)
 const TestSound = () => {
     
     //const [ary_th_alphabet, set_ary_th_alphabet] = useState(Array.CreatePlattern("th_alphabet_",44));
-    const [index, setIndex] = useState(Rand.Int(0,ary_th_alphabet.length));
-    const [sound,setSound] = useState(new Sound(ary_th_alphabet[0].concat(".mp3"), Sound.MAIN_BUNDLE))
-    const [i,setI] = useState(0)
-    //console.log(ary_th_alphabet)
-    
+    //const [index, setIndex] = useState(Rand.Int(0,ary_th_alphabet.length));
+    //const [sound,setSound] = useState(new Sound(ary_th_alphabet[0].concat(".mp3"), Sound.MAIN_BUNDLE))
+    const [index,setIndex] = useState(0)
+    console.log(ary_th_alphabet)
+    var sound = new Sound(ary_th_alphabet[index].concat(".mp3"), Sound.MAIN_BUNDLE, (error) => {
+      if (error) {
+          console.log("path : ",Sound.MAIN_BUNDLE)
+        console.log('failed to load the sound', error);
+        return;
+      }
+      // loaded successfully
+      //console.log('duration in seconds: ' + whoosh.getDuration() + 'number of channels: ' + whoosh.getNumberOfChannels());
+      play();
+      // Play the sound with an onEnd callback
+      // whoosh.play((success) => {
+      //   if (success) {
+      //     console.log('successfully finished playing');
+      //   } else {
+      //     console.log('playback failed due to audio decoding errors');
+      //   }
+      // });
+    });
    //sound.play()
 
 //       // Reduce the volume by half
@@ -71,51 +89,43 @@ const TestSound = () => {
       }
     });
   };
+
   useEffect(() => {
     // code to run on component mount
-  
+    play()
+    console.log("index is ",index)
     
-    
-  }, [ary_th_alphabet])
+  }, [index])
 
   playARemove = () => { 
-   
-    //randIndex = Rand.Int(0,ary_th_alphabet.length)
-    setI(i+1)
-    console.log("click : ",i)
-    //randIndex = Rand.Int(0,ary_th_alphabet.length-1)
-    //console.log("randIndex : ",randIndex ,"----- random by 0 to ",ary_th_alphabet.length-2)
-    setIndex(i)//random 0 , ary_th_alphabet.length-1
-    if(ary_th_alphabet.length > 1 ){
-      //console.log("wowwwwwwwwwwwwwwwwwwwwwwww")
-      var them = new Sound(ary_th_alphabet[0].concat(".mp3"), Sound.MAIN_BUNDLE, (error) => {
-        if (error) {
-            console.log("path : ",Sound.MAIN_BUNDLE)
-          console.log('failed to load the sound', error);
-          return;
-        }
-        // loaded successfully
-        //console.log('duration in seconds: ' + whoosh.getDuration() + 'number of channels: ' + whoosh.getNumberOfChannels());
-        play();
-        // Play the sound with an onEnd callback
-        // whoosh.play((success) => {
-        //   if (success) {
-        //     console.log('successfully finished playing');
-        //   } else {
-        //     console.log('playback failed due to audio decoding errors');
-        //   }
-        // });
-      });
-      setSound(them)
-      //console.log("useEffectIndex : ",index)
-      //console.log("lengthArray : ",ary_th_alphabet.length)
-      //console.log("array : ",ary_th_alphabet[index])
-      Array.RemoveIndex(ary_th_alphabet,0)
-      console.log("array All : ",ary_th_alphabet)
+    if(index < ary_th_alphabet.length-1){
+      sound.release();
+      setIndex(index+1)
     }
     else {
-      console.log("array is empty")
+      console.log("LAST !!!")
     }
+    
+   
+    // //randIndex = Rand.Int(0,ary_th_alphabet.length)
+    // setI(i+1)
+    // console.log("click : ",i)
+    // //randIndex = Rand.Int(0,ary_th_alphabet.length-1)
+    // //console.log("randIndex : ",randIndex ,"----- random by 0 to ",ary_th_alphabet.length-2)
+    // setIndex(i)//random 0 , ary_th_alphabet.length-1
+    // if(ary_th_alphabet.length > 1 ){
+    //   //console.log("wowwwwwwwwwwwwwwwwwwwwwwww")
+
+    //   setSound(them)
+    //   //console.log("useEffectIndex : ",index)
+    //   //console.log("lengthArray : ",ary_th_alphabet.length)
+    //   //console.log("array : ",ary_th_alphabet[index])
+    //   Array.RemoveIndex(ary_th_alphabet,0)
+    //   console.log("array All : ",ary_th_alphabet)
+    // }
+    // else {
+    //   console.log("array is empty")
+    // }
     
 
   };
