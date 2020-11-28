@@ -35,12 +35,8 @@ import GameFirstScene from './scene/GameFirstScene';
 const App = () => {
 
 return (
-<<<<<<< HEAD
   
   <TestSound/>
-=======
-  <HomeScene/>
->>>>>>> f630a2412af599c54d2fad58937ccf60a1ba5abb
 );
 }
 

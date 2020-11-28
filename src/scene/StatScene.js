@@ -24,8 +24,8 @@ import {
     Modal,
 } from 'react-native';
 import { NativeRouter, Route, Link, Redirect } from "react-router-native";
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Card from './Card'
+//import Icon from 'react-native-vector-icons/FontAwesome';
+//import Card from './Card'
 import imageAlphabet from '../resource/image/alphabet.jpg';
 
 
