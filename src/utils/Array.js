@@ -12,7 +12,12 @@ exports.RemoveIndex = (arr,index) =>  {
 exports.CreatePlattern = (string,size) =>  {
     var arr = []
     for (i = 1; i <= size; i++) {
-        arr.push(string.concat(i.toString()))
+        if(i<10){
+            arr.push(string.concat("0".concat(i.toString())))
+        }
+        else{
+            arr.push(string.concat(i.toString()))
+        } 
       }
     return arr;
 }

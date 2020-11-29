@@ -14,18 +14,84 @@ import {
   StatusBar,
   Button,
   Modal,
+  Dimensions,
   ImageBackground,
 } from 'react-native';
 
 import { SketchCanvas } from '@terrylinla/react-native-sketch-canvas';
-
+import Device from '../utils/Device';
 import imageBook from '../resource/image/book.png';
+import Sound from 'react-native-sound'
 
+//dimesions
+width = Device.isPortrait() ? Dimensions.get('screen').height : Dimensions.get('screen').width //1:4.65
+height = Device.isPortrait() ? Dimensions.get('screen').width : Dimensions.get('screen').height //1:4.65
+
+var doubly = false;
+var end = false;
 
 const writing = (props) => {
+
+  //set ary_th_alphabet
+  ary_th_alphabet = props.arrSound
+  index = props.arrIndex
+
+  //hook
+  
+
+  //sound
+  var sound = new Sound(ary_th_alphabet[index].concat(".mp3"), Sound.MAIN_BUNDLE, (error) => {
+    if (error) {
+        console.log("path : ",Sound.MAIN_BUNDLE)
+      console.log('failed to load the sound', error);
+      return;
+    }
+    // loaded successfully
+    //console.log('duration in seconds: ' + whoosh.getDuration() + 'number of channels: ' + whoosh.getNumberOfChannels());
+    var multiplier = 4;
+    if(index == multiplier || index == multiplier*2 || index == multiplier*3 || index == multiplier*4 || index == multiplier*5 
+      || index == multiplier*6 || index == multiplier*7 || index == multiplier*8 || index == multiplier*9 || index == multiplier*10
+      || index == multiplier*11 ){
+      if(doubly == true){
+        play()
+      }
+      else{
+
+        doubly = true
+      }
+      
+    }
+    else{
+      doubly = false
+      play()
+    }
+    // Play the sound with an onEnd callback
+    // whoosh.play((success) => {
+    //   if (success) {
+    //     console.log('successfully finished playing');
+    //   } else {
+    //     console.log('playback failed due to audio decoding errors');
+    //   }
+    // });
+  });
+  //console.log("/n HEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE m",props.modalState)
+  const play = () => {  
+    sound.play((success) => {
+      if (success) {
+        console.log('successfully finished playing');
+      } else {
+        console.log('playback failed due to audio decoding errors');
+      }
+    });
+  };
+
+  console.log("test",props.arrSound)
   const canvasRef = React.createRef()
   const Undo = () => {
     canvasRef.current.undo()
+  }
+  const Clear = () => {
+    canvasRef.current.clear()
   }
   const CheckCallback = async (success, base64) => {
     var image = `data:image/png;base64,` + base64
@@ -57,9 +123,25 @@ const writing = (props) => {
   }
   const Save = () => {
     console.log("YES");
-    canvasRef.current.save('jpg', false, 'RNSketchCanvas', 'image', true, false, false)
+    canvasRef.current.save('jpg', false, 'RNSketchCanvas', ary_th_alphabet[index], true, false, false)
     console.log("check")
     canvasRef.current.getBase64("jpg", false, false, false, false, CheckCallback)
+    Clear()   
+    if(index < ary_th_alphabet.length-1){
+      sound.release();
+      props.setArrIndex()
+    }
+    else {
+      if(end == false){
+        props.setArrIndex()
+        end = true
+      }
+      else{
+        console.log("LAST !!!")
+      }
+      
+    }
+    
   }
 
   const Upload = () => {
@@ -135,6 +217,20 @@ const writing = (props) => {
     <View style={styles.container}>
         <View style={styles.centeredView}>
           <ImageBackground source={imageBook} style={styles.image}>
+            <View style={{ flexDirection: 'row', justifyContent: "flex-start",alignContent:"flex-start" }}>
+              <Button
+                onPress={play}
+                title="sound"
+                color="#841584"
+                accessibilityLabel="Learn more about this purple button"
+              />  
+              <Button
+              onPress={Clear}
+              title="clear"
+              color="#191584"
+              accessibilityLabel="Learn more about this purple button"
+            />
+            </View>
             <SketchCanvas
               style={{ flex: 1, justifyContent: "center", flexDirection: 'row' }}
               strokeColor={'black'}
@@ -230,8 +326,13 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     resizeMode: 'cover',
+    
+    //backgroundColor:"blue",
     //alignItems: "center",
-    margin: 20,
+    margin: 50,
+    //padding : 50,
+    paddingHorizontal :50,
+    //alignSelf:"center",
     justifyContent: "center"
   },
 });

@@ -19,7 +19,6 @@ import StatusHP from '../component/statusHP'
 import Orientation from 'react-native-orientation';
 import Device from '../utils/Device';
 import Rand from '../utils/Rand';
-import Arrays from '../utils/Array'
 import Writing from '../component/writing'
 
 //image
@@ -27,8 +26,8 @@ import imageBackground from '../resource/image/LDSpotGameScene1.png'
 import imageHeart from '../resource/image/heartEmpty.png'
 import imagePlayer from '../resource/image/player_circle.png'
 import imageEnemy from '../resource/image/enemy1_circle.png'
-import imageGameSceneBG1 from '../resource/games/LDSpotGameSceneBG1.png'
-import imageGameSceneFG1 from '../resource/games/LDSpotGameSceneFG1.png'
+import imageGameSceneBG1 from '../resource/games/LDSpotGameSceneBG2.png'
+import imageGameSceneFG1 from '../resource/games/LDSpotGameSceneFG2.png'
 
 //sprite
 import spritePlayer from '../resource/sprite_sheet/player_character.png'
@@ -40,16 +39,13 @@ height = Device.isPortrait() ? Dimensions.get('screen').width : Dimensions.get('
 
 console.log("is tablet ?",Device.isTablet())
 console.log("Device height = ", height, " and width = ", width)
-//TH_alphabet
-var ary_th_alphabet = Arrays.CreatePlattern("th_alphabet_",44)
-Arrays.Shuffle(ary_th_alphabet)
-ary_th_alphabet.push("th_alphabet_45")
+
 
 //const spriteSize = height
 const GameFirstScene = () => {
   //HP Parameters
   const playerHeart = 5
-  const enemyHeart = 11
+  const enemyHeart = 5
   //State
   const [Transition, SetTransition] = useState(1);
   const [fps, setFps] = useState(16);
@@ -58,7 +54,6 @@ const GameFirstScene = () => {
   const [playerHeartEmpty, setPlayerHeartEmpty] = useState(0);
   const [enemyHeartEmpty, setEnemyHeartEmpty] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
-  const [index,setIndex] = useState(0)
 
   //Animation Parameters
   const effectFade = useRef(new Animated.Value(0)).current; // Initial value for opacity: 0
@@ -68,12 +63,8 @@ const GameFirstScene = () => {
 
   useEffect(() => {
     // code to run on component mount
-    const time = 1000 // 1 second per loop
-    var round = 0
     Orientation.lockToLandscape();
-    playPlayer("idle")
-    playEnemy("idle")
-    if(enemyHeartEmpty == enemyHeart ){
+    if(enemyHeartEmpty == 5 ){
       console.log("The enemy is dead")
       Animated.timing(
         enemyFade,
@@ -83,35 +74,11 @@ const GameFirstScene = () => {
           useNativeDriver:false
         }
       ).start();
-      bgTransition()
-    }
-    else{
-      const interval = setInterval(() => {
-        round = round + 1
-        if (round == 2) {
-          setModalVisible(true)
-          clearInterval(interval)
-          //play('idle')
-        }
-        return () => clearInterval(interval)
-      }, time);
     }
     return () => {
       Orientation.unlockAllOrientations();
     }
   }, [enemyHeartEmpty])
-
-  useEffect(() => {
-    // code to run on component mount
-    var multiplier = 4;
-    console.log("index = ",index)
-    if(index == multiplier || index == multiplier*2 || index == multiplier*3 || index == multiplier*4 || index == multiplier*5 
-      || index == multiplier*6 || index == multiplier*7 || index == multiplier*8 || index == multiplier*9 || index == multiplier*10
-      || index == multiplier*11){
-      setModalVisible(false)
-      Attack()
-    }
-  }, [index])
 
   playPlayer = (type) => {
     player.play({
@@ -144,6 +111,8 @@ const GameFirstScene = () => {
   };
 
   bgTransition = () => {
+    
+    
     Animated.timing(
       backgroundTransition,
       {
@@ -244,13 +213,7 @@ const GameFirstScene = () => {
   };
 
   const HandleCloseModal = () => {
-    console.log("modal closed")
     setModalVisible(false)
-  }
-
-  const SetArrayIndex = () =>{
-    console.log("index : ",index)
-    setIndex(index+1)
   }
 
   const FadeInView = (props) => {
@@ -358,7 +321,7 @@ const GameFirstScene = () => {
         </Animated.View>
         
         <Modal animationType="fade" transparent={true} visible={modalVisible}>
-          <Writing modalState = {modalVisible} closeModal={HandleCloseModal} arrSound={ary_th_alphabet} setArrIndex={SetArrayIndex} arrIndex={index}/>
+          <Writing closeModal={HandleCloseModal}/>
         </Modal>
         
       </View>
@@ -367,7 +330,7 @@ const GameFirstScene = () => {
 
       <Image source={imageGameSceneFG1} resizeMode="stretch" style={[styles.foreground]} />
 
-      {/* <View style={{ paddingVertical: 30, paddingHorizontal: 30, position: 'absolute' }}>
+      <View style={{ paddingVertical: 30, paddingHorizontal: 30, position: 'absolute' }}>
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
           <Button onPress={() => playPlayer('idle')} title="Player" />
           <Button onPress={() => playEnemy('attacked')} title="Enemy" />
@@ -395,7 +358,7 @@ const GameFirstScene = () => {
             onValueChange={val => setResetAfterFinish(val)}
           />
         </View>
-      </View> */}
+      </View>
 
     </View>
     // </KeyboardAvoidingView>
