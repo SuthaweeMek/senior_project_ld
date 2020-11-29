@@ -32,11 +32,12 @@ import TestSound from './scene/TestSound';
 import WritingScene from './scene/WritingScene';
 import ImageScene from './scene/ImageScene';
 import GameFirstScene from './scene/GameFirstScene';
+import StatScene from './scene/StatScene';
 const App = () => {
 
 return (
   
-  <TestSound/>
+  <StatScene/>
 );
 }
 
