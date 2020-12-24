@@ -49,7 +49,7 @@ const LoginScene = () => {
            <Text>รหัสผ่าน</Text>
           </View> 
             <InputBox text= "รหัสผ่าน" />
-            <Text style ={{marginLeft :90 ,marginTop:7}} onPress={onPress}  > ลืมรหัสผ่าน?</Text>
+            <Text style ={{marginLeft :0 ,marginBottom:7,marginTop:7}} onPress={onPress}  > ลืมรหัสผ่าน?</Text>
           <ButtonCurve onPress= {onPress} text = "เข้าสู่ระบบ" />
           <Text onPress={onPress} > สมัครสมาชิกใหม่</Text>
        </View>
