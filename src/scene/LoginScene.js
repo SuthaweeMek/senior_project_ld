@@ -32,25 +32,26 @@ const LoginScene = () => {
   const onPress = () => {
           alert("clicked");
     }
-
+   
 
   return (
     <NativeRouter>
      <ImageBackground source = {backgroundLogin} style = {styles.background}>
        <View style = {styles.card}>
-         <View style ={{marginBottom : 40}}>
+         <View style ={{marginBottom : 28}}>
             <Text style={{fontWeight: "bold",fontSize:27}}>เข้าสู่ระบบ</Text>
           </View>
-          <View style ={{marginRight :130}}>
+          <View style ={{marginRight :140 ,marginBottom:7}}>
             <Text >ชื่อ</Text>
           </View>
           <InputBox text= "ชื่อ" />
-          <View style ={{marginRight :100}}>
+          <View style ={{marginRight :110,marginBottom:7,marginTop:7}}>
            <Text>รหัสผ่าน</Text>
-          </View>
-          <InputBox text= "รหัสผ่าน" />
-          <ButtonCurve text = "เข้าสู่ระบบ" onPress= {onPress}/>
-          <Text>สมัครสมาชิกใหม่</Text>
+          </View> 
+            <InputBox text= "รหัสผ่าน" />
+            <Text style ={{marginLeft :90 ,marginTop:7}} onPress={onPress}  > ลืมรหัสผ่าน?</Text>
+          <ButtonCurve onPress= {onPress} text = "เข้าสู่ระบบ" />
+          <Text onPress={onPress} > สมัครสมาชิกใหม่</Text>
        </View>
       </ImageBackground>
     </NativeRouter>
@@ -76,8 +77,8 @@ const styles = StyleSheet.create({
     flexDirection :'column',
     backgroundColor : 'white',
     borderRadius : 10,
-    width : width/1.96,
-    height : height/1.56,
+    width : width/1.6,
+    height : height/1.8,
   },
   background: {
     justifyContent: 'center',
