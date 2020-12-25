@@ -42,7 +42,8 @@ console.log("Device height = ", height, " and width = ", width)
 
 
 //const spriteSize = height
-const GameFirstScene = () => {
+const GameSecondScene = () => {
+  console.log("Scene2")
   //HP Parameters
   const playerHeart = 5
   const enemyHeart = 5
@@ -428,4 +429,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default GameFirstScene;
+export default GameSecondScene;

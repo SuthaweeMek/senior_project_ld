@@ -16,7 +16,8 @@ import {
   StatusBar,
   Button,
   ImageBackground,
-  Image
+  Image,
+  TouchableOpacity
 } from 'react-native';
 import { NativeRouter, Route, Link } from "react-router-native";
 import backgroundMenu from '../resource/image/backgroundMenu.png';
@@ -26,7 +27,8 @@ const image = { uri: "https://reactjs.org/logo-og.png" };
 import Router from '../router'
 
 
-const HomeScene = () => {
+const HomeScene = (props) => {
+
   return (
     <NativeRouter>
       <View style={styles.container}>
@@ -34,41 +36,43 @@ const HomeScene = () => {
         <ImageBackground source={backgroundMenu} style={styles.backgroundMenu}>
           <View style={styles.containerMenuProfile}>
 
-          
-              <Image source={imageProfile} style={styles.imageProfile}></Image>
-              <Link to="/" >
+
+            <Image source={imageProfile} style={styles.imageProfile}></Image>
+            <Link to="/" >
               <Text style={styles.fontMenuProfile}>Pig Piggy</Text>
             </Link>
           </View>
 
           <View style={styles.containerMenuContent}>
             <View style={styles.containerMenuContentRow}>
-              
-                <Image source={imageProfile} style={styles.icon}></Image>
-                <Link to="/test" >
+
+              <Image source={imageProfile} style={styles.icon}></Image>
+
+              <TouchableOpacity onPress={() => props.handleScene(1)}>
                 <Text style={styles.fontMenuContent}>ทำแบบทดสอบ</Text>
-              </Link>
+
+              </TouchableOpacity>
             </View>
             <View style={styles.containerMenuContentRow}>
-              
-                <Image source={imageProfile} style={styles.icon}></Image>
-                <Link to="/result" >
+
+              <Image source={imageProfile} style={styles.icon}></Image>
+              <Link to="/result" >
                 <Text style={styles.fontMenuContent}>ผลลัพท์</Text>
               </Link>
             </View>
             <View style={styles.containerMenuContentRow}>
-              
-                <Image source={imageProfile} style={styles.icon}></Image>
-                <Link to="/stat" >
+
+              <Image source={imageProfile} style={styles.icon}></Image>
+              <Link to="/stat" >
                 <Text style={styles.fontMenuContent}>สถิติ</Text>
               </Link>
             </View>
 
             <View style={styles.containerMenuFooter}>
               <View style={styles.containerMenuContentRow}>
-               
-                  <Image source={imageProfile} style={styles.icon}></Image>
-                  <Link to="/logout" >
+
+                <Image source={imageProfile} style={styles.icon}></Image>
+                <Link to="/logout" >
 
                   <Text style={styles.fontMenuContent}>ออกจากระบบ</Text>
                 </Link>
@@ -80,7 +84,7 @@ const HomeScene = () => {
 
         </ImageBackground>
         <View style={styles.containerContent}>
-          <Router/>
+          <Router />
         </View>
       </View>
     </NativeRouter>

@@ -12,6 +12,7 @@ import React from 'react';
 
 import WritingScene from './scene/WritingScene'
 import HomeScene from './scene/HomeScene'
+import GameFirstScene from './scene/GameFirstScene'
 //import TestSprite from './scene/TestSprite'
 import {
   SafeAreaView,
@@ -53,7 +54,6 @@ const RouterComponent = () => {
   return (
     <React.Fragment>
       <Route exact path="/" component={Home} />
-      <Route path="/test" component={WritingScene} />
       <Route path="/result" component={Result} />
       <Route path="/stat" component={Stat} />
       <Route path="/logout" component={Logout} />

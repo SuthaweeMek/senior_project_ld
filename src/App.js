@@ -33,11 +33,12 @@ import WritingScene from './scene/WritingScene';
 import ImageScene from './scene/ImageScene';
 import GameFirstScene from './scene/GameFirstScene';
 import GameSecondScene from './scene/GameFirstScene';
+import Router2Component from './router2'
 const App = () => {
 
 return (
   
-  <GameFirstScene/>
+  <Router2Component/>
 );
 }
 
