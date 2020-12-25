@@ -46,7 +46,7 @@ Arrays.Shuffle(ary_th_alphabet)
 ary_th_alphabet.push("th_alphabet_45")
 
 //const spriteSize = height
-const GameFirstScene = () => {
+const GameFirstScene = (props) => {
   //HP Parameters
   const playerHeart = 5
   const enemyHeart = 11
@@ -84,6 +84,7 @@ const GameFirstScene = () => {
         }
       ).start();
       bgTransition()
+      props.handleScene(0)
     }
     else{
       const interval = setInterval(() => {
@@ -183,7 +184,6 @@ const GameFirstScene = () => {
     const interval = setInterval(() => {
       loop = loop + 1
       //effectFade
-      console.log('This',loop,'second')
       if (loop == 1) {
         Animated.timing(effectFade,{
           toValue:1,
