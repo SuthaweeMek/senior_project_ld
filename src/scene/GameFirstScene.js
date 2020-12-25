@@ -155,7 +155,7 @@ const GameFirstScene = () => {
     ).start();
     //setLoop(true)
     playPlayer('walk')
-
+    console.log("END SCENE 1")
     // const interval = setInterval(() => {
     //   setBackgroundTransition({ left: -speed })
 

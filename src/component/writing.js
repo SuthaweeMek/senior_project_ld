@@ -48,23 +48,26 @@ const writing = (props) => {
     }
     // loaded successfully
     //console.log('duration in seconds: ' + whoosh.getDuration() + 'number of channels: ' + whoosh.getNumberOfChannels());
-    var multiplier = 4;
-    if(index == multiplier || index == multiplier*2 || index == multiplier*3 || index == multiplier*4 || index == multiplier*5 
-      || index == multiplier*6 || index == multiplier*7 || index == multiplier*8 || index == multiplier*9 || index == multiplier*10
-      || index == multiplier*11 ){
-      if(doubly == true){
-        play()
+    if(ary_th_alphabet[index].includes("th_alphabet")){
+      var multiplier = 4;
+      if(index == multiplier || index == multiplier*2 || index == multiplier*3 || index == multiplier*4 || index == multiplier*5 
+        || index == multiplier*6 || index == multiplier*7 || index == multiplier*8 || index == multiplier*9 || index == multiplier*10
+        || index == multiplier*11 ){
+        if(doubly == true){
+          play()
+        }
+        else{
+
+          doubly = true
+        }
+        
       }
       else{
-
-        doubly = true
-      }
-      
+        doubly = false
+        play()
+     }
     }
-    else{
-      doubly = false
-      play()
-    }
+    
     // Play the sound with an onEnd callback
     // whoosh.play((success) => {
     //   if (success) {
