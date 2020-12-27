@@ -32,15 +32,15 @@ var end = false;
 
 const writing = (props) => {
 
-  //set ary_th_alphabet
-  ary_th_alphabet = props.arrSound
+  //set ary_sound , vowel , vocab
+  ary_sound = props.arrSound
   index = props.arrIndex
 
   //hook
   
 
   //sound
-  var sound = new Sound(ary_th_alphabet[index].concat(".mp3"), Sound.MAIN_BUNDLE, (error) => {
+  var sound = new Sound(ary_sound[index].concat(".mp3"), Sound.MAIN_BUNDLE, (error) => {
     if (error) {
         console.log("path : ",Sound.MAIN_BUNDLE)
       console.log('failed to load the sound', error);
@@ -48,7 +48,7 @@ const writing = (props) => {
     }
     // loaded successfully
     //console.log('duration in seconds: ' + whoosh.getDuration() + 'number of channels: ' + whoosh.getNumberOfChannels());
-    if(ary_th_alphabet[index].includes("th_alphabet")){
+    if(ary_sound[index].includes("th_alphabet")){
       var multiplier = 4;
       if(index == multiplier || index == multiplier*2 || index == multiplier*3 || index == multiplier*4 || index == multiplier*5 
         || index == multiplier*6 || index == multiplier*7 || index == multiplier*8 || index == multiplier*9 || index == multiplier*10
@@ -57,7 +57,44 @@ const writing = (props) => {
           play()
         }
         else{
+          doubly = true
+        }
+        
+      }
+      else{
+        doubly = false
+        play()
+     }
+    }
 
+    if(ary_sound[index].includes("th_vowel")){
+      var multiplier = 4;
+      if(index == multiplier || index == multiplier*2 || index == multiplier*3 || index == multiplier*4 || index == multiplier*5 
+        || index == multiplier*6 || index == multiplier*7 || index == multiplier*8 || index == multiplier*9 || index == multiplier*10
+        ){
+        if(doubly == true){
+          play()
+        }
+        else{
+          doubly = true
+        }
+        
+      }
+      else{
+        doubly = false
+        play()
+     }
+    }
+
+    if(ary_sound[index].includes("th_vocab")){
+      var multiplier = 4;
+      if(index == multiplier || index == multiplier*2 || index == multiplier*3 || index == multiplier*4 || index == multiplier*5 
+        || index == multiplier*6 || index == multiplier*7 || index == multiplier*8 || index == multiplier*9 || index == multiplier*10
+        ){
+        if(doubly == true){
+          play()
+        }
+        else{
           doubly = true
         }
         
@@ -88,7 +125,7 @@ const writing = (props) => {
     });
   };
 
-  console.log("Alphabet : ",ary_th_alphabet[index])
+  console.log("Alphabet : ",ary_sound[index])
   const canvasRef = React.createRef()
   const Undo = () => {
     canvasRef.current.undo()
@@ -126,11 +163,11 @@ const writing = (props) => {
   }
   const Save = () => {
     console.log("YES");
-    canvasRef.current.save('jpg', false, 'RNSketchCanvas', ary_th_alphabet[index], true, false, false)
+    canvasRef.current.save('jpg', false, 'RNSketchCanvas', ary_sound[index], true, false, false)
     console.log("check")
     canvasRef.current.getBase64("jpg", false, false, false, false, CheckCallback)
     Clear()   
-    if(index < ary_th_alphabet.length-1){
+    if(index < ary_sound.length-1){
       sound.release();
       props.setArrIndex()
     }
@@ -302,7 +339,6 @@ const styles = StyleSheet.create({
     //flex: 1, justifyContent: 'center', alignItems: 'center', 
     flex: 1,
     justifyContent: "center",
-
     //marginTop: 22
   },
   centeredView: {
@@ -328,13 +364,15 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     flexDirection: 'column',
-    resizeMode: 'cover',
+    resizeMode: 'center',
     
     //backgroundColor:"blue",
     //alignItems: "center",
+    marginHorizontal : width/3,
     margin: 50,
-    //padding : 50,
-    paddingHorizontal :50,
+    padding : 30,
+    // paddingHorizontal :50,
+    // paddingBottom : 50,
     //alignSelf:"center",
     justifyContent: "center"
   },
