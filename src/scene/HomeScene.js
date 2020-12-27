@@ -48,10 +48,9 @@ const HomeScene = (props) => {
 
               <Image source={imageProfile} style={styles.icon}></Image>
 
-              <TouchableOpacity onPress={() => props.handleScene(1)}>
-                <Text style={styles.fontMenuContent}>ทำแบบทดสอบ</Text>
-
-              </TouchableOpacity>
+              <Link to="/test" >
+                <Text style={styles.fontMenuContent}>ผลลัพท์</Text>
+              </Link>
             </View>
             <View style={styles.containerMenuContentRow}>
 

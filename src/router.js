@@ -13,6 +13,7 @@ import React from 'react';
 import WritingScene from './scene/WritingScene'
 import HomeScene from './scene/HomeScene'
 import GameFirstScene from './scene/GameFirstScene'
+import StartTestScene from './scene/StartTestScene'
 //import TestSprite from './scene/TestSprite'
 import {
   SafeAreaView,
@@ -32,11 +33,6 @@ function Home() {
   return <Text style={styles.header}>Home</Text>;
 }
 
-function Test() {
-  return WritingScene;
-}
-
-
 function Result() {
   return <Text style={styles.header}>Result</Text>;
 }
@@ -54,6 +50,7 @@ const RouterComponent = () => {
   return (
     <React.Fragment>
       <Route exact path="/" component={Home} />
+      <Route path="/test" component={StartTestScene} />
       <Route path="/result" component={Result} />
       <Route path="/stat" component={Stat} />
       <Route path="/logout" component={Logout} />
