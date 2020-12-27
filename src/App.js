@@ -32,12 +32,12 @@ import TestSound from './scene/TestSound';
 import WritingScene from './scene/WritingScene';
 import ImageScene from './scene/ImageScene';
 import GameFirstScene from './scene/GameFirstScene';
-import GameSecondScene from './scene/GameFirstScene';
+import GameSecondScene from './scene/GameSecondScene';
+import GameThirdScene from './scene/GameThirdScene';
 import Router2Component from './router2'
 const App = () => {
 
 return (
-  
   <Router2Component/>
 );
 }

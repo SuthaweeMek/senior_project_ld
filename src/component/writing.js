@@ -88,7 +88,7 @@ const writing = (props) => {
     });
   };
 
-  console.log("test",props.arrSound)
+  console.log("Alphabet : ",ary_th_alphabet[index])
   const canvasRef = React.createRef()
   const Undo = () => {
     canvasRef.current.undo()
@@ -100,11 +100,11 @@ const writing = (props) => {
     var image = `data:image/png;base64,` + base64
     const data = new FormData();
     data.append('prediction', 1);
-    data.append('img', image);
+    data.append('ImageName', image);
 
     //Please change file upload URL
     let res = await fetch(
-      'http://10.0.2.2:8000/classifications/',
+      'http://0324cd6e62e3.ngrok.io/classifications/',
       {
         method: 'post',
         body: data,

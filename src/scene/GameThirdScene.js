@@ -29,8 +29,8 @@ import imageBackground from '../resource/image/LDSpotGameScene1.png'
 import imageHeart from '../resource/image/heartEmpty.png'
 import imagePlayer from '../resource/image/player_circle.png'
 import imageEnemy from '../resource/image/enemy1_circle.png'
-import imageGameSceneBG2 from '../resource/games/LDSpotGameSceneBG2.png'
-import imageGameSceneFG2 from '../resource/games/LDSpotGameSceneFG2.png'
+import imageGameSceneBG3 from '../resource/games/LDSpotGameSceneBG3.png'
+import imageGameSceneFG3 from '../resource/games/LDSpotGameSceneFG3.png'
 
 //sprite
 import spritePlayer from '../resource/sprite_sheet/player_character.png'
@@ -84,7 +84,6 @@ const GameFirstScene = (props) => {
           useNativeDriver:false
         }
       ).start();
-      setLoop(true)
       bgTransition()
     }
     else{
@@ -153,11 +152,15 @@ const GameFirstScene = (props) => {
         duration: 5000,
         useNativeDriver:false
       }
+      
     ).start();
+    //setLoop(true)
     playPlayer('walk')
-    setTimeout(() => props.handleScene(3),
-      5000
+    playPlayer('walk')
+    setTimeout(() => props.handleScene(0),
+    5000
     )
+    console.log("END SCENE 3")
     // const interval = setInterval(() => {
     //   setBackgroundTransition({ left: -speed })
 
@@ -290,7 +293,7 @@ const GameFirstScene = (props) => {
     // resizeMode cover stretch
     <View style={styles.container}>
       <Animated.View style={[styles.fadingContainer,{ left:backgroundTransition}]}>  
-        <Image source={imageGameSceneBG2} resizeMode="stretch" style={[styles.background]} />
+        <Image source={imageGameSceneBG3} resizeMode="stretch" style={[styles.background]} />
       </Animated.View>
       <View style={styles.statusHP} >
         <View style={{ flexDirection: 'row' }}>
@@ -366,9 +369,9 @@ const GameFirstScene = (props) => {
 
 
 
-      <Image source={imageGameSceneFG2} resizeMode="stretch" style={[styles.foreground]} />
+      <Image source={imageGameSceneFG3} resizeMode="stretch" style={[styles.foreground]} />
 
-      <View style={{ paddingVertical: 30, paddingHorizontal: 30, position: 'absolute' }}>
+      {/* <View style={{ paddingVertical: 30, paddingHorizontal: 30, position: 'absolute' }}>
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
           <Button onPress={() => playPlayer('idle')} title="Player" />
           <Button onPress={() => playEnemy('attacked')} title="Enemy" />
@@ -396,7 +399,7 @@ const GameFirstScene = (props) => {
             onValueChange={val => setResetAfterFinish(val)}
           />
         </View>
-      </View>
+      </View> */}
 
     </View>
     // </KeyboardAvoidingView>
@@ -456,7 +459,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     width: width * 2,
     height: height / 4.26,
-    opacity:1,
   },
   imageCircle: {
     width: height / 5,

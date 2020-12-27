@@ -22,6 +22,8 @@ import Rand from '../utils/Rand';
 import Arrays from '../utils/Array'
 import Writing from '../component/writing'
 
+//alphabet
+var ary_th_alphabet = Arrays.CreatePlattern("th_alphabet_",44)
 //image
 import imageBackground from '../resource/image/LDSpotGameScene1.png'
 import imageHeart from '../resource/image/heartEmpty.png'
@@ -34,22 +36,19 @@ import imageGameSceneFG1 from '../resource/games/LDSpotGameSceneFG1.png'
 import spritePlayer from '../resource/sprite_sheet/player_character.png'
 import spriteEnemy from '../resource/sprite_sheet/enemy1_character.png'
 import spriteEffect1 from '../resource/sprite_sheet/effect1.png'
+
 //dimesions
 width = Device.isPortrait() ? Dimensions.get('screen').height : Dimensions.get('screen').width //1:4.65
 height = Device.isPortrait() ? Dimensions.get('screen').width : Dimensions.get('screen').height //1:4.65
 
 console.log("is tablet ?",Device.isTablet())
 console.log("Device height = ", height, " and width = ", width)
-//TH_alphabet
-var ary_th_alphabet = Arrays.CreatePlattern("th_alphabet_",44)
-Arrays.Shuffle(ary_th_alphabet)
-ary_th_alphabet.push("th_alphabet_45")
 
 //const spriteSize = height
 const GameFirstScene = (props) => {
   //HP Parameters
   const playerHeart = 5
-  const enemyHeart = 11
+  const enemyHeart = 1
   //State
   const [Transition, SetTransition] = useState(1);
   const [fps, setFps] = useState(16);
@@ -59,13 +58,15 @@ const GameFirstScene = (props) => {
   const [enemyHeartEmpty, setEnemyHeartEmpty] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
   const [index,setIndex] = useState(0)
-
   //Animation Parameters
   const effectFade = useRef(new Animated.Value(0)).current; // Initial value for opacity: 0
   const effectSpeed = useRef(new Animated.Value(0)).current;
   const enemyFade = useRef(new Animated.Value(1)).current; 
   const backgroundTransition = useRef(new Animated.Value(0)).current;
-
+  //TH_alphabet
+  index ==0 ? Arrays.Shuffle(ary_th_alphabet) : null
+  index ==0 ? ary_th_alphabet.push("th_alphabet_45") : null
+  
   useEffect(() => {
     // code to run on component mount
     const time = 1000 // 1 second per loop
@@ -84,7 +85,6 @@ const GameFirstScene = (props) => {
         }
       ).start();
       bgTransition()
-      props.handleScene(0)
     }
     else{
       const interval = setInterval(() => {
@@ -123,7 +123,7 @@ const GameFirstScene = (props) => {
       onFinish: () => console.log('Player Play')
     });
   };
-
+ 
   playEffect = (type) => {
     effect.play({
       type,
@@ -156,6 +156,9 @@ const GameFirstScene = (props) => {
     ).start();
     //setLoop(true)
     playPlayer('walk')
+    setTimeout(() => props.handleScene(2),
+    5000
+    )
     console.log("END SCENE 1")
     // const interval = setInterval(() => {
     //   setBackgroundTransition({ left: -speed })
@@ -193,7 +196,7 @@ const GameFirstScene = (props) => {
         setLoop(true)
         playPlayer('idle')
         setLoop(false)
-        setFps(5)
+        setFps(11)
         playEffect(effectArrays[effectProb][0])
       }
       if (loop == 2) {
@@ -330,11 +333,11 @@ const GameFirstScene = (props) => {
               imageStyle={{ marginTop: -1 }}
               animations={{
                 red : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,],
-                redstart: [0, 1, 2, 3, 4,],
+                redstart: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,],
                 redidle: Array.from({ length: 5 }, (v, i) => i + 5),
                 redend: Array.from({ length: 7 }, (v, i) => i + 10),
                 blue : [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,],
-                bluestart: [18, 19, 20, 21, 22,],
+                bluestart: [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28],
                 blueidle: Array.from({ length: 5 }, (v, i) => i + 23),
                 blueend: Array.from({ length: 7 }, (v, i) => i + 28)
               }}
@@ -440,10 +443,10 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     // alignItems: 'center',
     flex: 1,
-    // resizeMode: "cover",
+    //resizeMode: "cover",
     position: "absolute",
     left: 0,
-    width: width * 2,
+    width: width*2,
     height: height,
   },
   foreground: {
@@ -451,7 +454,7 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
 
     // resizeMode: "cover",
-    backgroundColor: 'black',
+    //backgroundColor: 'black',
     justifyContent: 'flex-end',
     width: width * 2,
     height: height / 4.26,

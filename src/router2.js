@@ -12,7 +12,9 @@ import { useHistory } from "react-router-dom";
 
 import WritingScene from './scene/WritingScene'
 import HomeScene from './scene/HomeScene'
-import GameFirstScene from './scene/GameFirstScene'
+import GameFirstScene from './scene/GameFirstScene';
+import GameSecondScene from './scene/GameSecondScene';
+import GameThirdScene from './scene/GameThirdScene';
 //import TestSprite from './scene/TestSprite'
 import {
     SafeAreaView,
@@ -36,16 +38,16 @@ const Router2Component = () => {
             <React.Fragment>
 
                 {
-                 scene == 0 ?
-                 <Redirect
-                 to={{
-                   pathname: "/home",
-                 }}
-               ></Redirect> : scene == 1 ? <Redirect to="/test"></Redirect> : null
-
+               scene == 0 ? <Redirect to="/home"></Redirect> :
+               scene == 1 ? <Redirect to="/gameFirstScene"></Redirect> : 
+               scene == 2 ? <Redirect to="/gameSecondScene"></Redirect> :
+               scene == 3 ? <Redirect to="/gameThirdScene"></Redirect> :
+               scene == 4 ? <Redirect to="/home "></Redirect> : null
                 }
                 <Route exact path="/home" render={props => <HomeScene handleScene = {setScene} />}  />
-                <Route path="/test" render={props => <GameFirstScene handleScene = {setScene} />} />
+                <Route path="/gameFirstScene" render={props => <GameFirstScene handleScene = {setScene} />} />
+                <Route path="/gameSecondScene" render={props => <GameSecondScene handleScene = {setScene} />} />
+                <Route path="/gameThirdScene" render={props => <GameThirdScene handleScene = {setScene} />} />
             </React.Fragment>
         </NativeRouter>
 
