@@ -49,7 +49,7 @@ const HomeScene = (props) => {
               <Image source={imageProfile} style={styles.icon}></Image>
 
               <Link to="/test" >
-                <Text style={styles.fontMenuContent}>ผลลัพท์</Text>
+                <Text style={styles.fontMenuContent}>เริ่มทำแบบทดสอบ</Text>
               </Link>
             </View>
             <View style={styles.containerMenuContentRow}>
@@ -83,7 +83,7 @@ const HomeScene = (props) => {
 
         </ImageBackground>
         <View style={styles.containerContent}>
-          <Router />
+          <Router setScene = {props.handleScene} handleTestId = {props.handleTestId}/>
         </View>
       </View>
     </NativeRouter>

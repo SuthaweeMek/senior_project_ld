@@ -45,12 +45,12 @@ function Logout() {
   return <Text style={styles.header}>Logout</Text>;
 }
 
-const RouterComponent = () => {
+const RouterComponent = (props) => {
 
   return (
     <React.Fragment>
       <Route exact path="/" component={Home} />
-      <Route path="/test" component={StartTestScene} />
+      <Route path="/test" render={() => <StartTestScene handleScene = {props.setScene} handleTestId={props.handleTestId} />} />
       <Route path="/result" component={Result} />
       <Route path="/stat" component={Stat} />
       <Route path="/logout" component={Logout} />

@@ -25,9 +25,29 @@ import Router from '../router'
 import ButtonCurve from '../component/buttonCurve';
 
 
-const StartTestScene = () => {
-    const onPress = () => {
-        alert("clicked");
+const StartTestScene = (props) => {
+    const onPress = async () => {
+        let res = await fetch(
+            'http://10.0.2.2:8000/test/',
+            {
+              method: 'post',
+              body: JSON.stringify({
+                "Round": 0,
+                "LDResult": 0,
+                "UserID": 1,
+                "TestSet": 1
+            }),
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+            }
+          );
+          let responseJson = await res.json();
+          if (res.status == 200) {
+            props.handleTestId(responseJson.id)
+            props.handleScene(1)
+          }
     }
     return (
         <ButtonCurve  text="MOO" onPress={onPress}/>

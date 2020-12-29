@@ -33,6 +33,7 @@ import { NativeRouter, Route, Link, Redirect } from "react-router-native";
 const Router2Component = () => {
     let history = useHistory();
     const [scene, setScene] = useState(0);
+    const [testId, setTestId] = useState(0);
     return (
         <NativeRouter>
             <React.Fragment>
@@ -44,10 +45,10 @@ const Router2Component = () => {
                scene == 3 ? <Redirect to="/gameThirdScene"></Redirect> :
                scene == 4 ? <Redirect to="/home "></Redirect> : null
                 }
-                <Route exact path="/home" render={props => <HomeScene handleScene = {setScene} />}  />
-                <Route path="/gameFirstScene" render={props => <GameFirstScene handleScene = {setScene} />} />
-                <Route path="/gameSecondScene" render={props => <GameSecondScene handleScene = {setScene} />} />
-                <Route path="/gameThirdScene" render={props => <GameThirdScene handleScene = {setScene} />} />
+                <Route exact path="/home" render={props => <HomeScene handleScene = {setScene} testId = {testId} handleTestId = {setTestId}/>}  />
+                <Route path="/gameFirstScene" render={props => <GameFirstScene handleScene = {setScene} testId = {testId} />} />
+                <Route path="/gameSecondScene" render={props => <GameSecondScene handleScene = {setScene} testId = {testId} />} />
+                <Route path="/gameThirdScene" render={props => <GameThirdScene handleScene = {setScene} testId = {testId} />} />
             </React.Fragment>
         </NativeRouter>
 

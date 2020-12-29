@@ -68,6 +68,7 @@ const GameFirstScene = (props) => {
   index ==0 ? ary_th_alphabet.push("th_alphabet_45") : null
   
   useEffect(() => {
+    console.log("testid",props.testId)
     // code to run on component mount
     const time = 1000 // 1 second per loop
     var round = 0
