@@ -48,7 +48,7 @@ console.log("Device height = ", height, " and width = ", width)
 const GameFirstScene = (props) => {
   //HP Parameters
   const playerHeart = 5
-  const enemyHeart = 1
+  const enemyHeart = 2
   //State
   const [Transition, SetTransition] = useState(1);
   const [fps, setFps] = useState(16);
@@ -66,13 +66,19 @@ const GameFirstScene = (props) => {
   //TH_alphabet
   index ==0 ? Arrays.Shuffle(ary_th_alphabet) : null
   index ==0 ? ary_th_alphabet.push("th_alphabet_45") : null
-  
+
+  useEffect(() => {
+    playPlayer("idle")
+    playEnemy("idle")
+    Orientation.lockToLandscape();
+  }, [])
+
   useEffect(() => {
     console.log("testid",props.testId)
     // code to run on component mount
     const time = 1000 // 1 second per loop
     var round = 0
-    Orientation.lockToLandscape();
+    setLoop(true)
     playPlayer("idle")
     playEnemy("idle")
     if(enemyHeartEmpty == enemyHeart ){
@@ -92,7 +98,10 @@ const GameFirstScene = (props) => {
         round = round + 1
         if (round == 2) {
           setModalVisible(true)
-          clearInterval(interval)
+          setLoop(true)
+          playPlayer("idle")
+          playEnemy("idle")
+          //clearInterval(interval)
           //play('idle')
         }
         return () => clearInterval(interval)
@@ -409,7 +418,7 @@ const GameFirstScene = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "green",
+    //backgroundColor: "green",
     flexDirection: "column"
     //justifyContent: 'center', 
     //alignItems: 'center',
@@ -455,6 +464,7 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
 
     // resizeMode: "cover",
+    left :0,
     //backgroundColor: 'black',
     justifyContent: 'flex-end',
     width: width * 2,

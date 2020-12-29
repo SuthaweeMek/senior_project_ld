@@ -23,7 +23,7 @@ import Arrays from '../utils/Array'
 import Writing from '../component/writing'
 
 //alphabet
-var ary_th_alphabet = Arrays.CreatePlattern("th_alphabet_",44)
+var ary_th_vocab = Arrays.CreatePlattern("th_vocab_",10)
 //image
 import imageBackground from '../resource/image/LDSpotGameScene1.png'
 import imageHeart from '../resource/image/heartEmpty.png'
@@ -64,8 +64,8 @@ const GameFirstScene = (props) => {
   const enemyFade = useRef(new Animated.Value(1)).current; 
   const backgroundTransition = useRef(new Animated.Value(0)).current;
   //TH_alphabet
-  index ==0 ? Arrays.Shuffle(ary_th_alphabet) : null
-  index ==0 ? ary_th_alphabet.push("th_alphabet_45") : null
+  index ==0 ? Arrays.Shuffle(ary_th_vocab) : null
+  index ==0 ? ary_th_vocab.push("th_alphabet_45") : null
   
   useEffect(() => {
     // code to run on component mount
@@ -104,11 +104,11 @@ const GameFirstScene = (props) => {
 
   useEffect(() => {
     // code to run on component mount
-    var multiplier = 4;
+    var multiplier = 1;
     console.log("index = ",index)
     if(index == multiplier || index == multiplier*2 || index == multiplier*3 || index == multiplier*4 || index == multiplier*5 
       || index == multiplier*6 || index == multiplier*7 || index == multiplier*8 || index == multiplier*9 || index == multiplier*10
-      || index == multiplier*11){
+      ){
       setModalVisible(false)
       Attack()
     }
@@ -197,7 +197,7 @@ const GameFirstScene = (props) => {
         setLoop(true)
         playPlayer('idle')
         setLoop(false)
-        setFps(5)
+        setFps(11)
         playEffect(effectArrays[effectProb][0])
       }
       if (loop == 2) {
@@ -334,11 +334,11 @@ const GameFirstScene = (props) => {
               imageStyle={{ marginTop: -1 }}
               animations={{
                 red : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,],
-                redstart: [0, 1, 2, 3, 4,],
+                redstart: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,],
                 redidle: Array.from({ length: 5 }, (v, i) => i + 5),
                 redend: Array.from({ length: 7 }, (v, i) => i + 10),
                 blue : [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35,],
-                bluestart: [18, 19, 20, 21, 22,],
+                bluestart: [18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28],
                 blueidle: Array.from({ length: 5 }, (v, i) => i + 23),
                 blueend: Array.from({ length: 7 }, (v, i) => i + 28)
               }}
@@ -362,7 +362,7 @@ const GameFirstScene = (props) => {
         </Animated.View>
         
         <Modal animationType="fade" transparent={true} visible={modalVisible}>
-          <Writing modalState = {modalVisible} closeModal={HandleCloseModal} arrSound={ary_th_alphabet} setArrIndex={SetArrayIndex} arrIndex={index}/>
+          <Writing modalState = {modalVisible} closeModal={HandleCloseModal} arrSound={ary_th_vocab} setArrIndex={SetArrayIndex} arrIndex={index}/>
         </Modal>
         
       </View>
@@ -409,7 +409,7 @@ const GameFirstScene = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "green",
+    //backgroundColor: "green",
     flexDirection: "column"
     //justifyContent: 'center', 
     //alignItems: 'center',
