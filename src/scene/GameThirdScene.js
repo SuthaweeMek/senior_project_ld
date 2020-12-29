@@ -14,6 +14,7 @@ import {
   Dimensions,
   Switch
 } from 'react-native';
+import { connect } from 'react-redux'; 
 import SpriteSheet from 'rn-sprite-sheet'
 import StatusHP from '../component/statusHP'
 import Orientation from 'react-native-orientation';
@@ -45,7 +46,7 @@ console.log("is tablet ?",Device.isTablet())
 console.log("Device height = ", height, " and width = ", width)
 
 //const spriteSize = height
-const GameFirstScene = (props) => {
+const GameThirdScene = (props) => {
   //HP Parameters
   const playerHeart = 5
   const enemyHeart = 1
@@ -157,10 +158,9 @@ const GameFirstScene = (props) => {
     //setLoop(true)
     playPlayer('walk')
     playPlayer('walk')
-    setTimeout(() => props.handleScene(0),
+    setTimeout(() => props.upDateScene(0),
     5000
     )
-    console.log("END SCENE 3")
     // const interval = setInterval(() => {
     //   setBackgroundTransition({ left: -speed })
 
@@ -362,7 +362,7 @@ const GameFirstScene = (props) => {
         </Animated.View>
         
         <Modal animationType="fade" transparent={true} visible={modalVisible}>
-          <Writing modalState = {modalVisible} closeModal={HandleCloseModal} arrSound={ary_th_vocab} setArrIndex={SetArrayIndex} arrIndex={index}/>
+          <Writing modalState = {modalVisible} closeModal={HandleCloseModal} arrSound={ary_th_vocab} setArrIndex={SetArrayIndex} arrIndex={index} />
         </Modal>
         
       </View>
@@ -468,5 +468,22 @@ const styles = StyleSheet.create({
   },
 });
 
+const mapStateToProps = state => {
+  return {
+      scene: state.scene
+  }
+}
 
-export default GameFirstScene;
+
+const mapDispatchToProps = dispatch => {
+  return {
+
+      upDateScene: (scene) => {
+        dispatch({type: 'EDIT_SCENE', payload: scene})
+    }
+
+
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(GameThirdScene);

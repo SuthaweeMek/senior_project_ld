@@ -23,34 +23,34 @@ import { NativeRouter, Route, Link } from "react-router-native";
 import backgroundLogin from '../resource/image/backgroundLogin.png'
 import Router from '../router'
 import ButtonCurve from '../component/buttonCurve';
-
+import { connect } from 'react-redux';
 
 const StartTestScene = (props) => {
     const onPress = async () => {
         let res = await fetch(
             'http://10.0.2.2:8000/test/',
             {
-              method: 'post',
-              body: JSON.stringify({
-                "Round": 0,
-                "LDResult": 0,
-                "UserID": 1,
-                "TestSet": 1
-            }),
-              headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-              },
+                method: 'post',
+                body: JSON.stringify({
+                    "Round": 0,
+                    "LDResult": 0,
+                    "UserID": 1,
+                    "TestSet": 1
+                }),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
             }
-          );
-          let responseJson = await res.json();
-          if (res.status == 200) {
-            props.handleTestId(responseJson.id)
-            props.handleScene(1)
-          }
+        );
+        let responseJson = await res.json();
+        if (res.status == 200) {
+            props.upDateTestId(responseJson.id)
+            props.upDateScene(1)
+        }
     }
     return (
-        <ButtonCurve  text="MOO" onPress={onPress}/>
+        <ButtonCurve text="MOO" onPress={onPress} />
     );
 }
 
@@ -124,6 +124,25 @@ const styles = StyleSheet.create({
         borderRadius: 20
     },
 });
+const mapStateToProps = state => {
+    return {
+        text: state.global,
+        scene: state.scene
+    }
+}
 
 
-export default StartTestScene;
+const mapDispatchToProps = dispatch => {
+    return {
+   
+        upDateScene: (scene) => {
+            dispatch({ type: 'EDIT_SCENE', payload: scene })
+        },
+        upDateTestId: (testId) => {
+            dispatch({ type: 'EDIT_TESTID', payload: testId })
+        }
+
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(StartTestScene);

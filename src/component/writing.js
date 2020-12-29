@@ -17,7 +17,7 @@ import {
   Dimensions,
   ImageBackground,
 } from 'react-native';
-
+import { connect } from 'react-redux'; 
 import { SketchCanvas } from '@terrylinla/react-native-sketch-canvas';
 import Device from '../utils/Device';
 import imageBook from '../resource/image/book.png';
@@ -138,10 +138,11 @@ const writing = (props) => {
     const data = new FormData();
     data.append('prediction', 1);
     data.append('ImageName', image);
-
+    data.append('label',ary_sound[index])
+    data.append('TestID',props.testId)
     //Please change file upload URL
     let res = await fetch(
-      'http://0324cd6e62e3.ngrok.io/classifications/',
+      'http://10.0.2.2:8000/classifications/',
       {
         method: 'post',
         body: data,
@@ -377,5 +378,9 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
 });
-
-export default writing;
+const mapStateToProps = state => {
+  return {
+      testId: state.testId,
+  }
+}
+export default connect(mapStateToProps)(writing);

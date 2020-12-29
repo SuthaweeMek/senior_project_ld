@@ -14,6 +14,7 @@ import {
   Dimensions,
   Switch
 } from 'react-native';
+import { connect } from 'react-redux'; 
 import SpriteSheet from 'rn-sprite-sheet'
 import StatusHP from '../component/statusHP'
 import Orientation from 'react-native-orientation';
@@ -74,7 +75,6 @@ const GameFirstScene = (props) => {
   }, [])
 
   useEffect(() => {
-    console.log("testid",props.testId)
     // code to run on component mount
     const time = 1000 // 1 second per loop
     var round = 0
@@ -166,10 +166,9 @@ const GameFirstScene = (props) => {
     ).start();
     //setLoop(true)
     playPlayer('walk')
-    setTimeout(() => props.handleScene(2),
+    setTimeout(() => props.upDateScene(2),
     5000
     )
-    console.log("END SCENE 1")
     // const interval = setInterval(() => {
     //   setBackgroundTransition({ left: -speed })
 
@@ -371,7 +370,7 @@ const GameFirstScene = (props) => {
         </Animated.View>
         
         <Modal animationType="fade" transparent={true} visible={modalVisible}>
-          <Writing modalState = {modalVisible} closeModal={HandleCloseModal} arrSound={ary_th_alphabet} setArrIndex={SetArrayIndex} arrIndex={index}/>
+          <Writing modalState = {modalVisible} closeModal={HandleCloseModal} arrSound={ary_th_alphabet} setArrIndex={SetArrayIndex} arrIndex={index} />
         </Modal>
         
       </View>
@@ -478,5 +477,21 @@ const styles = StyleSheet.create({
   },
 });
 
+const mapStateToProps = state => {
+  return {
+      scene: state.scene
+  }
+}
 
-export default GameFirstScene;
+
+const mapDispatchToProps = dispatch => {
+  return {
+    
+      upDateScene: (scene) => {
+        dispatch({type: 'EDIT_SCENE', payload: scene})
+    }
+
+
+  }
+} 
+export default connect(mapStateToProps,mapDispatchToProps)(GameFirstScene);

@@ -25,10 +25,11 @@ import imageProfile from '../resource/image/dummyProfile.jpg';
 import WritingScene from './WritingScene'
 const image = { uri: "https://reactjs.org/logo-og.png" };
 import Router from '../router'
-
+import { connect } from 'react-redux'; 
 
 const HomeScene = (props) => {
-
+console.log("test",props.text)
+props.upDateText("testtext")
   return (
     <NativeRouter>
       <View style={styles.container}>
@@ -161,5 +162,26 @@ const styles = StyleSheet.create({
   },
 });
 
+const mapStateToProps = state => {
+  return {
+      text: state.global,
+      scene: state.scene
+  }
+}
 
-export default HomeScene;
+
+const mapDispatchToProps = dispatch => {
+  return {
+      upDateText: (text) => {
+          dispatch({type: 'EDIT_GLOBAL', payload: text})
+      },
+      upDateScene: (scene) => {
+        dispatch({type: 'EDIT_SCENE', payload: scene})
+    }
+
+
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScene);
