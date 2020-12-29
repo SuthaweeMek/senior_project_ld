@@ -13,7 +13,7 @@ import { Text, View, TouchableOpacity, Dimensions, StyleSheet } from 'react-nati
 const width = Dimensions.get('window').width
 
 
-const ButtonCurve = ({ text, onPress }) => {
+const ButtonStart = ({ text, onPress }) => {
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.btnStyle}>
@@ -24,14 +24,18 @@ const ButtonCurve = ({ text, onPress }) => {
 }
 
 const styles = StyleSheet.create({
-  btnStyle: { 
-    backgroundColor: 'linear-gradient(121deg, rgba(0,241,157,1) 5.78%, rgba(67,87,199,1) 127.71%);',
+  btnStyle: {
+    marginTop:30,
+    marginLeft:60,
+    backgroundColor: 'linear-gradient(121deg, rgba(0,241,157,1) 100%, rgba(67,87,199,1) 100%);',
     paddingVertical: 10,
-    width: 200, 
+    height: 60,
+    width: 600, 
     borderRadius: width/10
   },
   btnTextStyle: {
-    color: '#ffffff',
+    paddingTop:10,
+    color: 'black',
     fontSize: 16,
     textTransform: 'uppercase',
     textAlign: 'center',
@@ -39,4 +43,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default ButtonCurve;
+export default ButtonStart;

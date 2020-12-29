@@ -24,6 +24,10 @@ import backgroundLogin from '../resource/image/backgroundLogin.png'
 import Router from '../router'
 import ButtonCurve from '../component/buttonCurve';
 import { connect } from 'react-redux';
+import InputBox from '../component/inputBox';
+import SelectionInput from '../component/picker';
+import ButtonStart from '../component/buttonStart';
+
 
 const StartTestScene = (props) => {
     const onPress = async () => {
@@ -50,7 +54,29 @@ const StartTestScene = (props) => {
         }
     }
     return (
-        <ButtonCurve text="MOO" onPress={onPress} />
+        <View style={styles.containerStartTest} >
+            <View>
+                <Text style={styles.fontStartTest} >แบบทดสอบ</Text>
+                <Text style={styles.fontStartTestInput} >รหัสประจำตัวเด็ก</Text> 
+                <InputBox text="รหัสประจำตัวเด็ก"></InputBox>
+                <View style={styles.containerStartTestInput}>
+                    <View>
+                        <Text style={styles.fontStartTestInput} >เพศ</Text> 
+                        <SelectionInput></SelectionInput>
+                    </View>
+                    <View>
+                        <Text style={styles.fontStartTestInput} >ชื่อ-สกุล</Text> 
+                        <InputBox text="ชื่อและนามสกุล"></InputBox>
+                    </View>    
+                </View>
+                <Text style={styles.fontStartTestInput} >อายุ</Text> 
+                <InputBox text="อายุ"></InputBox>
+                
+                <ButtonStart  text="กดเพื่อเริ่มแบบทดสอบ" onPress={onPress}/>
+                
+            </View>
+    
+        </View>
     );
 }
 
@@ -64,10 +90,47 @@ const styles = StyleSheet.create({
         //flex: 1 1 auto,
         //marginTop: 22
     },
+    containerStartTest: {
+        flex: 1,
+        width : 700,
+        flexDirection: 'row',
+        backgroundColor : "white",
+        margin : 70 
+        //justifyContent: 'center', 
+        //alignItems: 'center'
+        //flex: 1 1 auto,
+        //marginTop: 22
+    },
+    containerStartTestInput: {
+        flexDirection: 'row',
+        backgroundColor : "white",
+        justifyContent: 'space-around', 
+        //alignItems: 'center',
+        //flex: 1 1 auto,
+        //marginTop: 22
+    },
     containerMenuProfile: {
         flex: 4,
         justifyContent: 'flex-end',
         alignItems: 'center',
+    },
+    fontStartTest: {
+        color: 'black',
+        fontSize: 50,
+        fontWeight: "bold",
+        marginLeft: 220,
+        marginTop:40,
+        marginBottom:30,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    fontStartTestInput: {
+        color: 'black',
+        fontSize: 20,
+        marginLeft:70,
+        marginTop: 10,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     fontMenuProfile: {
         color: 'white',
