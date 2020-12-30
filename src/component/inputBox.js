@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
 import { TextInput } from 'react-native';
 
-const InputBox = () => {
-  const [value, onChangeText] = React.useState();
-
+const inputbox = (props) => {
   return (
     <TextInput
-      style={{ marginTop:10 ,marginBottom:10,marginLeft:70,marginRight:70, height: 40,width: 200,borderRadius: 8, borderColor: 'gray', borderWidth: 0.5 }}
-      onChangeText={text => onChangeText(text)}
-      value={value}
+      style={{ height: 40,width:160,marginTop:5,marginBottom:5,borderColor: 'gray', borderWidth: 1 }}
+      onChangeText={text => props.onChangeText(text)}
+      value={props.text}
+      placeholder = {props.placeholder}
     />
   );
 }
 
-export default InputBox;
+export default inputbox;
