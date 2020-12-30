@@ -27,11 +27,12 @@ import ButtonCurve from '../component/buttonCurve';
 import InputBox from '../component/inputbox';
 import AsyncStorage from '@react-native-community/async-storage'
 
+import { connect } from 'react-redux'; 
 
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
 
-const LoginScene = () => {
+const LoginScene = (props) => {
   const [token, setToken] = useState('5')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -75,6 +76,7 @@ const LoginScene = () => {
           setToken(responseJson.access)
           saveData('@token', responseJson.access)
           saveData('@refreshtoken', responseJson.refresh)
+          props.upDateScene(0)
         }
         else {
           alert("Login failed")
@@ -147,5 +149,14 @@ const styles = StyleSheet.create({
 });
 
 
+const mapDispatchToProps = dispatch => {
+  return {
+      upDateScene: (scene) => {
+        dispatch({type: 'EDIT_SCENE', payload: scene})
+    }
 
-export default LoginScene;
+
+  }
+}
+
+export default connect(null, mapDispatchToProps)(LoginScene);

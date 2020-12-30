@@ -24,7 +24,7 @@ import backgroundLogin from '../resource/image/backgroundLogin.png'
 import Router from '../router'
 import ButtonCurve from '../component/buttonCurve';
 import { connect } from 'react-redux';
-import InputBox from '../component/inputBox';
+import InputBox from '../component/inputbox';
 import SelectionInput from '../component/picker';
 import ButtonStart from '../component/buttonStart';
 
