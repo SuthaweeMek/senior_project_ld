@@ -17,6 +17,7 @@ import {
     Button,
     ImageBackground,
     Image,
+    Dimensions,
     Alert
 } from 'react-native';
 import { NativeRouter, Route, Link } from "react-router-native";
@@ -27,7 +28,13 @@ import { connect } from 'react-redux';
 import InputBox from '../component/inputBox';
 import SelectionInput from '../component/picker';
 import ButtonStart from '../component/buttonStart';
+import Device from '../utils/Device';
 
+width = Device.isPortrait() ? Dimensions.get('screen').height : Dimensions.get('screen').width //1:4.65
+height = Device.isPortrait() ? Dimensions.get('screen').width : Dimensions.get('screen').height //1:4.65
+
+console.log("is tablet ?",Device.isTablet())
+console.log("Device height = ", height, " and width = ", width)
 
 const StartTestScene = (props) => {
     const onPress = async () => {
@@ -55,7 +62,6 @@ const StartTestScene = (props) => {
     }
     return (
         <View style={styles.containerStartTest} >
-            <View>
                 <Text style={styles.fontStartTest} >แบบทดสอบ</Text>
                 <Text style={styles.fontStartTestInput} >รหัสประจำตัวเด็ก</Text> 
                 <InputBox text="รหัสประจำตัวเด็ก"></InputBox>
@@ -71,11 +77,9 @@ const StartTestScene = (props) => {
                 </View>
                 <Text style={styles.fontStartTestInput} >อายุ</Text> 
                 <InputBox text="อายุ"></InputBox>
-                
-                <ButtonStart  text="กดเพื่อเริ่มแบบทดสอบ" onPress={onPress}/>
-                
-            </View>
-    
+                <View style={styles.buttonStartPosition}>
+                <ButtonStart style={styles.buttonStart} text="กดเพื่อเริ่มแบบทดสอบ" onPress={onPress}/>
+                </View>
         </View>
     );
 }
@@ -92,13 +96,13 @@ const styles = StyleSheet.create({
     },
     containerStartTest: {
         flex: 1,
-        width : 700,
-        flexDirection: 'row',
+        width : width/1.8,
+        flexDirection: 'column',
         backgroundColor : "white",
-        margin : 70 
+        margin : height-(height*0.9) 
         //justifyContent: 'center', 
         //alignItems: 'center'
-        //flex: 1 1 auto,
+        //flex: 1 1 auto, 
         //marginTop: 22
     },
     containerStartTestInput: {
@@ -109,20 +113,27 @@ const styles = StyleSheet.create({
         //flex: 1 1 auto,
         //marginTop: 22
     },
+    
     containerMenuProfile: {
         flex: 4,
         justifyContent: 'flex-end',
         alignItems: 'center',
+    }, 
+    buttonStartPosition: {
+        marginTop:31,
+        marginBottom:30,
+        alignSelf:"center"
+    },
+    buttonStart: {
+        height : 5200
     },
     fontStartTest: {
         color: 'black',
         fontSize: 50,
         fontWeight: "bold",
-        marginLeft: 220,
         marginTop:40,
         marginBottom:30,
-        alignItems: 'center',
-        justifyContent: 'center'
+        alignSelf:"center"
     },
     fontStartTestInput: {
         color: 'black',

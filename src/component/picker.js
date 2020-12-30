@@ -19,13 +19,13 @@ const SelectionInput = () => {
 
 const styles = StyleSheet.create({
   container: {
-    height: 40,
-    width: 200,
+    height: height/20,
+    width: width/6,
     marginTop:10,
     paddingBottom:30,
     marginLeft:70,
     marginRight:70,
-    borderRadius: 7,
+    borderRadius: 8,
     alignItems: "center", 
     borderColor: 'gray', 
     borderWidth: 0.5
