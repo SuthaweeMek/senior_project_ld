@@ -23,8 +23,8 @@ import {
 import { NativeRouter, Route, Link } from "react-router-native";
 import backgroundLogin from '../resource/image/backgroundLogin.png'
 import Router from '../router'
-import ButtonCurve from '../component/buttonCurve';
-import InputBox from '../component/inputbox';
+import ButtonCurveLogin from '../component/buttonCurveLogin';
+import InputBoxLogin from '../component/inputboxLogin';
 import AsyncStorage from '@react-native-community/async-storage'
 
 
@@ -95,21 +95,17 @@ const LoginScene = () => {
   return (
     <NativeRouter>
       <ImageBackground source={backgroundLogin} style={styles.background}>
-        <View style={styles.card}>
-          <View style={{ marginBottom: 28 }}>
-            <Text style={{ fontWeight: "bold", fontSize: 27 }}>เข้าสู่ระบบ</Text>
+        <View style={styles.container2}>
+            <Text style={styles.fontTopic}>เข้าสู่ระบบ</Text>
+            <Text style={styles.fontInput}>ชื่อ</Text>
+            <InputBoxLogin text={username} onChangeText={handleUser} placeholder="Username" />
+            <Text style={styles.fontInput}>รหัสผ่าน</Text>
+          <InputBoxLogin text={password} onChangeText={handlePassword} placeholder="Password" />
+          <Text style={styles.fontForget} onPress={onPress}  > ลืมรหัสผ่าน?</Text>
+          <View style={styles.Login}>
+          <ButtonCurveLogin onPress={onPress} text="เข้าสู่ระบบ" />
           </View>
-          <View style={{ marginRight: 140, marginBottom: 7 }}>
-            <Text >ชื่อ</Text>
-          </View>
-          <InputBox text={username} onChangeText={handleUser} placeholder="Username" />
-          <View style={{ marginRight: 110, marginBottom: 7, marginTop: 7 }}>
-            <Text>รหัสผ่าน</Text>
-          </View>
-          <InputBox text={password} onChangeText={handlePassword} placeholder="Password" />
-          <Text style={{ marginLeft: 0, marginBottom: 7, marginTop: 7 }} onPress={onPress}  > ลืมรหัสผ่าน?</Text>
-          <ButtonCurve onPress={onPress} text="เข้าสู่ระบบ" />
-          <Text onPress={onPress} > สมัครสมาชิกใหม่</Text>
+          <Text style={styles.fontRegis} onPress={onPress} > สมัครสมาชิกใหม่</Text>
         </View>
       </ImageBackground>
     </NativeRouter>
@@ -128,6 +124,70 @@ const styles = StyleSheet.create({
     //flex: 1 1 auto,
     //marginTop: 22
   },
+container2: {
+    flex: 1,
+    width : width/2,
+    flexDirection: 'column',
+    backgroundColor : "white",
+    margin : height-(height*0.9),
+    borderRadius:width/50
+    //justifyContent: 'center', 
+    //alignItems: 'center'
+    //flex: 1 1 auto, 
+    //marginTop: 22
+},
+Login: {
+  alignSelf:'center',
+  marginTop:30 ,
+  marginBottom:20
+  //justifyContent: 'center', 
+  //alignItems: 'center'
+  //flex: 1 1 auto, 
+  //marginTop: 22
+},
+fontTopic: {
+  alignSelf: "center",
+  fontWeight: "bold",
+  fontSize:50,  
+  margin : height-(height*0.95)
+  //justifyContent: 'center', 
+  //alignItems: 'center'
+  //flex: 1 1 auto, 
+  //marginTop: 22
+},
+fontInput: {
+  fontSize:20,  
+  left: "10%"
+  //justifyContent: 'center', 
+  //alignItems: 'center'
+  //flex: 1 1 auto, 
+  //marginTop: 22
+},
+fontForget: {
+  fontSize:18,  
+  left: "72%"
+  //justifyContent: 'center', 
+  //alignItems: 'center'
+  //flex: 1 1 auto, 
+  //marginTop: 22
+},
+fontRegis: {
+  fontSize:18,  
+  alignSelf:'center',
+  marginBottom:20
+  //justifyContent: 'center', 
+  //alignItems: 'center'
+  //flex: 1 1 auto, 
+  //marginTop: 22
+},
+containerStartTestInput: {
+    flexDirection: 'row',
+    backgroundColor : "white",
+    justifyContent: 'space-around', 
+    //alignItems: 'center',
+    //flex: 1 1 auto,
+    //marginTop: 22
+},
   card: {
     fontFamily: "lucida grande",
     justifyContent: 'center',
