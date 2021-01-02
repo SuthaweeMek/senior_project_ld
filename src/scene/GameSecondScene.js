@@ -28,13 +28,13 @@ var ary_th_vowel = Arrays.CreatePlattern("th_vowel_",36)
 import imageBackground from '../resource/image/LDSpotGameScene1.png'
 import imageHeart from '../resource/image/heartEmpty.png'
 import imagePlayer from '../resource/image/player_circle.png'
-import imageEnemy from '../resource/image/enemy1_circle.png'
+import imageEnemy from '../resource/image/enemy2_circle.png'
 import imageGameSceneBG2 from '../resource/games/LDSpotGameSceneBG2.png'
 import imageGameSceneFG2 from '../resource/games/LDSpotGameSceneFG2.png'
 
 //sprite
 import spritePlayer from '../resource/sprite_sheet/player_character.png'
-import spriteEnemy from '../resource/sprite_sheet/enemy1_character.png'
+import spriteEnemy from '../resource/sprite_sheet/enemy2_character.png'
 import spriteEffect1 from '../resource/sprite_sheet/effect1.png'
 
 //dimesions
@@ -383,7 +383,7 @@ const GameSecondScene = (props) => {
       <View style={{ paddingVertical: 30, paddingHorizontal: 30, position: 'absolute' }}>
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
           <Button onPress={() => playPlayer('idle')} title="Player" />
-          <Button onPress={() => playEnemy('attacked')} title="Enemy" />
+          <Button onPress={() => playEnemy('idle')} title="Enemy" />
           <Button onPress={() => bgTransition()} title="BG Move" />
           <Button onPress={() => setModalVisible(true)} title="Modal" />
           <Button onPress={() => Attack()} title="Attack" />
