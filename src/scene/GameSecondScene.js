@@ -45,7 +45,7 @@ console.log("is tablet ?",Device.isTablet())
 console.log("Device height = ", height, " and width = ", width)
 
 //const spriteSize = height
-const GameFirstScene = (props) => {
+const GameSecondScene = (props) => {
   //HP Parameters
   const playerHeart = 5
   const enemyHeart = 1
@@ -63,15 +63,24 @@ const GameFirstScene = (props) => {
   const effectSpeed = useRef(new Animated.Value(0)).current;
   const enemyFade = useRef(new Animated.Value(1)).current; 
   const backgroundTransition = useRef(new Animated.Value(0)).current;
-  //TH_alphabet
-  index ==0 ? Arrays.Shuffle(ary_th_vowel) : null
-  index ==0 ? ary_th_vowel.push("th_alphabet_45") : null
   
+  
+  useEffect(() => {
+    playPlayer("idle")
+    playEnemy("idle")
+    //TH_alphabet
+    // index ==0 ? Arrays.Shuffle(ary_th_vowel) : null
+    // index ==0 ? ary_th_vowel.push("th_vowel_end") : null
+    Arrays.Shuffle(ary_th_vowel)
+    ary_th_vowel.push("th_vowel_end")
+    Orientation.lockToLandscape();
+  }, [])
+
   useEffect(() => {
     // code to run on component mount
     const time = 1000 // 1 second per loop
     var round = 0
-    Orientation.lockToLandscape();
+    setLoop(true)
     playPlayer("idle")
     playEnemy("idle")
     if(enemyHeartEmpty == enemyHeart ){
@@ -84,7 +93,6 @@ const GameFirstScene = (props) => {
           useNativeDriver:false
         }
       ).start();
-      setLoop(true)
       bgTransition()
     }
     else{
@@ -92,7 +100,10 @@ const GameFirstScene = (props) => {
         round = round + 1
         if (round == 2) {
           setModalVisible(true)
-          clearInterval(interval)
+          setLoop(true)
+          playPlayer("idle")
+          playEnemy("idle")
+          //clearInterval(interval)
           //play('idle')
         }
         return () => clearInterval(interval)
@@ -154,6 +165,7 @@ const GameFirstScene = (props) => {
       }
     ).start();
     playPlayer('walk')
+    console.log("END SCENE 2")
     setTimeout(() => props.handleScene(3),
       5000
     )
@@ -287,6 +299,7 @@ const GameFirstScene = (props) => {
   return (
     // <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
     // resizeMode cover stretch
+    <>
     <View style={styles.container}>
       <Animated.View style={[styles.fadingContainer,{ left:backgroundTransition}]}>  
         <Image source={imageGameSceneBG2} resizeMode="stretch" style={[styles.background]} />
@@ -398,6 +411,7 @@ const GameFirstScene = (props) => {
       </View>
 
     </View>
+    </>
     // </KeyboardAvoidingView>
   );
 }
@@ -466,4 +480,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default GameFirstScene;
+export default GameSecondScene;

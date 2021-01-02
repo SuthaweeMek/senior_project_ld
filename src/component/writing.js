@@ -36,6 +36,7 @@ const writing = (props) => {
   ary_sound = props.arrSound
   index = props.arrIndex
 
+  console.log("array sound = ",ary_sound)
   //hook
   
 
@@ -87,7 +88,7 @@ const writing = (props) => {
     }
 
     if(ary_sound[index].includes("th_vocab")){
-      var multiplier = 4;
+      var multiplier = 2;
       if(index == multiplier || index == multiplier*2 || index == multiplier*3 || index == multiplier*4 || index == multiplier*5 
         || index == multiplier*6 || index == multiplier*7 || index == multiplier*8 || index == multiplier*9 || index == multiplier*10
         ){

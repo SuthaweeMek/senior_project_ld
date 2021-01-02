@@ -30,6 +30,7 @@ import imageHeart from '../resource/image/heartEmpty.png'
 import imagePlayer from '../resource/image/player_circle.png'
 import imageEnemy from '../resource/image/enemy1_circle.png'
 import imageGameSceneBG3 from '../resource/games/LDSpotGameSceneBG3.png'
+import imageGameSceneBGC3 from '../resource/games/LDSpotGameSceneBGC3.png'
 import imageGameSceneFG3 from '../resource/games/LDSpotGameSceneFG3.png'
 
 //sprite
@@ -45,10 +46,10 @@ console.log("is tablet ?",Device.isTablet())
 console.log("Device height = ", height, " and width = ", width)
 
 //const spriteSize = height
-const GameFirstScene = (props) => {
+const GameThirdScene = (props) => {
   //HP Parameters
   const playerHeart = 5
-  const enemyHeart = 1
+  const enemyHeart = 5
   //State
   const [Transition, SetTransition] = useState(1);
   const [fps, setFps] = useState(16);
@@ -63,15 +64,24 @@ const GameFirstScene = (props) => {
   const effectSpeed = useRef(new Animated.Value(0)).current;
   const enemyFade = useRef(new Animated.Value(1)).current; 
   const backgroundTransition = useRef(new Animated.Value(0)).current;
-  //TH_alphabet
-  index ==0 ? Arrays.Shuffle(ary_th_vocab) : null
-  index ==0 ? ary_th_vocab.push("th_alphabet_45") : null
+ 
   
+  useEffect(() => {
+    playPlayer("idle")
+    playEnemy("idle")
+  //    //TH_alphabet
+  // index ==0 ? Arrays.Shuffle(ary_th_vocab) : null
+  // index ==0 ? ary_th_vocab.push("th_vocab_end") : null
+    Arrays.Shuffle(ary_th_vocab)
+    ary_th_vocab.push("th_vocab_end")
+    Orientation.lockToLandscape();
+  }, [])
+
   useEffect(() => {
     // code to run on component mount
     const time = 1000 // 1 second per loop
     var round = 0
-    Orientation.lockToLandscape();
+    setLoop(true)
     playPlayer("idle")
     playEnemy("idle")
     if(enemyHeartEmpty == enemyHeart ){
@@ -91,7 +101,10 @@ const GameFirstScene = (props) => {
         round = round + 1
         if (round == 2) {
           setModalVisible(true)
-          clearInterval(interval)
+          setLoop(true)
+          playPlayer("idle")
+          playEnemy("idle")
+          //clearInterval(interval)
           //play('idle')
         }
         return () => clearInterval(interval)
@@ -104,7 +117,7 @@ const GameFirstScene = (props) => {
 
   useEffect(() => {
     // code to run on component mount
-    var multiplier = 1;
+    var multiplier = 2;
     console.log("index = ",index)
     if(index == multiplier || index == multiplier*2 || index == multiplier*3 || index == multiplier*4 || index == multiplier*5 
       || index == multiplier*6 || index == multiplier*7 || index == multiplier*8 || index == multiplier*9 || index == multiplier*10
@@ -156,11 +169,11 @@ const GameFirstScene = (props) => {
     ).start();
     //setLoop(true)
     playPlayer('walk')
-    playPlayer('walk')
+    console.log("END SCENE 3")
     setTimeout(() => props.handleScene(0),
     5000
     )
-    console.log("END SCENE 3")
+    
     // const interval = setInterval(() => {
     //   setBackgroundTransition({ left: -speed })
 
@@ -253,7 +266,7 @@ const GameFirstScene = (props) => {
   }
 
   const SetArrayIndex = () =>{
-    console.log("index : ",index)
+    console.log("index : ",index,"ary size ",ary_th_vocab.length)
     setIndex(index+1)
   }
 
@@ -292,8 +305,8 @@ const GameFirstScene = (props) => {
     // <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
     // resizeMode cover stretch
     <View style={styles.container}>
-      <Animated.View style={[styles.fadingContainer,{ left:backgroundTransition}]}>  
-        <Image source={imageGameSceneBG3} resizeMode="stretch" style={[styles.background]} />
+       <Animated.View style={[styles.fadingContainer,{ left:backgroundTransition}]}>  
+        <Image source={imageGameSceneBGC3} resizeMode="stretch" style={[styles.background]} />
       </Animated.View>
       <View style={styles.statusHP} >
         <View style={{ flexDirection: 'row' }}>
@@ -305,7 +318,6 @@ const GameFirstScene = (props) => {
           <Image source={imageEnemy} style={styles.imageCircle} />
         </View>
       </View>
-
       <View style={styles.field}>
         <View style={{left:"50%"}}>
           <SpriteSheet
@@ -419,7 +431,7 @@ const styles = StyleSheet.create({
   },
   statusHP: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
   },
   field: {
     flex: 1,
@@ -444,21 +456,25 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     // alignItems: 'center',
     flex: 1,
+    justifyContent: 'flex-end',
     // resizeMode: "cover",
+    //backgroundColor:"red",
     position: "absolute",
     left: 0,
     width: width * 2,
-    height: height,
+    height: height- height/4.62-height/4.62/2,
+    opacity:1,
   },
   foreground: {
     // justifyContent: 'center',
     // alignItems: 'center',
 
     // resizeMode: "cover",
-    backgroundColor: 'black',
+    //backgroundColor: 'blue',
     justifyContent: 'flex-end',
     width: width * 2,
-    height: height / 4.26,
+    height: height/4.62,
+    opacity:1,
   },
   imageCircle: {
     width: height / 5,
@@ -469,4 +485,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default GameFirstScene;
+export default GameThirdScene;
