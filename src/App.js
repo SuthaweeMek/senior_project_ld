@@ -38,7 +38,7 @@ import Router2Component from './router2'
 const App = () => {
 
 return (
-  <Router2Component/>
+  <GameThirdScene/>
 );
 }
 

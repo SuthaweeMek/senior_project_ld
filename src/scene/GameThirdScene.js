@@ -28,14 +28,14 @@ var ary_th_vocab = Arrays.CreatePlattern("th_vocab_",10)
 import imageBackground from '../resource/image/LDSpotGameScene1.png'
 import imageHeart from '../resource/image/heartEmpty.png'
 import imagePlayer from '../resource/image/player_circle.png'
-import imageEnemy from '../resource/image/enemy1_circle.png'
+import imageEnemy from '../resource/image/enemy3_circle.png'
 import imageGameSceneBG3 from '../resource/games/LDSpotGameSceneBG3.png'
 import imageGameSceneBGC3 from '../resource/games/LDSpotGameSceneBGC3.png'
 import imageGameSceneFG3 from '../resource/games/LDSpotGameSceneFG3.png'
 
 //sprite
 import spritePlayer from '../resource/sprite_sheet/player_character.png'
-import spriteEnemy from '../resource/sprite_sheet/enemy1_character.png'
+import spriteEnemy from '../resource/sprite_sheet/enemy3_character.png'
 import spriteEffect1 from '../resource/sprite_sheet/effect1.png'
 
 //dimesions
@@ -362,7 +362,7 @@ const GameThirdScene = (props) => {
             source={spriteEnemy}
             columns={9}
             rows={6}
-            height={height / 2.76} // set either, none, but not both
+            height={height / 2} // set either, none, but not both
             //width={100}
             imageStyle={{ marginTop: -1 }}
             animations={{
