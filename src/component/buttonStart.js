@@ -9,7 +9,7 @@
 import React from 'react'
 import { Text, View, TouchableOpacity, Dimensions, StyleSheet } from 'react-native'
 
-
+const height = Dimensions.get('window').height
 const width = Dimensions.get('window').width
 
 
@@ -25,13 +25,12 @@ const ButtonStart = ({ text, onPress }) => {
 
 const styles = StyleSheet.create({
   btnStyle: {
-    marginTop:30,
-    marginLeft:60,
     backgroundColor: 'linear-gradient(121deg, rgba(0,241,157,1) 100%, rgba(67,87,199,1) 100%);',
     paddingVertical: 10,
-    height: 60,
-    width: 600, 
+    height: height-(height*0.92),
+    width: width/2.5, 
     borderRadius: width/10
+  
   },
   btnTextStyle: {
     paddingTop:10,
