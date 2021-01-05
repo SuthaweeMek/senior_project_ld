@@ -27,7 +27,7 @@ import ButtonCurveLogin from '../component/buttonCurveLogin';
 import InputBoxLogin from '../component/inputboxLogin';
 import AsyncStorage from '@react-native-community/async-storage'
 
-import { connect } from 'react-redux'; 
+import { connect } from 'react-redux';
 
 const width = Dimensions.get('window').width
 const height = Dimensions.get('window').height
@@ -72,7 +72,8 @@ const LoginScene = (props) => {
       })
     }).then((response) => response.json())
       .then((responseJson) => {
-        if (responseJson.detail === undefined) {
+        console.log(responseJson)
+        if (responseJson.detail === undefined && !(responseJson.password !== undefined || responseJson.username !== undefined)) {
           setToken(responseJson.access)
           saveData('@token', responseJson.access)
           saveData('@refreshtoken', responseJson.refresh)
@@ -98,14 +99,14 @@ const LoginScene = (props) => {
     <NativeRouter>
       <ImageBackground source={backgroundLogin} style={styles.background}>
         <View style={styles.container2}>
-            <Text style={styles.fontTopic}>เข้าสู่ระบบ</Text>
-            <Text style={styles.fontInput}>ชื่อ</Text>
-            <InputBoxLogin text={username} onChangeText={handleUser} placeholder="Username" />
-            <Text style={styles.fontInput}>รหัสผ่าน</Text>
+          <Text style={styles.fontTopic}>เข้าสู่ระบบ</Text>
+          <Text style={styles.fontInput}>ชื่อ</Text>
+          <InputBoxLogin text={username} onChangeText={handleUser} placeholder="Username" />
+          <Text style={styles.fontInput}>รหัสผ่าน</Text>
           <InputBoxLogin text={password} onChangeText={handlePassword} placeholder="Password" />
           <Text style={styles.fontForget} onPress={onPress}  > ลืมรหัสผ่าน?</Text>
           <View style={styles.Login}>
-          <ButtonCurveLogin onPress={onPress} text="เข้าสู่ระบบ" />
+            <ButtonCurveLogin onPress={onPress} text="เข้าสู่ระบบ" />
           </View>
           <Text style={styles.fontRegis} onPress={onPress} > สมัครสมาชิกใหม่</Text>
         </View>
@@ -126,70 +127,70 @@ const styles = StyleSheet.create({
     //flex: 1 1 auto,
     //marginTop: 22
   },
-container2: {
+  container2: {
     flex: 1,
-    width : width/2,
+    width: width / 2,
     flexDirection: 'column',
-    backgroundColor : "white",
-    margin : height-(height*0.9),
-    borderRadius:width/50
+    backgroundColor: "white",
+    margin: height - (height * 0.9),
+    borderRadius: width / 50
     //justifyContent: 'center', 
     //alignItems: 'center'
     //flex: 1 1 auto, 
     //marginTop: 22
-},
-Login: {
-  alignSelf:'center',
-  marginTop:30 ,
-  marginBottom:20
-  //justifyContent: 'center', 
-  //alignItems: 'center'
-  //flex: 1 1 auto, 
-  //marginTop: 22
-},
-fontTopic: {
-  alignSelf: "center",
-  fontWeight: "bold",
-  fontSize:50,  
-  margin : height-(height*0.95)
-  //justifyContent: 'center', 
-  //alignItems: 'center'
-  //flex: 1 1 auto, 
-  //marginTop: 22
-},
-fontInput: {
-  fontSize:20,  
-  left: "10%"
-  //justifyContent: 'center', 
-  //alignItems: 'center'
-  //flex: 1 1 auto, 
-  //marginTop: 22
-},
-fontForget: {
-  fontSize:18,  
-  left: "72%"
-  //justifyContent: 'center', 
-  //alignItems: 'center'
-  //flex: 1 1 auto, 
-  //marginTop: 22
-},
-fontRegis: {
-  fontSize:18,  
-  alignSelf:'center',
-  marginBottom:20
-  //justifyContent: 'center', 
-  //alignItems: 'center'
-  //flex: 1 1 auto, 
-  //marginTop: 22
-},
-containerStartTestInput: {
+  },
+  Login: {
+    alignSelf: 'center',
+    marginTop: 30,
+    marginBottom: 20
+    //justifyContent: 'center', 
+    //alignItems: 'center'
+    //flex: 1 1 auto, 
+    //marginTop: 22
+  },
+  fontTopic: {
+    alignSelf: "center",
+    fontWeight: "bold",
+    fontSize: 50,
+    margin: height - (height * 0.95)
+    //justifyContent: 'center', 
+    //alignItems: 'center'
+    //flex: 1 1 auto, 
+    //marginTop: 22
+  },
+  fontInput: {
+    fontSize: 20,
+    left: "10%"
+    //justifyContent: 'center', 
+    //alignItems: 'center'
+    //flex: 1 1 auto, 
+    //marginTop: 22
+  },
+  fontForget: {
+    fontSize: 18,
+    left: "72%"
+    //justifyContent: 'center', 
+    //alignItems: 'center'
+    //flex: 1 1 auto, 
+    //marginTop: 22
+  },
+  fontRegis: {
+    fontSize: 18,
+    alignSelf: 'center',
+    marginBottom: 20
+    //justifyContent: 'center', 
+    //alignItems: 'center'
+    //flex: 1 1 auto, 
+    //marginTop: 22
+  },
+  containerStartTestInput: {
     flexDirection: 'row',
-    backgroundColor : "white",
-    justifyContent: 'space-around', 
+    backgroundColor: "white",
+    justifyContent: 'space-around',
     //alignItems: 'center',
     //flex: 1 1 auto,
     //marginTop: 22
-},
+  },
   card: {
     fontFamily: "lucida grande",
     justifyContent: 'center',
@@ -211,8 +212,8 @@ containerStartTestInput: {
 
 const mapDispatchToProps = dispatch => {
   return {
-      upDateScene: (scene) => {
-        dispatch({type: 'EDIT_SCENE', payload: scene})
+    upDateScene: (scene) => {
+      dispatch({ type: 'EDIT_SCENE', payload: scene })
     }
 
 

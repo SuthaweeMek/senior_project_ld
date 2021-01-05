@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     SafeAreaView,
     StyleSheet,
@@ -30,34 +30,70 @@ import imageAlphabet from '../resource/image/alphabet.jpg';
 const StatScene = () => {
 
     const [search, setSearch] = useState("");
-    const [reportList, setReportList] = useState([1, 2, 3, 4]);
+    const [reportList, setReportList] = useState([1, 2, 3, 4, 5]);
     const [imageList, setImageList] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
     const [selectItem, setSelectItem] = useState(0)
     const [selectItemId, setSelectItemId] = useState(0)
     const [selectTab, setSelectTab] = useState(0)
     const [modalVisible, setModalVisible] = useState(false);
+    useEffect(() => {
 
+        fetch(`http://10.0.2.2:8000/test/?page=${1}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+
+        }).then((response) => response.json())
+            .then((responseJson) => {
+                console.log('check')
+                setReportList(responseJson.articles)
+                console.log("1")
+            })
+            ;
+    }, [])
+    const queryImage = async () => {
+        await fetch(`http://10.0.2.2:8000/classifications/?testid=${1}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+
+        }).then((response) => response.json())
+            .then((responseJson) => {
+                console.log('check2 ')
+                console.log(responseJson)
+                setImageList(responseJson.articles)
+                console.log("1")
+            })
+            ;
+    }
     const backText = "< "
     const onPress = (tab) => {
         setSelectTab(tab)
 
     }
+
+
     const itemList = reportList.map((element, index) => {
+        console.log(element)
         return (
             < View style={{ alignSelf: 'stretch', flexDirection: 'row', marginTop: "2%", paddingBottom: "1%", borderBottomColor: "black", borderBottomWidth: 1 }
             }>
-                <View style={{ flex: 1, alignSelf: 'stretch', alignItems: 'center' }} ><Text style={{ color: 'rgba(0,0,0,1)' }}>#10013</Text></View>
+                <View style={{ flex: 1, alignSelf: 'stretch', alignItems: 'center' }} ><Text style={{ color: 'rgba(0,0,0,1)' }}>{element.id}</Text></View>
                 <View style={{ flex: 1, alignSelf: 'stretch', alignItems: 'center' }} ><Text style={{ color: 'rgba(0,0,0,1)' }}>นายศุทธวีร์ วีระพงษ์</Text></View>
-                <View style={{ flex: 1, alignSelf: 'stretch', alignItems: 'center' }} ><Text style={{ color: 'rgba(0,0,0,1)' }}>06/11/2020</Text></View>
-                <View style={{ flex: 1, alignSelf: 'stretch', alignItems: 'center' }} ><Text style={{ color: 'rgba(0,0,0,1)' }}>97%</Text></View>
+                <View style={{ flex: 1, alignSelf: 'stretch', alignItems: 'center' }} ><Text style={{ color: 'rgba(0,0,0,1)' }}>{element.created === undefined ? "Pending" : element.created.split("T")[0]}</Text></View>
+                <View style={{ flex: 1, alignSelf: 'stretch', alignItems: 'center' }} ><Text style={{ color: 'rgba(0,0,0,1)' }}>{element.LDResult}</Text></View>
                 <View style={{ flex: 1, alignSelf: 'stretch', alignItems: 'center' }} >
                     <Button
                         title="click"
                         onPress={() => {
 
                             setSelectItem(1)
-                            setSelectItemId(index)
-
+                            setSelectItemId(element.id)
+                            queryImage()
                         }}
                     />
                 </View>
@@ -73,12 +109,11 @@ const StatScene = () => {
                 <Text> d </Text>
                 <Text>โมเดลทำนาย : เขียนถูก</Text>
                 <Text>ความน่าจะเป็น : 99%</Text>
-                <Image source={imageAlphabet} style={{
-                    width: "50%",
-                    height: "50%",
-                    resizeMode: 'contain',
-
-                }}></Image>
+                <Image source={require('../resource/image/alphabet.jpg')} style={{
+                        width: "50%",
+                        height: "50%",
+                        resizeMode: 'contain',
+                    }}></Image>
             </TouchableOpacity>
         )
     })
@@ -92,7 +127,7 @@ const StatScene = () => {
                     Alert.alert("Modal has been closed.");
                 }}
             >
-                <TouchableOpacity style={{...styles.centeredView, backgroundColor:'rgba(142,142,142,0.5)'}} onPress={() => setModalVisible(!modalVisible)}>
+                <TouchableOpacity style={{ ...styles.centeredView, backgroundColor: 'rgba(142,142,142,0.5)' }} onPress={() => setModalVisible(!modalVisible)}>
 
                     <Image source={require('../resource/image/alphabet.jpg')} style={{
                         width: "50%",

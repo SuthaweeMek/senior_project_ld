@@ -22,7 +22,7 @@ import {
 import { NativeRouter, Route, Link } from "react-router-native";
 import backgroundLogin from '../resource/image/backgroundLogin.png'
 import Router from '../router'
-import ButtonCurve from '../component/buttonCurve';
+import ButtonCurve from '../component/buttonCurveLogin';
 import { connect } from 'react-redux';
 import InputBox from '../component/inputBox';
 import SelectionInput from '../component/picker';

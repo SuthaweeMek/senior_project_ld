@@ -25,11 +25,11 @@ import imageProfile from '../resource/image/dummyProfile.jpg';
 import WritingScene from './WritingScene'
 const image = { uri: "https://reactjs.org/logo-og.png" };
 import Router from '../router'
-import { connect } from 'react-redux'; 
+import { connect } from 'react-redux';
 
 const HomeScene = (props) => {
-console.log("test",props.text)
-props.upDateText("testtext")
+  console.log("test", props.text)
+  props.upDateText("testtext")
   return (
     <NativeRouter>
       <View style={styles.container}>
@@ -72,10 +72,12 @@ props.upDateText("testtext")
               <View style={styles.containerMenuContentRow}>
 
                 <Image source={imageProfile} style={styles.icon}></Image>
-                <Link to="/logout" >
 
+                <TouchableOpacity
+                  onPress={() => props.upDateScene(-1)}
+                >
                   <Text style={styles.fontMenuContent}>ออกจากระบบ</Text>
-                </Link>
+                </TouchableOpacity>
               </View>
             </View>
 
@@ -84,7 +86,7 @@ props.upDateText("testtext")
 
         </ImageBackground>
         <View style={styles.containerContent}>
-          <Router setScene = {props.handleScene} handleTestId = {props.handleTestId}/>
+          <Router setScene={props.handleScene} handleTestId={props.handleTestId} />
         </View>
       </View>
     </NativeRouter>
@@ -161,19 +163,19 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-      text: state.global,
-      scene: state.scene
+    text: state.global,
+    scene: state.scene
   }
 }
 
 
 const mapDispatchToProps = dispatch => {
   return {
-      upDateText: (text) => {
-          dispatch({type: 'EDIT_GLOBAL', payload: text})
-      },
-      upDateScene: (scene) => {
-        dispatch({type: 'EDIT_SCENE', payload: scene})
+    upDateText: (text) => {
+      dispatch({ type: 'EDIT_GLOBAL', payload: text })
+    },
+    upDateScene: (scene) => {
+      dispatch({ type: 'EDIT_SCENE', payload: scene })
     }
 
 
