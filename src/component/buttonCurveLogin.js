@@ -11,6 +11,7 @@ import { Text, View, TouchableOpacity, Dimensions, StyleSheet } from 'react-nati
 
 
 const width = Dimensions.get('window').width
+const height = Dimensions.get('window').height
 
 const ButtonCurve = ({ text, onPress }) => {
   return (
@@ -24,16 +25,16 @@ const ButtonCurve = ({ text, onPress }) => {
 
 const styles = StyleSheet.create({
   btnStyle: {
-    marginTop:20,
-    marginBottom:13,
     backgroundColor: 'linear-gradient(121deg, rgba(0,241,157,1) 100%, rgba(67,87,199,1) 100%);',
     paddingVertical: 10,
-    width: 140,
-    borderRadius: width/10
+    height: height-(height*0.93),
+    width: width/2.5, 
+    borderRadius: width/90
   },
   btnTextStyle: {
     color: '#ffffff',
-    fontSize: 16,
+    fontSize: 20,
+    fontWeight:'bold',
     textTransform: 'uppercase',
     textAlign: 'center',
     fontFamily: 'Quicksand-Medium'
