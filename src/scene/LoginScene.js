@@ -39,7 +39,6 @@ const LoginScene = (props) => {
   const saveData = async (STORAGE_KEY, value) => {
     try {
       await AsyncStorage.setItem(STORAGE_KEY, value)
-      alert('Data successfully saved')
     } catch (e) {
       alert('Failed to save the data to the storage')
     }

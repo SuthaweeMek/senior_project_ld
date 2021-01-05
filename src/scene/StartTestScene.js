@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
     SafeAreaView,
     StyleSheet,
@@ -33,10 +33,32 @@ import Device from '../utils/Device';
 width = Device.isPortrait() ? Dimensions.get('screen').height : Dimensions.get('screen').width //1:4.65
 height = Device.isPortrait() ? Dimensions.get('screen').width : Dimensions.get('screen').height //1:4.65
 
-console.log("is tablet ?",Device.isTablet())
+console.log("is tablet ?", Device.isTablet())
 console.log("Device height = ", height, " and width = ", width)
 
 const StartTestScene = (props) => {
+
+    const [name, setName] = useState('')
+    const [surname, setSurname] = useState('')
+    const [childrenID, setChildrenID] = useState('')
+    const [gender, setGender] = useState('male')
+    const [age, setAge] = useState('')
+    console.log(name)
+    console.log(childrenID)
+    console.log(gender)
+    const handleName = (text) => {
+        setName(text)
+    }
+    const handleChildrenID = (text) => {
+        setChildrenID(text)
+    }
+    const handleGender = (text) => {
+        setGender(text)
+    }
+    const handleAge = (text) => {
+        setAge(text)
+    }
+
     const onPress = async () => {
         let res = await fetch(
             'http://10.0.2.2:8000/test/',
@@ -46,7 +68,11 @@ const StartTestScene = (props) => {
                     "Round": 0,
                     "LDResult": 0,
                     "UserID": 1,
-                    "TestSet": 1
+                    "TestSet": 1,
+                    "name": name,
+                    "childrenID": childrenID,
+                    "age": age,
+                    "gender":gender
                 }),
                 headers: {
                     'Accept': 'application/json',
@@ -62,24 +88,24 @@ const StartTestScene = (props) => {
     }
     return (
         <View style={styles.containerStartTest} >
-                <Text style={styles.fontStartTest} >แบบทดสอบ</Text>
-                <Text style={styles.fontStartTestInput} >รหัสประจำตัวเด็ก</Text> 
-                <InputBox text="รหัสประจำตัวเด็ก"></InputBox>
-                <View style={styles.containerStartTestInput}>
-                    <View>
-                        <Text style={styles.fontStartTestInput} >เพศ</Text> 
-                        <SelectionInput></SelectionInput>
-                    </View>
-                    <View>
-                        <Text style={styles.fontStartTestInput} >ชื่อ-สกุล</Text> 
-                        <InputBox text="ชื่อและนามสกุล"></InputBox>
-                    </View>    
+            <Text style={styles.fontStartTest} >แบบทดสอบ</Text>
+            <Text style={styles.fontStartTestInput} >รหัสประจำตัวเด็ก</Text>
+            <InputBox text={childrenID} onChangeText={handleChildrenID} placeholder="รหัสประจำตัวผู้เข้าทำแบบทดสอบ"></InputBox>
+            <View style={styles.containerStartTestInput}>
+                <View>
+                    <Text style={styles.fontStartTestInput} >เพศ</Text>
+                    <SelectionInput onChangeGender={handleGender} value={gender}></SelectionInput>
                 </View>
-                <Text style={styles.fontStartTestInput} >อายุ</Text> 
-                <InputBox text="อายุ"></InputBox>
-                <View style={styles.buttonStartPosition}>
-                <ButtonStart style={styles.buttonStart} text="กดเพื่อเริ่มแบบทดสอบ" onPress={onPress}/>
+                <View>
+                    <Text style={styles.fontStartTestInput} >ชื่อ-สกุล</Text>
+                    <InputBox text={name} onChangeText={handleName} placeholder="ชื่อและนามสกุล"></InputBox>
                 </View>
+            </View>
+            <Text style={styles.fontStartTestInput} >อายุ</Text>
+            <InputBox text={age} onChangeText={handleAge} placeholder="อายุ"></InputBox>
+            <View style={styles.buttonStartPosition}>
+                <ButtonStart style={styles.buttonStart} text="กดเพื่อเริ่มแบบทดสอบ" onPress={onPress} />
+            </View>
         </View>
     );
 }
@@ -96,10 +122,10 @@ const styles = StyleSheet.create({
     },
     containerStartTest: {
         flex: 1,
-        width : width/1.8,
+        width: width / 1.8,
         flexDirection: 'column',
-        backgroundColor : "white",
-        margin : height-(height*0.9) 
+        backgroundColor: "white",
+        margin: height - (height * 0.9)
         //justifyContent: 'center', 
         //alignItems: 'center'
         //flex: 1 1 auto, 
@@ -107,38 +133,38 @@ const styles = StyleSheet.create({
     },
     containerStartTestInput: {
         flexDirection: 'row',
-        backgroundColor : "white",
-        justifyContent: 'space-around', 
+        backgroundColor: "white",
+        justifyContent: 'space-around',
         //alignItems: 'center',
         //flex: 1 1 auto,
         //marginTop: 22
     },
-    
+
     containerMenuProfile: {
         flex: 4,
         justifyContent: 'flex-end',
         alignItems: 'center',
-    }, 
+    },
     buttonStartPosition: {
-        marginTop:31,
-        marginBottom:30,
-        alignSelf:"center"
+        marginTop: 31,
+        marginBottom: 30,
+        alignSelf: "center"
     },
     buttonStart: {
-        height : 5200
+        height: 5200
     },
     fontStartTest: {
         color: 'black',
         fontSize: 50,
         fontWeight: "bold",
-        marginTop:40,
-        marginBottom:30,
-        alignSelf:"center"
+        marginTop: 40,
+        marginBottom: 30,
+        alignSelf: "center"
     },
     fontStartTestInput: {
         color: 'black',
         fontSize: 20,
-        marginLeft:70,
+        marginLeft: 70,
         marginTop: 10,
         alignItems: 'center',
         justifyContent: 'center'
@@ -208,7 +234,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-   
+
         upDateScene: (scene) => {
             dispatch({ type: 'EDIT_SCENE', payload: scene })
         },

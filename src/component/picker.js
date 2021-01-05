@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import { View, Picker, StyleSheet } from "react-native";
 
-const SelectionInput = () => {
-  const [selectedValue, setSelectedValue] = useState("java");
+const SelectionInput = (props) => {
   return (
     <View style={styles.container}>
       <Picker
-        selectedValue={selectedValue}
+        selectedValue={props.value}
         style={{ height: 40, width: 200 }}
-        onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+        onValueChange={(itemValue, itemIndex) => props.onChangeGender(itemValue)}
       >
-        <Picker.Item label="เพศชาย" value="เพศชาย" />
-        <Picker.Item label="เพศหญิง" value="เพศหญิง" />
+        <Picker.Item label="เพศชาย" value="male" />
+        <Picker.Item label="เพศหญิง" value="female" />
       </Picker>
     </View>
   );
