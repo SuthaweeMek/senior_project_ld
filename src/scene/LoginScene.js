@@ -23,13 +23,8 @@ import {
 import { NativeRouter, Route, Link } from "react-router-native";
 import backgroundLogin from '../resource/image/backgroundLogin.png'
 import Router from '../router'
-<<<<<<< HEAD
-import ButtonCurve from '../component/buttonCurve';
-import InputBox from '../component/inputBox';
-=======
 import ButtonCurveLogin from '../component/buttonCurveLogin';
 import InputBoxLogin from '../component/inputboxLogin';
->>>>>>> 1362c0c7606d42b70d9e4b192cb816280ef84b64
 import AsyncStorage from '@react-native-community/async-storage'
 
 import { connect } from 'react-redux'; 

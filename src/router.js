@@ -10,6 +10,7 @@ import React from 'react';
 
 
 
+import StatScene from './scene/StatScene'
 import WritingScene from './scene/WritingScene'
 import HomeScene from './scene/HomeScene'
 import GameFirstScene from './scene/GameFirstScene'
@@ -50,8 +51,8 @@ const RouterComponent = (props) => {
   return (
     <React.Fragment>
       <Route exact path="/" component={Home} />
-      <Route path="/test" render={() => <StartTestScene handleScene = {props.setScene} handleTestId={props.handleTestId} />} />
-      <Route path="/result" component={Result} />
+      <Route path="/test" component={WritingScene} />
+      <Route path="/result" component={StatScene} />
       <Route path="/stat" component={Stat} />
       <Route path="/logout" component={Logout} />
     </React.Fragment>
