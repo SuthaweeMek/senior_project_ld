@@ -23,13 +23,19 @@ import {
     TouchableHighlight,
     FlatList,
     Modal,
+    Dimensions,
 } from 'react-native';
 import { NativeRouter, Route, Link, Redirect } from "react-router-native";
 import imageAlphabet from '../resource/image/alphabet.jpg';
 import Pagination from '../component/pagination'
+import Device from '../utils/Device';
 
-const DATA = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+//dimesions
+width = Device.isPortrait() ? Dimensions.get('screen').height : Dimensions.get('screen').width //1:4.65
+height = Device.isPortrait() ? Dimensions.get('screen').width : Dimensions.get('screen').height //1:4.65
 
+const DATA = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"]
+const DATA2 = ["1","2","3","4"]
 const StatScene = () => {
 
     const [search, setSearch] = useState("");
@@ -95,18 +101,40 @@ const StatScene = () => {
 
     }
 
-    const pageMove = (type) => {
-        if (type == "next") {
-            page
-        }
-        if (type == "before") {
+    const Item = ({ item, onPress }) => (
+        // <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
+        //   <Text style={styles.title}>{item}</Text>
+        // </TouchableOpacity>
 
-        } else {
-            console.log("type is wrong.")
-        }
-    }
+        <View
+            style={{ color: "white", width: "25%", alignItems: "center", borderBottomWidth: 0.5, paddingBottom: "1%" }}
+        onPress={() => setModalVisible(true)}
+        >
+            <TouchableOpacity onPress={() => setModalVisible(true)}>
+            <Text> {item} </Text>
+            <Text>โมเดลทำนาย : เขียนถูก</Text>
+            <Text>ความน่าจะเป็น : 99%</Text> 
+        <Image source={require('../resource/image/alphabet.jpg')} style={{
+                width: width/8,
+                height: width/8,
+                resizeMode: 'contain',
+            }}></Image>
+            </TouchableOpacity>
+        
 
+        </View>
 
+   );
+
+    const renderItem = ({ item }) => {
+        //const backgroundColor = item === selectedId ? "#6e3b6e" : "#f9c2ff";
+        return (
+          <Item
+            item={item}
+            onPress={true}
+          />
+        )
+      };
 
 
     const itemList = reportList.map((element, index) => {
@@ -133,23 +161,6 @@ const StatScene = () => {
 
     })
 
-    const imageListItem = imageList.map((element, index) => {
-        return (
-            <TouchableOpacity
-                style={{ color: "white", width: "25%", alignItems: "center", borderBottomWidth: 0.5, paddingBottom: "1%" }}
-                onPress={() => setModalVisible(true)}
-            >
-                <Text> d </Text>
-                <Text>โมเดลทำนาย : เขียนถูก</Text>
-                <Text>ความน่าจะเป็น : 99%</Text>
-                <Image source={require('../resource/image/alphabet.jpg')} style={{
-                    width: "50%",
-                    height: "50%",
-                    resizeMode: 'contain',
-                }}></Image>
-            </TouchableOpacity>
-        )
-    })
     if (selectItem) {
         return (<>
             <Modal
@@ -225,10 +236,20 @@ const StatScene = () => {
                             <Text style={{ color: selectTab == 2 ? "black" : 'rgba(142,142,142,1)', fontSize: 20 }}> คำสะกด </Text>
                         </TouchableOpacity>
                     </View>
-                    <View style={{ flex: 10, flexDirection: 'row', backgroundColor: "white", flexWrap: 'wrap' }}>
-                        {imageListItem}
-
-                    </View>
+                    {/* <View style={{  flex: 10, flexDirection: 'row', backgroundColor: "white", flexWrap: 'wrap' }}> */}
+                        {/* { imageListItem} */}
+                        <View style={{flex : 10,flexDirection:'column',backgroundColor:"white"}}>
+                            <FlatList
+                                data={DATA}
+                                renderItem={renderItem}
+                                keyExtractor={(item) => item}
+                                //extraData={selectedId}
+                                horizontal={false}
+                                numColumns={4}
+                            />
+                        </View>
+                        
+                    {/* </View> */}
                 </View>
             </View>
 
