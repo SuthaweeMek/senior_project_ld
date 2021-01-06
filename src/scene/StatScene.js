@@ -28,18 +28,21 @@ import { NativeRouter, Route, Link, Redirect } from "react-router-native";
 import imageAlphabet from '../resource/image/alphabet.jpg';
 import Pagination from '../component/pagination'
 
-const DATA = ["1","2","3","4","5","6","7","8","9","10","11","12"]
+const DATA = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
 
 const StatScene = () => {
 
     const [search, setSearch] = useState("");
     const [reportList, setReportList] = useState([1, 2, 3, 4, 5]);
-    const [imageList, setImageList] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]);
+    const [imageList, setImageList] = useState([]   );
     const [selectItem, setSelectItem] = useState(0)
     const [selectItemId, setSelectItemId] = useState(0)
     const [selectTab, setSelectTab] = useState(0)
     const [modalVisible, setModalVisible] = useState(false);
     const [paging, setPaging] = useState(0);
+    const [selectedId, setSelectedId] = useState("1");
+    const [resultNumber, setResultNumber] = useState("0");
+
     useEffect(() => {
 
         fetch(`http://10.0.2.2:8000/test/?page=${1}`, {
@@ -48,15 +51,30 @@ const StatScene = () => {
                 Accept: 'application/json',
                 'Content-Type': 'application/json'
             },
-
         }).then((response) => response.json())
             .then((responseJson) => {
-                console.log('check')
                 setReportList(responseJson.articles)
-                console.log("1")
             })
             ;
+    
+        
     }, [])
+
+    useEffect(() => {
+
+        fetch(`http://10.0.2.2:8000/test/?page=${selectedId}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+        }).then((response) => response.json())
+            .then((responseJson) => {
+                setResultNumber(responseJson.count)
+                setReportList(responseJson.articles)
+            })
+            ;
+    }, [selectedId])
     const queryImage = async () => {
         await fetch(`http://10.0.2.2:8000/classifications/?testid=${1}`, {
             method: 'GET',
@@ -67,10 +85,7 @@ const StatScene = () => {
 
         }).then((response) => response.json())
             .then((responseJson) => {
-                console.log('check2 ')
-                console.log(responseJson)
                 setImageList(responseJson.articles)
-                console.log("1")
             })
             ;
     }
@@ -81,11 +96,11 @@ const StatScene = () => {
     }
 
     const pageMove = (type) => {
-        if(type == "next"){
+        if (type == "next") {
             page
         }
         if (type == "before") {
-            
+
         } else {
             console.log("type is wrong.")
         }
@@ -95,7 +110,6 @@ const StatScene = () => {
 
 
     const itemList = reportList.map((element, index) => {
-        console.log(element)
         return (<>
             < View style={{ alignSelf: 'stretch', flexDirection: 'row', marginTop: "2%", paddingBottom: "1%", borderBottomColor: "black", borderBottomWidth: 1 }
             }>
@@ -115,8 +129,8 @@ const StatScene = () => {
                     />
                 </View>
             </View >
-            </>)
-            
+        </>)
+
     })
 
     const imageListItem = imageList.map((element, index) => {
@@ -129,10 +143,10 @@ const StatScene = () => {
                 <Text>โมเดลทำนาย : เขียนถูก</Text>
                 <Text>ความน่าจะเป็น : 99%</Text>
                 <Image source={require('../resource/image/alphabet.jpg')} style={{
-                        width: "50%",
-                        height: "50%",
-                        resizeMode: 'contain',
-                    }}></Image>
+                    width: "50%",
+                    height: "50%",
+                    resizeMode: 'contain',
+                }}></Image>
             </TouchableOpacity>
         )
     })
@@ -212,8 +226,8 @@ const StatScene = () => {
                         </TouchableOpacity>
                     </View>
                     <View style={{ flex: 10, flexDirection: 'row', backgroundColor: "white", flexWrap: 'wrap' }}>
-                        { imageListItem}
-                        
+                        {imageListItem}
+
                     </View>
                 </View>
             </View>
@@ -248,16 +262,16 @@ const StatScene = () => {
                             <Text></Text>
                         </View>
                         {itemList}
-                 
-                        
+
+
                     </View>
-                    <View style={{flex:1 ,alignItems:"center" ,flexDirection:"row",justifyContent:"center"}}>  
-                    {paging > 0 ? (<Button title={"ก่อน"} onPress={()=>{setPaging(paging-1)} }/>) : null}   
-                            <Pagination paging={paging} number={21} split={5}/>
-                            {/* วิธีคิด pagging คือต้องเอา number/split -1*/}
-                    {paging < 3.2? (<Button title={"หลัง"} onPress={()=>{setPaging(paging+1)} }/>) : null}
+                    <View style={{ flex: 1, alignItems: "center", flexDirection: "row", justifyContent: "center" }}>
+                        {paging > 0 ? (<Button title={"ก่อน"} onPress={() => { setPaging(paging - 1) }} />) : null}
+                        <Pagination paging={paging} number={resultNumber} split={5} selectedId={selectedId} setSelectedId={setSelectedId}/>
+                        {/* วิธีคิด pagging คือต้องเอา number/split -1*/}
+                        {paging < resultNumber/5-1 ? (<Button title={"หลัง"} onPress={() => { setPaging(paging + 1) }} />) : null}
                     </View>
-                    
+
                 </View>
 
             </>

@@ -67,12 +67,11 @@ const StartTestScene = (props) => {
                 body: JSON.stringify({
                     "Round": 0,
                     "LDResult": 0,
-                    "UserID": 1,
+                    "UserID": 3,
                     "TestSet": 1,
-                    "name": name,
-                    "childrenID": childrenID,
-                    "age": age,
-                    "gender":gender
+                    "name": 1,
+                    "childrenID": 1,
+                    "age": 1,
                 }),
                 headers: {
                     'Accept': 'application/json',
@@ -81,6 +80,7 @@ const StartTestScene = (props) => {
             }
         );
         let responseJson = await res.json();
+        console.log(responseJson)
         if (res.status == 200) {
             props.upDateTestId(responseJson.id)
             props.upDateScene(1)

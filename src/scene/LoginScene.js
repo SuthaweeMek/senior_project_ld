@@ -66,13 +66,13 @@ const LoginScene = (props) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        username: username,
+        userid: username,
         password: password
       })
     }).then((response) => response.json())
       .then((responseJson) => {
         console.log(responseJson)
-        if (responseJson.detail === undefined && !(responseJson.password !== undefined || responseJson.username !== undefined)) {
+        if (responseJson.detail === undefined && !(responseJson.password !== undefined || responseJson.userid !== undefined)) {
           setToken(responseJson.access)
           saveData('@token', responseJson.access)
           saveData('@refreshtoken', responseJson.refresh)
