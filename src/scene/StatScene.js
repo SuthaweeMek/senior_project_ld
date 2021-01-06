@@ -21,11 +21,14 @@ import {
     TextInput,
     TouchableOpacity,
     TouchableHighlight,
+    FlatList,
     Modal,
 } from 'react-native';
 import { NativeRouter, Route, Link, Redirect } from "react-router-native";
 import imageAlphabet from '../resource/image/alphabet.jpg';
+import Pagination from '../component/pagination'
 
+const DATA = ["1","2","3","4","5","6","7","8","9","10","11","12"]
 
 const StatScene = () => {
 
@@ -36,6 +39,7 @@ const StatScene = () => {
     const [selectItemId, setSelectItemId] = useState(0)
     const [selectTab, setSelectTab] = useState(0)
     const [modalVisible, setModalVisible] = useState(false);
+    const [paging, setPaging] = useState(0);
     useEffect(() => {
 
         fetch(`http://10.0.2.2:8000/test/?page=${1}`, {
@@ -76,10 +80,23 @@ const StatScene = () => {
 
     }
 
+    const pageMove = (type) => {
+        if(type == "next"){
+            page
+        }
+        if (type == "before") {
+            
+        } else {
+            console.log("type is wrong.")
+        }
+    }
+
+
+
 
     const itemList = reportList.map((element, index) => {
         console.log(element)
-        return (
+        return (<>
             < View style={{ alignSelf: 'stretch', flexDirection: 'row', marginTop: "2%", paddingBottom: "1%", borderBottomColor: "black", borderBottomWidth: 1 }
             }>
                 <View style={{ flex: 1, alignSelf: 'stretch', alignItems: 'center' }} ><Text style={{ color: 'rgba(0,0,0,1)' }}>{element.id}</Text></View>
@@ -97,7 +114,9 @@ const StatScene = () => {
                         }}
                     />
                 </View>
-            </View >)
+            </View >
+            </>)
+            
     })
 
     const imageListItem = imageList.map((element, index) => {
@@ -193,7 +212,8 @@ const StatScene = () => {
                         </TouchableOpacity>
                     </View>
                     <View style={{ flex: 10, flexDirection: 'row', backgroundColor: "white", flexWrap: 'wrap' }}>
-                        {imageListItem}
+                        { imageListItem}
+                        
                     </View>
                 </View>
             </View>
@@ -228,7 +248,16 @@ const StatScene = () => {
                             <Text></Text>
                         </View>
                         {itemList}
+                 
+                        
                     </View>
+                    <View style={{flex:1 ,alignItems:"center" ,flexDirection:"row",justifyContent:"center"}}>  
+                    {paging > 0 ? (<Button title={"ก่อน"} onPress={()=>{setPaging(paging-1)} }/>) : null}   
+                            <Pagination paging={paging} number={21} split={5}/>
+                            {/* วิธีคิด pagging คือต้องเอา number/split -1*/}
+                    {paging < 3.2? (<Button title={"หลัง"} onPress={()=>{setPaging(paging+1)} }/>) : null}
+                    </View>
+                    
                 </View>
 
             </>

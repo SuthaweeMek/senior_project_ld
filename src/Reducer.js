@@ -1,7 +1,7 @@
 init_state = {
     global: 'init',
     testId: 0,
-    scene: -1
+    scene: 0
 }
 
 export default Reducer = (state = init_state, action) => {
