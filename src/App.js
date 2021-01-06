@@ -35,6 +35,7 @@ import GameFirstScene from './scene/GameFirstScene';
 import GameSecondScene from './scene/GameSecondScene';
 import GameThirdScene from './scene/GameThirdScene';
 import Router2Component from './router2'
+import Pagination from './component/pagination'
 
 import { Provider } from 'react-redux'; // <---- 
 import { createStore } from 'redux';    // <----
