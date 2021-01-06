@@ -50,7 +50,7 @@ const RouterComponent = (props) => {
 
   return (
     <React.Fragment>
-      <Route exact path="/" component={Home} />
+      <Route exact path="/" render={() => <StartTestScene handleScene={props.setScene} handleTestId={props.handleTestId} />}/>
       <Route path="/test" render={() => <StartTestScene handleScene={props.setScene} handleTestId={props.handleTestId} />} />
       <Route path="/result" component={StatScene} />
       <Route path="/stat" component={Stat} />
