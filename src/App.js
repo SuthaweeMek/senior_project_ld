@@ -35,18 +35,11 @@ import GameFirstScene from './scene/GameFirstScene';
 import GameSecondScene from './scene/GameSecondScene';
 import GameThirdScene from './scene/GameThirdScene';
 import Router2Component from './router2'
-import Pagination from './component/pagination'
-import Test2 from './scene/Test'
+import CollectingScene from './scene/CollectingScene'
 
-import { Provider } from 'react-redux'; // <---- 
-import { createStore } from 'redux';    // <----
-import Reducer from './Reducer'
 const App = () => {
-  const store = createStore(Reducer);     // <----
   return (
-     <Provider store={store}>
-      <Router2Component/>
-     </Provider>
+      <CollectingScene/>
   );
 }
 

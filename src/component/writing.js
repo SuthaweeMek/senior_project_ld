@@ -148,7 +148,7 @@ const writing = (props) => {
 
     //Please change file upload URL
     let res = await fetch(
-      'http://10.0.2.2:8000/classifications/',
+      'http://10.0.2.2:8000/classifications/' ,
       {
         method: 'post',
         body: data,
