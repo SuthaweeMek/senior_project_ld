@@ -29,18 +29,19 @@ import { NativeRouter, Route, Link, Redirect } from "react-router-native";
 import imageAlphabet from '../resource/image/alphabet.jpg';
 import Pagination from '../component/pagination'
 import Device from '../utils/Device';
-
+import LocalStorage from '../utils/LocalStorage'
+import { connect } from 'react-redux';
 //dimesions
 width = Device.isPortrait() ? Dimensions.get('screen').height : Dimensions.get('screen').width //1:4.65
 height = Device.isPortrait() ? Dimensions.get('screen').width : Dimensions.get('screen').height //1:4.65
 
-const DATA = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"]
-const DATA2 = ["1","2","3","4"]
-const StatScene = () => {
+const DATA = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"]
+const DATA2 = ["1", "2", "3", "4"]
+const StatScene = (props) => {
 
     const [search, setSearch] = useState("");
     const [reportList, setReportList] = useState([1, 2, 3, 4, 5]);
-    const [imageList, setImageList] = useState([]   );
+    const [imageList, setImageList] = useState([]);
     const [selectItem, setSelectItem] = useState(0)
     const [selectItemId, setSelectItemId] = useState(0)
     const [selectTab, setSelectTab] = useState(0)
@@ -48,26 +49,11 @@ const StatScene = () => {
     const [paging, setPaging] = useState(0);
     const [selectedId, setSelectedId] = useState("1");
     const [resultNumber, setResultNumber] = useState("0");
-
+    const [imageModal, setImageModal] = useState("");
+    const [testId, setTestId] = useState(1);
+    console.log(search)
     useEffect(() => {
-
-        fetch(`http://10.0.2.2:8000/test/?page=${1}`, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            },
-        }).then((response) => response.json())
-            .then((responseJson) => {
-                setReportList(responseJson.articles)
-            })
-            ;
-    
-        
-    }, [])
-
-    useEffect(() => {
-
+        console.log(LocalStorage.isTokenExpired(JSON.parse(props.token).access))
         fetch(`http://10.0.2.2:8000/test/?page=${selectedId}`, {
             method: 'GET',
             headers: {
@@ -81,60 +67,104 @@ const StatScene = () => {
             })
             ;
     }, [selectedId])
-    const queryImage = async () => {
-        await fetch(`http://10.0.2.2:8000/classifications/?testid=${1}`, {
+
+    useEffect(() => {
+        if(search==""){
+            console.log('checkif')
+        fetch(`http://10.0.2.2:8000/test/?page=${selectedId}`, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-
         }).then((response) => response.json())
             .then((responseJson) => {
-                setImageList(responseJson.articles)
+                setResultNumber(responseJson.count)
+                setReportList(responseJson.articles)
             })
             ;
-    }
+        }
+        else{
+            console.log('checkelse')
+            fetch(`http://10.0.2.2:8000/test/?page=${selectedId}&condition=${search}`, {
+                method: 'GET',  
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                },
+            }).then((response) => response.json())
+                .then((responseJson) => {
+                    setResultNumber(responseJson.count)
+                    setReportList(responseJson.articles)
+                })
+        }
+    }, [search])
+
+
+    useEffect(() => {
+        const queryImage = async () => {
+            setImageList([])
+            await fetch(`http://10.0.2.2:8000/classifications/?testid=${testId}&type=${selectTab}`, {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+
+            }).then((response) => response.json())
+                .then((responseJson) => {
+                    console.log(responseJson)
+                    setImageList(responseJson.articles)
+                })
+                ;
+        }
+        queryImage()
+    }, [selectTab,testId])
     const backText = "< "
     const onPress = (tab) => {
         setSelectTab(tab)
 
     }
-
-    const Item = ({ item, onPress }) => (
+    const Item = ({ item, index, onPress }) => (
         // <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
         //   <Text style={styles.title}>{item}</Text>
         // </TouchableOpacity>
-
         <View
             style={{ color: "white", width: "25%", alignItems: "center", borderBottomWidth: 0.5, paddingBottom: "1%" }}
-        onPress={() => setModalVisible(true)}
+            onPress={() => {
+                setImageModal(`http://10.0.2.2:8000${item.ImageName}`)
+                setModalVisible(true)
+            }}
         >
-            <TouchableOpacity onPress={() => setModalVisible(true)}>
-            <Text> {item} </Text>
-            <Text>โมเดลทำนาย : เขียนถูก</Text>
-            <Text>ความน่าจะเป็น : 99%</Text> 
-        <Image source={require('../resource/image/alphabet.jpg')} style={{
-                width: width/8,
-                height: width/8,
-                resizeMode: 'contain',
-            }}></Image>
+            <TouchableOpacity onPress={() => {
+                setImageModal(`http://10.0.2.2:8000${item.ImageName}`)
+                setModalVisible(true)
+            }}>
+                <Text> {index + 1} </Text>
+                <Text>โมเดลทำนาย : เขียนถูก</Text>
+                <Text>ความน่าจะเป็น : 99%</Text>
+                <Image source={{ uri: `http://10.0.2.2:8000${item.ImageName}` }} style={{
+                    width: width / 8,
+                    height: width / 8,
+                    resizeMode: 'contain',
+                }}></Image>
             </TouchableOpacity>
-        
+
 
         </View>
 
-   );
+    );
 
-    const renderItem = ({ item }) => {
+    const renderItem = ({ item, index }) => {
         //const backgroundColor = item === selectedId ? "#6e3b6e" : "#f9c2ff";
         return (
-          <Item
-            item={item}
-            onPress={true}
-          />
+            <Item
+                item={item}
+                index={index}
+                onPress={true}
+            />
         )
-      };
+    };
 
 
     const itemList = reportList.map((element, index) => {
@@ -142,7 +172,7 @@ const StatScene = () => {
             < View style={{ alignSelf: 'stretch', flexDirection: 'row', marginTop: "2%", paddingBottom: "1%", borderBottomColor: "black", borderBottomWidth: 1 }
             }>
                 <View style={{ flex: 1, alignSelf: 'stretch', alignItems: 'center' }} ><Text style={{ color: 'rgba(0,0,0,1)' }}>{element.id}</Text></View>
-                <View style={{ flex: 1, alignSelf: 'stretch', alignItems: 'center' }} ><Text style={{ color: 'rgba(0,0,0,1)' }}>นายศุทธวีร์ วีระพงษ์</Text></View>
+                <View style={{ flex: 1, alignSelf: 'stretch', alignItems: 'center' }} ><Text style={{ color: 'rgba(0,0,0,1)' }}>{element.name}</Text></View>
                 <View style={{ flex: 1, alignSelf: 'stretch', alignItems: 'center' }} ><Text style={{ color: 'rgba(0,0,0,1)' }}>{element.created === undefined ? "Pending" : element.created.split("T")[0]}</Text></View>
                 <View style={{ flex: 1, alignSelf: 'stretch', alignItems: 'center' }} ><Text style={{ color: 'rgba(0,0,0,1)' }}>{element.LDResult}</Text></View>
                 <View style={{ flex: 1, alignSelf: 'stretch', alignItems: 'center' }} >
@@ -152,7 +182,8 @@ const StatScene = () => {
 
                             setSelectItem(1)
                             setSelectItemId(element.id)
-                            queryImage()
+                            setTestId(element.id)
+                            setSelectTab(0)
                         }}
                     />
                 </View>
@@ -161,6 +192,7 @@ const StatScene = () => {
 
     })
 
+    
     if (selectItem) {
         return (<>
             <Modal
@@ -173,7 +205,7 @@ const StatScene = () => {
             >
                 <TouchableOpacity style={{ ...styles.centeredView, backgroundColor: 'rgba(142,142,142,0.5)' }} onPress={() => setModalVisible(!modalVisible)}>
 
-                    <Image source={require('../resource/image/alphabet.jpg')} style={{
+                    <Image source={{ uri: imageModal }} style={{
                         width: "50%",
                         height: "50%",
                         resizeMode: 'contain',
@@ -237,18 +269,18 @@ const StatScene = () => {
                         </TouchableOpacity>
                     </View>
                     {/* <View style={{  flex: 10, flexDirection: 'row', backgroundColor: "white", flexWrap: 'wrap' }}> */}
-                        {/* { imageListItem} */}
-                        <View style={{flex : 10,flexDirection:'column',backgroundColor:"white"}}>
-                            <FlatList
-                                data={DATA}
-                                renderItem={renderItem}
-                                keyExtractor={(item) => item}
-                                //extraData={selectedId}
-                                horizontal={false}
-                                numColumns={4}
-                            />
-                        </View>
-                        
+                    {/* { imageListItem} */}
+                    <View style={{ flex: 10, flexDirection: 'column', backgroundColor: "white" }}>
+                        <FlatList
+                            data={imageList}
+                            renderItem={renderItem}
+                            keyExtractor={(item) => item.id}
+                            //extraData={selectedId}
+                            horizontal={false}
+                            numColumns={4}
+                        />
+                    </View>
+
                     {/* </View> */}
                 </View>
             </View>
@@ -288,9 +320,9 @@ const StatScene = () => {
                     </View>
                     <View style={{ flex: 1, alignItems: "center", flexDirection: "row", justifyContent: "center" }}>
                         {paging > 0 ? (<Button title={"ก่อน"} onPress={() => { setPaging(paging - 1) }} />) : null}
-                        <Pagination paging={paging} number={resultNumber} split={5} selectedId={selectedId} setSelectedId={setSelectedId}/>
+                        <Pagination paging={paging} number={resultNumber} split={5} selectedId={selectedId} setSelectedId={setSelectedId} />
                         {/* วิธีคิด pagging คือต้องเอา number/split -1*/}
-                        {paging < resultNumber/5-1 ? (<Button title={"หลัง"} onPress={() => { setPaging(paging + 1) }} />) : null}
+                        {paging < resultNumber / 5 - 1 ? (<Button title={"หลัง"} onPress={() => { setPaging(paging + 1) }} />) : null}
                     </View>
 
                 </View>
@@ -338,4 +370,24 @@ const styles = StyleSheet.create({
     }
 });
 
-export default StatScene;
+
+const mapStateToProps = state => {
+    return {
+        token: state.token
+    }
+}
+
+
+const mapDispatchToProps = dispatch => {
+    return {
+
+        upDateToken: (token) => {
+            dispatch({ type: 'EDIT_TOKEN', payload: token })
+        }
+
+
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(StatScene);

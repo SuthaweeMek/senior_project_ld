@@ -25,8 +25,7 @@ import backgroundLogin from '../resource/image/backgroundLogin.png'
 import Router from '../router'
 import ButtonCurveLogin from '../component/buttonCurveLogin';
 import InputBoxLogin from '../component/inputboxLogin';
-import AsyncStorage from '@react-native-community/async-storage'
-
+import LocalStorage from '../utils/LocalStorage'
 import { connect } from 'react-redux';
 
 const width = Dimensions.get('window').width
@@ -36,27 +35,6 @@ const LoginScene = (props) => {
   const [token, setToken] = useState('5')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const saveData = async (STORAGE_KEY, value) => {
-    try {
-      await AsyncStorage.setItem(STORAGE_KEY, value)
-    } catch (e) {
-      alert('Failed to save the data to the storage')
-    }
-  }
-
-  const readData = async () => {
-    try {
-      const userToken = await AsyncStorage.getItem(STORAGE_KEY)
-
-      if (userToken !== null) {
-        setToken(userToken)
-        console.log('checkcheck')
-
-      }
-    } catch (e) {
-      alert('Failed to fetch the data from storage')
-    }
-  }
 
   const onPress = () => {
     fetch('http://10.0.2.2:8000/api/token/', {
@@ -73,9 +51,7 @@ const LoginScene = (props) => {
       .then((responseJson) => {
         console.log(responseJson)
         if (responseJson.detail === undefined && !(responseJson.password !== undefined || responseJson.userid !== undefined)) {
-          setToken(responseJson.access)
-          saveData('@token', responseJson.access)
-          saveData('@refreshtoken', responseJson.refresh)
+          props.upDateToken(JSON.stringify(responseJson))
           props.upDateScene(0)
         }
         else {
@@ -213,8 +189,10 @@ const mapDispatchToProps = dispatch => {
   return {
     upDateScene: (scene) => {
       dispatch({ type: 'EDIT_SCENE', payload: scene })
+    },
+    upDateToken: (token) => {
+      dispatch({ type: "EDIT_TOKEN", payload: token })
     }
-
 
   }
 }

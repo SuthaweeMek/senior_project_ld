@@ -1,7 +1,8 @@
 init_state = {
     global: 'init',
     testId: 0,
-    scene: -1
+    scene: -1,
+    token: ""
 }
 
 export default Reducer = (state = init_state, action) => {
@@ -21,6 +22,12 @@ export default Reducer = (state = init_state, action) => {
                 ...state,
                 testId: action.payload
             }
+        case 'EDIT_TOKEN':
+            return {
+                ...state,
+                token: action.payload
+            }
+
         default:
             return state
     }
