@@ -34,11 +34,12 @@ import ImageScene from './scene/ImageScene';
 import GameFirstScene from './scene/GameFirstScene';
 import GameSecondScene from './scene/GameSecondScene';
 import GameThirdScene from './scene/GameThirdScene';
+import CollectingScene from './scene/CollectingScene';
 import Router2Component from './router2'
 const App = () => {
 
 return (
-  <GameThirdScene/>
+  <CollectingScene/>
 );
 }
 

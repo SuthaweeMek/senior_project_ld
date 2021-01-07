@@ -22,7 +22,7 @@ import Rand from '../utils/Rand';
 import Arrays from '../utils/Array'
 import Writing from '../component/writing'
 
-//alphabet
+//vowel
 var ary_th_vowel = Arrays.CreatePlattern("th_vowel_",36)
 //image
 import imageBackground from '../resource/image/LDSpotGameScene1.png'
