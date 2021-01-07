@@ -42,9 +42,9 @@ const CollectingScene = (props) => {
 
 
   useEffect(() => {
-    Arrays.Shuffle(ary_th_alphabet)
-    Arrays.Shuffle(ary_th_vowel)
-    Arrays.Shuffle(ary_th_vocab)
+    // Arrays.Shuffle(ary_th_alphabet)
+    // Arrays.Shuffle(ary_th_vowel)
+    // Arrays.Shuffle(ary_th_vocab)
 
     //ary_th_alphabet.push("th_alphabet_end")
     ary_all = ary_th_alphabet.concat(ary_th_vowel).concat(ary_th_vocab)

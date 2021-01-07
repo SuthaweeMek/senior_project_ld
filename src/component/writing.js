@@ -143,10 +143,12 @@ const writing = (props) => {
     const data = new FormData();
     data.append('prediction', 1);
     data.append('ImageName', image);
+    data.append('label',ary_sound[index])
+    data.append('TestID',1)
 
     //Please change file upload URL
     let res = await fetch(
-      'http://0324cd6e62e3.ngrok.io/classifications/',
+      'http://10.0.2.2:8000/classifications/',
       {
         method: 'post',
         body: data,

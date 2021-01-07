@@ -22,7 +22,7 @@ import {
   LearnMoreLinks,
   Colors,
   DebugInstructions,
-  ReloadInstructions,tt
+  ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
 import HomeScene from './scene/HomeScene';
@@ -34,13 +34,20 @@ import ImageScene from './scene/ImageScene';
 import GameFirstScene from './scene/GameFirstScene';
 import GameSecondScene from './scene/GameSecondScene';
 import GameThirdScene from './scene/GameThirdScene';
-import CollectingScene from './scene/CollectingScene';
 import Router2Component from './router2'
-const App = () => {
+import Pagination from './component/pagination'
+import Test2 from './scene/Test'
 
-return (
-  <CollectingScene/>
-);
+import { Provider } from 'react-redux'; // <---- 
+import { createStore } from 'redux';    // <----
+import Reducer from './Reducer'
+const App = () => {
+  const store = createStore(Reducer);     // <----
+  return (
+     <Provider store={store}>
+      <Router2Component/>
+     </Provider>
+  );
 }
 
 
