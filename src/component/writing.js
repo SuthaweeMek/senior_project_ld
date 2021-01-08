@@ -170,7 +170,7 @@ const writing = (props) => {
   }
   const Save = () => {
     console.log("YES");
-    canvasRef.current.save('jpg', false, 'RNSketchCanvas', filename+"_"+ary_sound[index], true, false, false)
+    canvasRef.current.save('jpg', false, 'RNSketchCanvas', ary_sound[index]+"_"+filename, true, false, false)
     console.log("check")
     canvasRef.current.getBase64("jpg", false, false, false, false, CheckCallback)
     Clear()   
