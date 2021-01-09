@@ -96,7 +96,8 @@ const LoginScene = (props) => {
 
   return (
     <NativeRouter>
-      <ImageBackground source={backgroundLogin} style={styles.background}>
+      <StatusBar translucent={true} barStyle={"dark-content"} backgroundColor={"#00000000"}/>
+      {/* <ImageBackground source={backgroundLogin} style={styles.background}> */}
         <View style={styles.container2}>
           <Text style={styles.fontTopic}>เข้าสู่ระบบ</Text>
           <Text style={styles.fontInput}>ชื่อ</Text>
@@ -109,7 +110,7 @@ const LoginScene = (props) => {
           </View>
           <Text style={styles.fontRegis} onPress={onPress} > สมัครสมาชิกใหม่</Text>
         </View>
-      </ImageBackground>
+      {/* </ImageBackground> */}
     </NativeRouter>
   );
 
@@ -130,7 +131,8 @@ const styles = StyleSheet.create({
     flex: 1,
     width: width / 2,
     flexDirection: 'column',
-    backgroundColor: "white",
+    backgroundColor: "#f2f2f2",
+    
     margin: height - (height * 0.9),
     borderRadius: width / 50
     //justifyContent: 'center', 

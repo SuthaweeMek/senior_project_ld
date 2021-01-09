@@ -45,7 +45,7 @@ const App = () => {
   const store = createStore(Reducer);     // <----
   return (
      <Provider store={store}>
-      <Router2Component />
+      <LoginScene />
      </Provider>
   );
 }
