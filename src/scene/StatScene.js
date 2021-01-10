@@ -43,7 +43,6 @@ const StatScene = (props) => {
     const [reportList, setReportList] = useState([1, 2, 3, 4, 5]);
     const [imageList, setImageList] = useState([]);
     const [selectItem, setSelectItem] = useState(0)
-    const [selectItemId, setSelectItemId] = useState(0)
     const [selectTab, setSelectTab] = useState(0)
     const [modalVisible, setModalVisible] = useState(false);
     const [paging, setPaging] = useState(0);
@@ -51,53 +50,81 @@ const StatScene = (props) => {
     const [resultNumber, setResultNumber] = useState("0");
     const [imageModal, setImageModal] = useState("");
     const [testId, setTestId] = useState(1);
-    console.log(search)
+    const [testResult, setTestResult] = useState([]);
     useEffect(() => {
-        console.log(LocalStorage.isTokenExpired(JSON.parse(props.token).access))
-        fetch(`http://10.0.2.2:8000/test/?page=${selectedId}`, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            },
-        }).then((response) => response.json())
-            .then((responseJson) => {
-                setResultNumber(responseJson.count)
-                setReportList(responseJson.articles)
-            })
-            ;
-    }, [selectedId])
-
-    useEffect(() => {
-        if(search==""){
-            console.log('checkif')
-        fetch(`http://10.0.2.2:8000/test/?page=${selectedId}`, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-        }).then((response) => response.json())
-            .then((responseJson) => {
-                setResultNumber(responseJson.count)
-                setReportList(responseJson.articles)
-            })
-            ;
-        }
-        else{
-            console.log('checkelse')
-            fetch(`http://10.0.2.2:8000/test/?page=${selectedId}&condition=${search}`, {
-                method: 'GET',  
+        const queryTest = async () => {
+            fetch(`http://10.0.2.2:8000/test/?page=${selectedId}`, {
+                method: 'GET',
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + await LocalStorage.readData("token")
                 },
-            }).then((response) => response.json())
-                .then((responseJson) => {
-                    setResultNumber(responseJson.count)
-                    setReportList(responseJson.articles)
-                })
+            }).then((response) => {
+                if (response.ok) {
+                    return response.json()
+                }
+                else throw new Error(response.status);
+            }
+            ).then((responseJson) => {
+                setResultNumber(responseJson.count)
+                setReportList(responseJson.articles)
+            }).catch((error) => {
+                console.log('error: ' + error);
+            });
         }
+        queryTest()
+    }, [selectedId])
+
+
+
+
+    useEffect(() => {
+        const queryTest = async () => {
+            if (search == "") {
+                fetch(`http://10.0.2.2:8000/test/?page=${selectedId}`, {
+                    method: 'GET',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + await LocalStorage.readData("token")
+                    },
+                }).then((response) => {
+                    if (response.ok) {
+                        return response.json()
+                    }
+                    else throw new Error(response.status);
+                })
+                    .then((responseJson) => {
+                        setResultNumber(responseJson.count)
+                        setReportList(responseJson.articles)
+                    }).catch((error) => {
+                        console.log('error: ' + error);
+                    });
+            }
+            else {
+                fetch(`http://10.0.2.2:8000/test/?page=${selectedId}&condition=${search}`, {
+                    method: 'GET',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + await LocalStorage.readData("token")
+                    },
+                }).then((response) => {
+                    if (response.ok) {
+                        return response.json()
+                    }
+                    else throw new Error(response.status);
+                })
+                    .then((responseJson) => {
+                        setResultNumber(responseJson.count)
+                        setReportList(responseJson.articles)
+                    }).catch((error) => {
+                        console.log('error: ' + error);
+                    });
+            }
+        }
+        queryTest()
     }, [search])
 
 
@@ -108,18 +135,24 @@ const StatScene = (props) => {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + await LocalStorage.readData("token")
                 },
 
-            }).then((response) => response.json())
+            }).then((response) => {
+                if (response.ok) {
+                    return response.json()
+                }
+                else throw new Error(response.status);
+            })
                 .then((responseJson) => {
-                    console.log(responseJson)
                     setImageList(responseJson.articles)
-                })
-                ;
+                }).catch((error) => {
+                    console.log('error: ' + error);
+                });
         }
         queryImage()
-    }, [selectTab,testId])
+    }, [selectTab, testId])
     const backText = "< "
     const onPress = (tab) => {
         setSelectTab(tab)
@@ -165,6 +198,20 @@ const StatScene = (props) => {
             />
         )
     };
+    const getTestResult = async (id) => {
+        await fetch(`http://10.0.2.2:8000/classificationsresult/?testid=${id}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+        }).then((response) => response.json())
+            .then((responseJson) => {
+                setTestResult(responseJson)
+            })
+        setTestId(id)
+    }
+
 
 
     const itemList = reportList.map((element, index) => {
@@ -178,11 +225,10 @@ const StatScene = (props) => {
                 <View style={{ flex: 1, alignSelf: 'stretch', alignItems: 'center' }} >
                     <Button
                         title="click"
-                        onPress={() => {
-
+                        onPress={async () => {
+                            setImageList([])
+                            await getTestResult(element.id)
                             setSelectItem(1)
-                            setSelectItemId(element.id)
-                            setTestId(element.id)
                             setSelectTab(0)
                         }}
                     />
@@ -192,7 +238,7 @@ const StatScene = (props) => {
 
     })
 
-    
+
     if (selectItem) {
         return (<>
             <Modal
@@ -224,7 +270,7 @@ const StatScene = (props) => {
                         <TouchableOpacity style={{ marginTop: "3%", marginLeft: "4%", color: "white" }} onPress={() => setSelectItem(0)} >
                             <Text style={{ fontSize: 50, color: 'rgba(142,142,142,1)' }}> {backText}</Text>
                         </TouchableOpacity>
-                        <Text style={{ marginTop: "2%", marginLeft: "0%", fontSize: 75 }}>{selectItemId}</Text>
+                        <Text style={{ marginTop: "2%", marginLeft: "0%", fontSize: 75 }}>{testId}</Text>
                     </View>
                 </View>
 
@@ -233,9 +279,9 @@ const StatScene = (props) => {
                     <View style={{ flex: 2, }}>
                         <Text style={{ marginBottom: "1.5%", color: "black", fontSize: 20 }}>นายทดสอบ สมจริง</Text>
                         <Text style={{ marginBottom: "1.5%", color: "black", fontSize: 20 }}>ความน่าจะเป็น 97.2431%</Text>
-                        <Text style={{ marginBottom: "1.5%", color: "black", fontSize: 20 }}>พยัญชนะ : เขียนถูก 30 ตัว <Text style={{ color: 'rgba(232,89,89,1)' }}>เขียนผิด</Text>10 ตัว <Text style={{ color: 'rgba(104,187,177,1)' }} >เขียนกลับด้าน</Text> 4 ตัว</Text>
-                        <Text style={{ marginBottom: "1.5%", color: "black", fontSize: 20 }}>สระ : เขียนถูก 30 ตัว <Text style={{ color: 'rgba(232,89,89,1)' }}>เขียนผิด</Text> 10 ตัว <Text style={{ color: 'rgba(104,187,177,1)' }} >เขียนกลับด้าน</Text> 4 ตัว</Text>
-                        <Text style={{ color: "black", fontSize: 20 }}>คำสะกด : เขียนถูก 7 ตัว <Text style={{ color: 'rgba(232,89,89,1)' }}>เขียนผิด</Text> 2 ตัว <Text style={{ color: 'rgba(104,187,177,1)' }} >เขียนกลับด้าน</Text> 1 ตัว</Text>
+                        <Text style={{ marginBottom: "1.5%", color: "black", fontSize: 20 }}>พยัญชนะ : เขียนถูก {testResult.countAlphabetTrue} ตัว <Text style={{ color: 'rgba(232,89,89,1)' }}>เขียนผิด</Text>{testResult.countAlphabetFalse} ตัว <Text style={{ color: 'rgba(104,187,177,1)' }} >เขียนกลับด้าน</Text> {testResult.countAlphabetMirror} ตัว</Text>
+                        <Text style={{ marginBottom: "1.5%", color: "black", fontSize: 20 }}>สระ : เขียนถูก {testResult.countVowelTrue} ตัว <Text style={{ color: 'rgba(232,89,89,1)' }}>เขียนผิด</Text> {testResult.countVowelFalse} ตัว <Text style={{ color: 'rgba(104,187,177,1)' }} >เขียนกลับด้าน</Text> {testResult.countVowelMirror} ตัว</Text>
+                        <Text style={{ color: "black", fontSize: 20 }}>คำสะกด : เขียนถูก {testResult.countVocabTrue} ตัว <Text style={{ color: 'rgba(232,89,89,1)' }}>เขียนผิด</Text> {testResult.countVocabFalse} ตัว <Text style={{ color: 'rgba(104,187,177,1)' }} >เขียนกลับด้าน</Text> 1 ตัว</Text>
                     </View>
                     <View style={{ flex: 1, backgroundColor: "white", alignItems: "flex-end" }}>
                         <Text style={{ fontSize: 30 }}>11/20/2020</Text>
@@ -373,17 +419,12 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
     return {
-        token: state.token
     }
 }
 
 
 const mapDispatchToProps = dispatch => {
     return {
-
-        upDateToken: (token) => {
-            dispatch({ type: 'EDIT_TOKEN', payload: token })
-        }
 
 
     }

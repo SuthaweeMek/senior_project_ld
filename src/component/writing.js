@@ -153,8 +153,7 @@ const writing = (props) => {
       }
     );
     let responseJson = await res.json();
-    console.log(responseJson)
-    if (res.status == 201) {
+    if (res.ok) {
       console.log('Upload Successful');
     }
     else {
@@ -190,69 +189,6 @@ const writing = (props) => {
     //ImageScene("test", "moo");
   }
 
-
-
-
-  let uploadImage = async () => {
-    //Check if any file is selected or not
-    if (singleFile != null) {
-      //If file selected then create FormData
-      const fileToUpload = singleFile;
-      const data = new FormData();
-      data.append('name', 'Image Upload');
-      data.append('file_attachment', fileToUpload);
-      //Please change file upload URL
-      let res = await fetch(
-        'http://localhost/upload.php',
-        {
-          method: 'post',
-          body: data,
-          headers: {
-            'Content-Type': 'multipart/form-data; ',
-          },
-        }
-      );
-      let responseJson = await res.json();
-      if (responseJson.status == 1) {
-        alert('Upload Successful');
-      }
-    } else {
-      //if no file selected the show alert
-      alert('Please Select File first');
-    }
-  };
-
-  let selectFile = async () => {
-    //Opening Document Picker to select one file
-    try {
-      const res = await DocumentPicker.pick({
-        //Provide which type of file you want user to pick
-        type: [DocumentPicker.types.allFiles],
-        //There can me more options as well
-        // DocumentPicker.types.allFiles
-        // DocumentPicker.types.images
-        // DocumentPicker.types.plainText
-        // DocumentPicker.types.audio
-        // DocumentPicker.types.pdf
-      });
-      //Printing the log realted to the file
-      console.log('res : ' + JSON.stringify(res));
-      //Setting the state to show single file attributes
-      setSingleFile(res);
-    } catch (err) {
-      setSingleFile(null);
-      //Handling any exception (If any)
-      if (DocumentPicker.isCancel(err)) {
-        //If user canceled the document selection
-        alert('Canceled from single doc picker');
-      } else {
-        //For Unknown Error
-        alert('Unknown Error: ' + JSON.stringify(err));
-        throw err;
-      }
-    }
-  };
-  
 
   return (
     <View style={styles.container}>

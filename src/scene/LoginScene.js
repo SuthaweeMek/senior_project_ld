@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -47,19 +47,18 @@ const LoginScene = (props) => {
         userid: username,
         password: password
       })
-    }).then((response) => response.json())
+    }).then((response) => {
+      if (response.ok) {
+        return response.json()
+      }
+      else throw new Error(response.status);
+    })
       .then((responseJson) => {
-        console.log(responseJson)
-        if (responseJson.detail === undefined && !(responseJson.password !== undefined || responseJson.userid !== undefined)) {
-          props.upDateToken(JSON.stringify(responseJson))
-          props.upDateScene(0)
-        }
-        else {
-          alert("Login failed")
-        }
-
-      })
-      ;
+        LocalStorage.saveData("token", JSON.stringify(responseJson))
+        props.upDateScene(0)
+      }).catch((error) => {
+        console.log('error: ' + error);
+      });
   }
   const handleUser = (text) => {
     setUsername(text)
@@ -68,7 +67,6 @@ const LoginScene = (props) => {
   const handlePassword = (text) => {
     setPassword(text)
   }
-
 
   return (
     <NativeRouter>
@@ -190,9 +188,7 @@ const mapDispatchToProps = dispatch => {
     upDateScene: (scene) => {
       dispatch({ type: 'EDIT_SCENE', payload: scene })
     },
-    upDateToken: (token) => {
-      dispatch({ type: "EDIT_TOKEN", payload: token })
-    }
+
 
   }
 }

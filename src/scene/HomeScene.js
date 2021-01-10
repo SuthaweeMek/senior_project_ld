@@ -26,6 +26,7 @@ import WritingScene from './WritingScene'
 const image = { uri: "https://reactjs.org/logo-og.png" };
 import Router from '../router'
 import { connect } from 'react-redux';
+import LocalStorage from '../utils/LocalStorage'
 
 const HomeScene = (props) => {
   console.log("test", props.text)
@@ -74,7 +75,13 @@ const HomeScene = (props) => {
                 <Image source={imageProfile} style={styles.icon}></Image>
 
                 <TouchableOpacity
-                  onPress={() => props.upDateScene(-1)}
+                  onPress={() => {
+                    LocalStorage.clearStorage()
+
+                    props.upDateScene(-1)
+                  }
+
+                  }
                 >
                   <Text style={styles.fontMenuContent}>ออกจากระบบ</Text>
                 </TouchableOpacity>
