@@ -204,6 +204,7 @@ const StatScene = (props) => {
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + await LocalStorage.readData("token")
             },
         }).then((response) => response.json())
             .then((responseJson) => {

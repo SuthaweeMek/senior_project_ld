@@ -20,26 +20,19 @@ async function getAccessUsingRefresh(refreshToken) {
 }
 
 const getVerifiedKeys = async (keys) => {
-  console.log('Loading keys from storage')
   if (keys) {
-    console.log('checking access')
 
     if (!isTokenExpired(keys.access)) {
-      console.log('returning access')
+
       return keys.access
     } else {
-      console.log('access expired')
-
-      console.log('checking refresh expiry')
-
+     
       if (!isTokenExpired(keys.refresh)) {
-        console.log('fetching access using refresh')
 
         const response = await getAccessUsingRefresh(keys.refresh)
         response.refresh = keys.refresh
         await AsyncStorage.setItem('token', JSON.stringify(response))
 
-        console.log('UPDATED ONE')
 
         return response.access
       } else {
@@ -57,7 +50,6 @@ const getVerifiedKeys = async (keys) => {
 
 function isTokenExpired(token) {
   var decoded = jwt_decode(token)
-  console.log(decoded)
   if (decoded.exp < Date.now() / 1000) {
     return true
   } else {
@@ -68,7 +60,6 @@ function isTokenExpired(token) {
 
 exports.saveData = async (STORAGE_KEY, value) => {
   try {
-    console.log(value)
     await AsyncStorage.setItem(STORAGE_KEY, value)
     console.log("Store Success")
   } catch (e) {
@@ -80,7 +71,6 @@ exports.readData = async (STORAGE_KEY) => {
   try {
     const userToken = await AsyncStorage.getItem(STORAGE_KEY)
     let cred = await getVerifiedKeys(JSON.parse(userToken))
-    console.log(cred)
     if (userToken != null && cred != null) {
 
       return cred
