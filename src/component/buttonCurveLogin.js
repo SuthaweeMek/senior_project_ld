@@ -8,10 +8,10 @@
 
 import React from 'react'
 import { Text, View, TouchableOpacity, Dimensions, StyleSheet } from 'react-native'
-
-
-const width = Dimensions.get('window').width
-const height = Dimensions.get('window').height
+import Device from '../utils/Device'
+//dimesions
+width = Device.isPortrait() ? Dimensions.get('window').height : Dimensions.get('window').width //1:4.65
+height = Device.isPortrait() ? Dimensions.get('window').width : Dimensions.get('window').height //1:4.65  
 
 const ButtonCurve = ({ text, onPress }) => {
   return (
@@ -25,19 +25,18 @@ const ButtonCurve = ({ text, onPress }) => {
 
 const styles = StyleSheet.create({
   btnStyle: {
-    backgroundColor: 'linear-gradient(121deg, rgba(0,241,157,1) 100%, rgba(67,87,199,1) 100%);',
+    backgroundColor: '#66b4c1',
     paddingVertical: 10,
     height: height-(height*0.93),
     width: width/2.5, 
-    borderRadius: width/90
+    borderRadius: width
   },
   btnTextStyle: {
     color: '#ffffff',
-    fontSize: 20,
-    fontWeight:'bold',
-    textTransform: 'uppercase',
+    fontSize: 28,
+    fontFamily: 'EkkamaiNew-Bold',
+    //textTransform: 'uppercase',
     textAlign: 'center',
-    fontFamily: 'Quicksand-Medium'
   }
 })
 

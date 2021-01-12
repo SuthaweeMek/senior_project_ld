@@ -37,6 +37,7 @@ import GameThirdScene from './scene/GameThirdScene';
 import Router2Component from './router2'
 import Pagination from './component/pagination'
 import Test2 from './scene/Test'
+import Input from './component/inputboxLogin'
 
 import { Provider } from 'react-redux'; // <---- 
 import { createStore } from 'redux';    // <----

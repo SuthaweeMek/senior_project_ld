@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, { useState } from 'react';
+import React, { useState ,useRef, useEffect} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -18,24 +18,34 @@ import {
   ImageBackground,
   Image,
   Alert,
-  Dimensions
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
+  TextInput,
+  Platform,
+  Dimensions,
+  Animated,
 } from 'react-native';
+import logo from '../resource/image/logo.png'
 import { NativeRouter, Route, Link } from "react-router-native";
 import backgroundLogin from '../resource/image/backgroundLogin.png'
 import Router from '../router'
 import ButtonCurveLogin from '../component/buttonCurveLogin';
 import InputBoxLogin from '../component/inputboxLogin';
 import AsyncStorage from '@react-native-community/async-storage'
-
+import Device from '../utils/Device'
 import { connect } from 'react-redux';
 
-const width = Dimensions.get('window').width
-const height = Dimensions.get('window').height
+//dimesions
+width = Device.isPortrait() ? Dimensions.get('window').height : Dimensions.get('window').width //1:4.65
+height = Device.isPortrait() ? Dimensions.get('window').width : Dimensions.get('window').height //1:4.65  
 
 const LoginScene = (props) => {
   const [token, setToken] = useState('5')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const moveAnim = useRef(new Animated.Value(-25)).current  // Initial value for top : 0
+  const fadeAnim = useRef(new Animated.Value(0)).current // Initial value for fontSize: 28
   const saveData = async (STORAGE_KEY, value) => {
     try {
       await AsyncStorage.setItem(STORAGE_KEY, value)
@@ -43,7 +53,6 @@ const LoginScene = (props) => {
       alert('Failed to save the data to the storage')
     }
   }
-
   const readData = async () => {
     try {
       const userToken = await AsyncStorage.getItem(STORAGE_KEY)
@@ -93,120 +102,105 @@ const LoginScene = (props) => {
     setPassword(text)
   }
 
+  useEffect(()=>{
+    Animated.parallel([
+      Animated.timing(moveAnim, {
+          toValue: 0,
+          duration: 1000,
+          useNativeDriver :false
+      }),
+      Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: 1000,
+          useNativeDriver :false
+      })
+    ]).start()
+  },[])
 
   return (
     <NativeRouter>
-      <StatusBar translucent={true} barStyle={"dark-content"} backgroundColor={"#00000000"}/>
-      {/* <ImageBackground source={backgroundLogin} style={styles.background}> */}
-        <View style={styles.container2}>
-          <Text style={styles.fontTopic}>เข้าสู่ระบบ</Text>
-          <Text style={styles.fontInput}>ชื่อ</Text>
-          <InputBoxLogin text={username} onChangeText={handleUser} placeholder="Username" />
-          <Text style={styles.fontInput}>รหัสผ่าน</Text>
-          <InputBoxLogin text={password} onChangeText={handlePassword} placeholder="Password" />
-          <Text style={styles.fontForget} onPress={onPress}  > ลืมรหัสผ่าน?</Text>
-          <View style={styles.Login}>
-            <ButtonCurveLogin onPress={onPress} text="เข้าสู่ระบบ" />
-          </View>
-          <Text style={styles.fontRegis} onPress={onPress} > สมัครสมาชิกใหม่</Text>
-        </View>
-      {/* </ImageBackground> */}
+      <StatusBar translucent={true} barStyle={"dark-content"} backgroundColor={"#00000000"} />
+      <ImageBackground source={backgroundLogin} style={styles.background} resizeMode={"stretch"}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={{ flex: 1 }}
+        >
+          <SafeAreaView style={{ flex: 1 }}>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+              <Animated.View style={[styles.inner,{top : moveAnim,opacity : fadeAnim}]}>
+                <View style={{ flex: 1 }} />
+                <Image style={styles.logo} source={logo} resizeMode="contain" />
+                <Text style={styles.fontTopic}>
+                  เข้าสู่ระบบ
+                            </Text>
+                <InputBoxLogin text={username} onChangeText={handleUser} placeholder="Username" />
+                <InputBoxLogin text={password} onChangeText={handlePassword} placeholder="Password" password={true} />
+                <Text style={styles.fontForget} onPress={() => { console.log("do something1") }}>ลืมรหัสผ่าน</Text>
+                <View style={styles.btnContainer}>
+                  <ButtonCurveLogin onPress={onPress} text="เข้าสู่ระบบ" />
+                </View>
+                <Text style={styles.fontRegis} onPress={() => { console.log("do something2") }}>สมัครสมาชิก</Text>
+                <View style={{ flex: 1 }} />
+              </Animated.View>
+            </TouchableWithoutFeedback>
+          </SafeAreaView>
+        </KeyboardAvoidingView>
+      </ImageBackground>
     </NativeRouter>
   );
 
 }
 
 const styles = StyleSheet.create({
-  container: {
-
-    //flex: 1,
-    //justifyContent: 'center', 
-    //alignItems: 'center',
-    flexDirection: 'row',
-    //backgroundColor : "gray"
-    //flex: 1 1 auto,
-    //marginTop: 22
-  },
-  container2: {
-    flex: 1,
-    width: width / 2,
-    flexDirection: 'column',
-    backgroundColor: "#f2f2f2",
-    
-    margin: height - (height * 0.9),
-    borderRadius: width / 50
-    //justifyContent: 'center', 
-    //alignItems: 'center'
-    //flex: 1 1 auto, 
-    //marginTop: 22
-  },
-  Login: {
-    alignSelf: 'center',
-    marginTop: 30,
-    marginBottom: 20
-    //justifyContent: 'center', 
-    //alignItems: 'center'
-    //flex: 1 1 auto, 
-    //marginTop: 22
+  logo: {
+    height: height / 100 * 30,
+    marginBottom: 36,
   },
   fontTopic: {
-    alignSelf: "center",
-    fontWeight: "bold",
+    fontFamily: 'EkkamaiNew-Bold',
+    color: "#66b4c1",
     fontSize: 50,
-    margin: height - (height * 0.95)
-    //justifyContent: 'center', 
-    //alignItems: 'center'
-    //flex: 1 1 auto, 
-    //marginTop: 22
-  },
-  fontInput: {
-    fontSize: 20,
-    left: "10%"
-    //justifyContent: 'center', 
-    //alignItems: 'center'
-    //flex: 1 1 auto, 
-    //marginTop: 22
+    marginBottom: 36,
   },
   fontForget: {
     fontSize: 18,
-    left: "72%"
-    //justifyContent: 'center', 
-    //alignItems: 'center'
-    //flex: 1 1 auto, 
-    //marginTop: 22
+    fontFamily: 'EkkamaiNew-Bold',
+    textAlign: "right",
+    width: width / 2.6,
+    marginTop: 10
   },
   fontRegis: {
     fontSize: 18,
-    alignSelf: 'center',
-    marginBottom: 20
-    //justifyContent: 'center', 
-    //alignItems: 'center'
-    //flex: 1 1 auto, 
-    //marginTop: 22
-  },
-  containerStartTestInput: {
-    flexDirection: 'row',
-    backgroundColor: "white",
-    justifyContent: 'space-around',
-    //alignItems: 'center',
-    //flex: 1 1 auto,
-    //marginTop: 22
-  },
-  card: {
-    fontFamily: "lucida grande",
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
-    backgroundColor: 'white',
-    borderRadius: 10,
-    width: width / 1.6,
-    height: height / 1.8,
+    marginBottom: 36,
+    textDecorationLine: 'underline',
+    fontFamily: 'EkkamaiNew-Bold',
   },
   background: {
-    justifyContent: 'center',
-    alignItems: 'center',
     flex: 1,
-    resizeMode: "cover",
+  },
+  container: {
+    flex: 1
+  },
+  inner: {
+    padding: 24,
+    flex: 1,
+    justifyContent: "flex-end",
+    alignItems: "center",
+    fontSize: 50,
+    top:-25,
+    opacity:0
+    //margin: height - (height * 0.95)
+  },
+  header: {
+    fontFamily: 'EkkamaiNew-Bold',
+    fontSize: 36,
+    flex: 2,
+    textAlignVertical: "center",
+    //backgroundColor: "blue",
+    marginBottom: 48
+  },
+  btnContainer: {
+    marginVertical: 24
   }
 });
 

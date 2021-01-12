@@ -1,12 +1,14 @@
 import { Dimensions,} from 'react-native';
 
 exports.isPortrait = () =>{
-    const dim  = Dimensions.get('screen');
+    const dim  = Dimensions.get('window');
+    //console.log("dim ",dim.height >= dim.width)
     return dim.height >= dim.width
 };
 
 exports.isLandscape = () =>{
-    const dim  = Dimensions.get('screen');
+    const dim  = Dimensions.get('window');
+    //console.log("dim2 ",dim.height >= dim.width)
     return dim.height < dim.width
 };
 
