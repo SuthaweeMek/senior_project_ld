@@ -138,7 +138,7 @@ const writing = (props) => {
     const data = new FormData();
     data.append('prediction', 1);
     data.append('ImageName', image);
-    data.append('label',ary_sound[index])
+    data.append('label',ary_sound[index-1])
     data.append('TestID',props.testId)
     //Please change file upload URL
     let res = await fetch(

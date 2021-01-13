@@ -174,7 +174,7 @@ const StatScene = (props) => {
                 setModalVisible(true)
             }}>
                 <Text> {index + 1} </Text>
-                <Text>โมเดลทำนาย : เขียนถูก</Text>
+                <Text>โมเดลทำนาย : {item.prediction}</Text>
                 <Text>ความน่าจะเป็น : 99%</Text>
                 <Image source={{ uri: `http://10.0.2.2:8000${item.ImageName}` }} style={{
                     width: width / 8,
