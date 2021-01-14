@@ -8,36 +8,46 @@
 
 import React from 'react'
 import { Text, View, TouchableOpacity, Dimensions, StyleSheet } from 'react-native'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from '../utils/Device';
 import Device from '../utils/Device'
-//dimesions
-width = Device.isPortrait() ? Dimensions.get('window').height : Dimensions.get('window').width //1:4.65
-height = Device.isPortrait() ? Dimensions.get('window').width : Dimensions.get('window').height //1:4.65  
+import { connect } from 'react-redux';
 
-const ButtonCurve = ({ text, onPress }) => {
+
+const ButtonCurve = ({ text, onPress ,orientation}) => {
   return (
     <TouchableOpacity onPress={onPress} >
-      <View style={styles.btnStyle}>
-        <Text style={styles.btnTextStyle}> {text} </Text>
+      <View style={styles(orientation).btnStyle}>
+        <Text style={styles(orientation).btnTextStyle}> {text} </Text>
       </View>
     </TouchableOpacity>
   )
 }
 
-const styles = StyleSheet.create({
+const styles = (props)  => StyleSheet.create({
   btnStyle: {
     backgroundColor: '#66b4c1',
-    paddingVertical: 10,
-    height: height-(height*0.93),
-    width: width/2.5, 
-    borderRadius: width
+    //paddingVertical: 10,
+    height: hp('6%'),
+    width: wp('90%'),
+    borderRadius: height
   },
   btnTextStyle: {
     color: '#ffffff',
-    fontSize: 28,
+    height: hp('6%'),
+    width: wp('90%'),
+    fontSize: hp('3%'),
+    //backgroundColor:"red",
     fontFamily: 'EkkamaiNew-Bold',
     //textTransform: 'uppercase',
+    textAlignVertical :'center',
     textAlign: 'center',
   }
 })
 
-export default ButtonCurve;
+const mapStateToProps = state => {
+  return {
+    orientation: state.orientation,
+  }
+}
+
+export default connect(mapStateToProps, null)(ButtonCurve);

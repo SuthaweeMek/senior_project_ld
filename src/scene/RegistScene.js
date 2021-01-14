@@ -42,7 +42,7 @@ import { connect } from 'react-redux';
 // width = Device.isPortrait() ? Dimensions.get('window').height : Dimensions.get('window').width //1:4.65
 // height = Device.isPortrait() ? Dimensions.get('window').width : Dimensions.get('window').height //1:4.65  
 
-const LoginScene = (props) => {
+const RegistScene = (props) => {
   const [token, setToken] = useState('5')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -139,10 +139,10 @@ const LoginScene = (props) => {
       <StatusBar translucent={true} barStyle={"dark-content"} backgroundColor={"#00000000"} />
       <ImageBackground source={backgroundLogin} style={styles(props.orientation).background} resizeMode={"stretch"}>
         <KeyboardAvoidingView
-          behavior={props.orientation=="landscape"? Platform.OS === "ios" ? "padding" : "height": Platform.OS === "ios" ? "padding" : "height"} 
-          style={styles(props.orientation).container}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={{ flex: 1 }}
         >
-          <SafeAreaView style={styles(props.orientation).container}>
+          <SafeAreaView style={{ flex: 1 }}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
               <Animated.View style={[styles(props.orientation).inner,{top : moveAnim,opacity : fadeAnim}]}>
                 <View style={{ flex: 1 }} />
@@ -173,9 +173,6 @@ const LoginScene = (props) => {
 
 
 const styles = (props) => StyleSheet.create({
-  container:{
-    flex: 1
-  },
   logo : {
     height: hp('20%'),
     marginBottom: 36,
@@ -251,4 +248,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginScene);
+export default connect(mapStateToProps, mapDispatchToProps)(RegistScene);

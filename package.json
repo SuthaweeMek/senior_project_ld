@@ -10,8 +10,8 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@react-navigation/native": "^5.8.9",
     "@react-native-community/async-storage": "^1.12.1",
+    "@react-navigation/native": "^5.8.9",
     "@terrylinla/react-native-sketch-canvas": "^0.8.0",
     "axios": "^0.20.0",
     "react": "16.13.1",
@@ -23,9 +23,9 @@
     "react-native-reanimated": "^1.13.0",
     "react-native-screens": "^2.10.1",
     "react-native-sound": "^0.11.0",
+    "react-native-vector-icons": "^7.1.0",
     "react-redux": "^7.2.2",
     "react-router-dom": "^5.2.0",
-    "react-native-vector-icons": "^7.1.0",
     "react-router-native": "^5.2.0",
     "redux": "^4.0.5",
     "rn-sprite-sheet": "^1.1.11"
@@ -43,5 +43,4 @@
   "jest": {
     "preset": "react-native"
   }
-
 }
