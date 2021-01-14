@@ -25,11 +25,21 @@ const ButtonCurve = ({ text, onPress ,orientation}) => {
 
 const styles = (props)  => StyleSheet.create({
   btnStyle: {
-    backgroundColor: '#66b4c1',
+    // backgroundColor: '#66b4c1',
+    backgroundColor:'#24A0ED',
     //paddingVertical: 10,
     height: hp('6%'),
     width: wp('90%'),
-    borderRadius: height
+    borderRadius: height,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
   btnTextStyle: {
     color: '#ffffff',

@@ -137,9 +137,10 @@ const LoginScene = (props) => {
     
     <NativeRouter>
       <StatusBar translucent={true} barStyle={"dark-content"} backgroundColor={"#00000000"} />
-      <ImageBackground source={backgroundLogin} style={styles(props.orientation).background} resizeMode={"stretch"}>
+      {/* <ImageBackground source={backgroundLogin} style={styles(props.orientation).background} resizeMode={"stretch"}> */}
         <KeyboardAvoidingView
-          behavior={props.orientation=="landscape"? Platform.OS === "ios" ? "padding" : "height": Platform.OS === "ios" ? "padding" : "height"} 
+          // behavior={props.orientation=="landscape"? Platform.OS === "ios" ? "padding" : "height": Platform.OS === "ios" ? "padding" : "height"}
+          behavior={Platform.OS === "ios" ? "padding" :null}  
           style={styles(props.orientation).container}
         >
           <SafeAreaView style={styles(props.orientation).container}>
@@ -162,7 +163,7 @@ const LoginScene = (props) => {
             </TouchableWithoutFeedback>
           </SafeAreaView>
         </KeyboardAvoidingView>
-      </ImageBackground>
+      {/* </ImageBackground> */}
     </NativeRouter>
 
     

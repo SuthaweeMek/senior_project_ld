@@ -159,7 +159,8 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         marginTop: 40,
         marginBottom: 30,
-        alignSelf: "center"
+        alignSelf: "center",
+        fontFamily:"EkkamaiNew-Regular",
     },
     fontStartTestInput: {
         color: 'black',
@@ -167,6 +168,7 @@ const styles = StyleSheet.create({
         marginLeft: 70,
         marginTop: 10,
         alignItems: 'center',
+        fontFamily:"EkkamaiNew-Regular",
         justifyContent: 'center'
     },
     fontMenuProfile: {
@@ -175,12 +177,14 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         paddingTop: 10,
         alignItems: 'center',
+        fontFamily:"EkkamaiNew-Regular",
         justifyContent: 'center'
     },
     fontMenuContent: {
         color: 'white',
         fontSize: 15,
         alignItems: 'center',
+        fontFamily:"EkkamaiNew-Regular",
         paddingLeft: 5,
     },
     containerMenuContent: {

@@ -12,8 +12,8 @@ const inputbox = (props) => {
   const [clickInput,setClickInput] = useState({borderColor: '#d9dada',borderBottomWidth: 2})
   const [text,setText] = useState(props.text)
   const moveAnim = useRef(new Animated.Value(0)).current  // Initial value for top : 0
-  const sizeAnim = useRef(new Animated.Value(hp('3%'))).current // Initial value for fontSize: 28
-
+  const sizeAnim = useRef(new Animated.Value(hp('3%'))).current // Initial value for fontSize: 28]
+  const [textHolderColor,setTextholdercolor] = useState('#d9dada')
 
     const placeholderAnimation = (clicked) => {
       Animated.parallel([
@@ -43,15 +43,15 @@ const inputbox = (props) => {
     />
     <View style={styles(orientation).container2}>
 
-      <Animated.Text style={[styles(orientation).textHolder,{fontSize:sizeAnim,top:moveAnim}]} >{props.placeholder}</Animated.Text>
+      <Animated.Text style={[styles(orientation).textHolder,{fontSize:sizeAnim,top:moveAnim,color:textHolderColor}]} >{props.placeholder}</Animated.Text>
         <TextInput
           style={[styles(orientation).textinput]}
           onChangeText={text => {props.onChangeText(text) ,setText(text)}}
           pointerEvents="none"
           secureTextEntry={props.password? true:false}
           value={props.text}
-          onFocus = {()=> {setClickInput({borderColor: '#66b4c1',borderBottomWidth: 4}) ,placeholderAnimation(clicked=true)}}
-          onBlur = {()=>{setClickInput({borderColor: '#d9dada',borderBottomWidth: 2}) , placeholderAnimation(clicked=false)}}
+          onFocus = {()=> {setClickInput({borderColor: '#24A0ED',borderBottomWidth: 4}) ,placeholderAnimation(clicked=true),text =="" ? setTextholdercolor('#000'):null}}
+          onBlur = {()=>{setClickInput({borderColor: '#d9dada',borderBottomWidth: 2}) , placeholderAnimation(clicked=false), text =="" ? setTextholdercolor('#d9dada'):setTextholdercolor('#000')}}
         />   
     </View>
       
@@ -97,7 +97,7 @@ const styles = (props) => StyleSheet.create({
     //marginTop : -10,
     //paddingTop :-5,
     paddingLeft: 10,
-    color: '#66b4c1',
+    color: '#24A0ED',
     textAlignVertical:"center",
     },
 })

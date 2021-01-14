@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -26,18 +26,44 @@ import WritingScene from './WritingScene'
 const image = { uri: "https://reactjs.org/logo-og.png" };
 import Router from '../router'
 import { connect } from 'react-redux';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp,listenOrientationChange as lor,removeOrientationListener as rol} from '../utils/Device'
+import { Icon } from 'react-native-elements'
 
 const HomeScene = (props) => {
-  console.log("test", props.text)
+  const [onClick,setOnclick] = useState("test_scene")
+  // console.log("test", props.text)
+
   props.upDateText("testtext")
+
+  const newStyle = (fromscene) =>{
+    var new_style = {}
+    console.log("onClick vs fromscene",onClick , "and ", fromscene,": ",onClick==fromscene)
+    const menu_clicked = {BG:{backgroundColor:"white",borderColor:"white"},
+    FG:{logocolor:"#24A0ED",color:"black"}}
+    const menu_unclick = {BG:{backgroundColor:"#24A0ED",borderColor:"#24A0ED"},
+    FG:{logocolor:"white",color:"white"}}
+
+    switch (fromscene) {
+      case 'test_scene':
+        onClick==fromscene ? new_style = menu_clicked: new_style = menu_unclick
+      case 'result_scene':
+        onClick==fromscene ? new_style = menu_clicked: new_style = menu_unclick
+      case 'stat_scene':
+        onClick==fromscene ? new_style = menu_clicked: new_style =menu_unclick
+      }
+  return (new_style)
+  
+}
+
   return (
     <NativeRouter>
+      <StatusBar translucent={true} barStyle={"dark-content"} backgroundColor={"#00000000"} />
       <View style={styles.container}>
 
-        <ImageBackground source={backgroundMenu} style={styles.backgroundMenu}>
+        {/* <ImageBackground source={backgroundMenu} style={styles.backgroundMenu}> */}
+        <View style={styles.containerMenu}>
+
           <View style={styles.containerMenuProfile}>
-
-
             <Image source={imageProfile} style={styles.imageProfile}></Image>
             <Link to="/" >
               <Text style={styles.fontMenuProfile}>Pig Piggy</Text>
@@ -45,34 +71,59 @@ const HomeScene = (props) => {
           </View>
 
           <View style={styles.containerMenuContent}>
-            <View style={styles.containerMenuContentRow}>
 
-              <Image source={imageProfile} style={styles.icon}></Image>
-
-              <Link to="/test" >
-                <Text style={styles.fontMenuContent}>เริ่มทำแบบทดสอบ</Text>
-              </Link>
+            <Link to="/test" onPress={()=>{setOnclick("test_scene")}} >
+            <View style={[styles.containerMenuContentRow,newStyle("test_scene").BG]} >
+            <Icon
+              //reverse
+              name={"pen"}
+              type='font-awesome-5'
+              color= {newStyle("test_scene").FG.logocolor} 
+              size={wp('2.5%')}
+              style={styles.icon}
+            />
+                <Text style={[styles.fontMenuContent,{color:newStyle("test_scene").FG.color}]}>แบบทดสอบ</Text>
             </View>
-            <View style={styles.containerMenuContentRow}>
+            </Link>
 
-              <Image source={imageProfile} style={styles.icon}></Image>
-              <Link to="/result" >
-                <Text style={styles.fontMenuContent}>ผลลัพท์</Text>
-              </Link>
+            <Link to="/result" onPress={()=>{setOnclick("result_scene")}}>
+            <View style={[styles.containerMenuContentRow,newStyle("result_scene").BG]} >
+            <Icon
+              //reverse
+              name={"file-contract"}
+              type='font-awesome-5'
+              color= {newStyle("result_scene").FG.logocolor} 
+              size={wp('2.5%')}
+              style={styles.icon}
+            />              
+                <Text style={[styles.fontMenuContent,{color:newStyle("result_scene").FG.color}]}>ผลลัพท์</Text>
             </View>
-            <View style={styles.containerMenuContentRow}>
+            </Link>
 
-              <Image source={imageProfile} style={styles.icon}></Image>
-              <Link to="/stat" >
-                <Text style={styles.fontMenuContent}>สถิติ</Text>
-              </Link>
+            <Link to="/stat" onPress={()=>{setOnclick("stat_scene")}} >
+            <View style={[styles.containerMenuContentRow,newStyle("stat_scene").BG]} >
+            <Icon
+              //reverse
+              name={"chart-bar"}
+              type='font-awesome-5'
+              color= {newStyle("stat_scene").FG.logocolor} 
+              size={wp('2.5%')}
+              style={styles.icon}
+            /> 
+                <Text style={[styles.fontMenuContent,{color:newStyle("stat_scene").FG.color}]}>สถิติ</Text>
             </View>
+            </Link>
 
             <View style={styles.containerMenuFooter}>
               <View style={styles.containerMenuContentRow}>
-
-                <Image source={imageProfile} style={styles.icon}></Image>
-
+              <Icon
+              //reverse
+              name={"door-open"}
+              type='font-awesome-5'
+              color= {"white"} 
+              size={wp('2.5%')}
+              style={styles.icon}
+            /> 
                 <TouchableOpacity
                   onPress={() => props.upDateScene(-1)}
                 >
@@ -82,9 +133,8 @@ const HomeScene = (props) => {
             </View>
 
           </View>
-
-
-        </ImageBackground>
+        </View>
+        {/* </ImageBackground> */}
         <View style={styles.containerContent}>
           <Router setScene={props.handleScene} handleTestId={props.handleTestId} />
         </View>
@@ -95,32 +145,50 @@ const HomeScene = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex:1,
     //justifyContent: 'center', 
     //alignItems: 'center',
     flexDirection: 'row',
-    //backgroundColor : "gray"
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor : "#24A0ED",
+    // width : wp("25%"),
+    // height : hp ("100%")
     //flex: 1 1 auto,
     //marginTop: 22
   },
+  containerMenu :{
+    // flex:1,
+    flexDirection: 'column',
+    justifyContent: 'center', 
+    alignItems: 'flex-end',
+    // backgroundColor:"green",
+    width : wp("19%"),
+    // height : hp ("100%")
+  },
   containerMenuProfile: {
-    flex: 4,
+    flex: 3,
     justifyContent: 'flex-end',
     alignItems: 'center',
+    alignSelf:'center'
+    // backgroundColor:"red"
   },
   fontMenuProfile: {
     color: 'white',
-    fontSize: 16,
-    fontWeight: "bold",
-    paddingTop: 10,
+    fontSize: wp('3%'),
+    // fontWeight: "bold",
+    paddingTop: 12,
     alignItems: 'center',
+    fontFamily:"EkkamaiNew-Bold",
     justifyContent: 'center'
   },
   fontMenuContent: {
     color: 'white',
-    fontSize: 15,
+    fontSize: wp('1.8%'),
     alignItems: 'center',
+    fontFamily:"EkkamaiNew-Regular",
     paddingLeft: 5,
+    // backgroundColor:"green",
   },
   containerMenuContent: {
     marginTop: 10,
@@ -129,35 +197,47 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   containerMenuContentRow: {
-    marginTop: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row'
+    marginVertical: 12,
+    // justifyContent: 'flex-start',
+    // alignItems: 'flex-start',
+    // alignSelf:"flex-start",
+    alignSelf: 'center',
+    flexDirection: 'row',
+    width : wp("16%"),
+    backgroundColor:"white",
+    paddingLeft: wp("1%"),
+    borderTopLeftRadius: wp(1.8),
+    borderBottomLeftRadius: wp(1.8),
+    borderWidth: 2,
+    borderColor:"white",
   },
   containerMenuFooter: {
     flex: 1,
     paddingBottom: 10,
     justifyContent: 'flex-end',
     alignItems: 'center',
+    
   },
   containerContent: {
-    flex: 4,
+    flex: 2,
+    backgroundColor:"white"
   },
   backgroundMenu: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flex: 1,
-    resizeMode: "cover",
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    // flex: 1,
+    // resizeMode: "cover",
   },
   imageProfile: {
-    width: 100,
-    height: 100,
-    borderRadius: 50
+    width: wp('11%'),
+    height: wp('11%'),
+    borderRadius: wp('11%')/2,
+    borderColor:"white",
+    borderWidth:3,
   },
   icon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20
+    width: wp(3.2),
+
   },
 });
 
