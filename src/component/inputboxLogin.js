@@ -3,17 +3,17 @@ import { TextInput,Dimensions,StyleSheet, View,Text,TouchableOpacity,Animated} f
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from '../utils/Device';
 import Device from '../utils/Device';
 import { Icon } from 'react-native-elements'
-import { KeyboardAvoidingView } from 'react-native';
-import { Platform } from 'react-native';
+import Color from '../resource/color'
 import { connect } from 'react-redux';
 
 const inputbox = (props) => {
   const orientation = props.orientation
-  const [clickInput,setClickInput] = useState({borderColor: '#d9dada',borderBottomWidth: 2})
+  const size = props.size
+  const [clickInput,setClickInput] = useState({borderColor: Color.Cover,borderBottomWidth: 2})
   const [text,setText] = useState(props.text)
   const moveAnim = useRef(new Animated.Value(0)).current  // Initial value for top : 0
   const sizeAnim = useRef(new Animated.Value(hp('3%'))).current // Initial value for fontSize: 28]
-  const [textHolderColor,setTextholdercolor] = useState('#d9dada')
+  const [textHolderColor,setTextholdercolor] = useState(Color.Cover)
 
     const placeholderAnimation = (clicked) => {
       Animated.parallel([
@@ -32,26 +32,26 @@ const inputbox = (props) => {
 
   return (
 
-    <View style={[styles(orientation).inputSection, clickInput]}>
+    <View style={[styles({orientation,size}).inputSection, clickInput]}>
    <Icon
       //reverse
       name={props.icon}
       type='font-awesome-5'
       color= {clickInput.borderColor} 
       size={hp('4%')}
-      style={styles(orientation).inputIcon} 
+      style={styles({orientation,size}).inputIcon} 
     />
-    <View style={styles(orientation).container2}>
+    <View style={styles({orientation,size}).container2}>
 
-      <Animated.Text style={[styles(orientation).textHolder,{fontSize:sizeAnim,top:moveAnim,color:textHolderColor}]} >{props.placeholder}</Animated.Text>
+      <Animated.Text style={[styles({orientation,size}).textHolder,{fontSize:sizeAnim,top:moveAnim,color:textHolderColor}]} >{props.placeholder}</Animated.Text>
         <TextInput
-          style={[styles(orientation).textinput]}
+          style={[styles({orientation,size}).textinput]}
           onChangeText={text => {props.onChangeText(text) ,setText(text)}}
           pointerEvents="none"
           secureTextEntry={props.password? true:false}
           value={props.text}
-          onFocus = {()=> {setClickInput({borderColor: '#24A0ED',borderBottomWidth: 4}) ,placeholderAnimation(clicked=true),text =="" ? setTextholdercolor('#000'):null}}
-          onBlur = {()=>{setClickInput({borderColor: '#d9dada',borderBottomWidth: 2}) , placeholderAnimation(clicked=false), text =="" ? setTextholdercolor('#d9dada'):setTextholdercolor('#000')}}
+          onFocus = {()=> {setClickInput({borderColor: Color.Background,borderBottomWidth: 4}) ,placeholderAnimation(clicked=true),text =="" ? setTextholdercolor(Color.Black):null}}
+          onBlur = {()=>{setClickInput({borderColor: '#d9dada',borderBottomWidth: 2}) , placeholderAnimation(clicked=false), text =="" ? setTextholdercolor(Color.Cover):setTextholdercolor(Color.Black)}}
         />   
     </View>
       
@@ -64,11 +64,11 @@ const styles = (props) => StyleSheet.create({
     flexDirection: 'row',
     marginTop:20,
     marginBottom:10,
-    borderColor: '#d9dada',
+    borderColor: 'red',
     borderBottomWidth : 2,
-    justifyContent:"center",
+    justifyContent:"flex-start",
     alignItems:"flex-end",
-    
+    width: props.size.wp,
 },
   container2 :{
     flexDirection:"column"
@@ -81,8 +81,8 @@ const styles = (props) => StyleSheet.create({
     position:"absolute",
     color:"#d9dada",
     //backgroundColor:"blue",
-    height: hp('6%'),
-    width: wp('80%'),
+    height: props.size.hp,
+    width: props.size.wp,
 },
 
   inputIcon: {
@@ -93,11 +93,11 @@ const styles = (props) => StyleSheet.create({
     fontFamily:"EkkamaiNew-Regular",
     fontSize: hp('3%'),
     // height: hp('5.9%'),
-    width: wp('80%'),
+    width: props.size.wp,
     //marginTop : -10,
     //paddingTop :-5,
     paddingLeft: 10,
-    color: '#24A0ED',
+    color: Color.Background,
     textAlignVertical:"center",
     },
 })

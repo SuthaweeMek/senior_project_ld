@@ -33,7 +33,7 @@ import { NativeRouter, Route, Link, Redirect } from "react-router-native";
 import { connect } from 'react-redux';
 
 const Router2Component = (props) => {
-    console.log(props.scene)
+    //console.log(props.scene)
     let history = useHistory();
     const [testId, setTestId] = useState(0);
     return (

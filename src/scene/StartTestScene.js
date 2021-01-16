@@ -23,12 +23,16 @@ import {
 import { NativeRouter, Route, Link } from "react-router-native";
 import backgroundLogin from '../resource/image/backgroundLogin.png'
 import Router from '../router'
-import ButtonCurve from '../component/buttonCurveLogin';
+import ButtonCurve from '../component/buttonCurve.js';
+import InputBoxLogin from '../component/inputboxLogin';
 import { connect } from 'react-redux';
 import InputBox from '../component/inputBox';
 import SelectionInput from '../component/picker';
-import ButtonStart from '../component/buttonStart';
+// import ButtonStart from '../component/buttonStart';
+import Color from '../resource/color'
 import Device from '../utils/Device';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientationChange as lor, removeOrientationListener as rol } from '../utils/Device'
+
 
 width = Device.isPortrait() ? Dimensions.get('screen').height : Dimensions.get('screen').width //1:4.65
 height = Device.isPortrait() ? Dimensions.get('screen').width : Dimensions.get('screen').height //1:4.65
@@ -38,12 +42,32 @@ console.log("Device height = ", height, " and width = ", width)
 
 const StartTestScene = (props) => {
 
-    const [name, setName] = useState('')
-    const [surname, setSurname] = useState('')
+    const [name, setName] = useState('ทดสอบ')
+    const [surname, setSurname] = useState('สมจริง')
     const [childrenID, setChildrenID] = useState('')
-    const [gender, setGender] = useState('male')
-    const [age, setAge] = useState('')
-    console.log(name)
+    const [gender, setGender] = useState('m')
+    const [level, setLevel] = useState("level_1")
+    const [value, setValue] = useState({level: "level_1", value: "ระดับที่ 1"})
+    const [age, setAge] = useState('16')
+    const pickerItem = [
+        {
+            level: "level_1", value: "ระดับที่ 1" 
+        },
+        {
+            level: "level_2", value: "ระดับที่ 2"
+        },
+        {
+            level: "level_3", value: "ระดับที่ 3"
+        },
+        {
+            level: "level_4", value: "ระดับที่ 4"
+        },
+        {
+            level: "level_5", value: "ระดับที่ 5"
+        },
+      ];
+    console.log("what ?",props.orientation == "portrait"?"true":"false")
+    console.log(props.orientation)
     console.log(childrenID)
     console.log(gender)
     const handleName = (text) => {
@@ -52,11 +76,13 @@ const StartTestScene = (props) => {
     const handleChildrenID = (text) => {
         setChildrenID(text)
     }
-    const handleGender = (text) => {
-        setGender(text)
+    const handleLevel = (text) => {
+        console.log("level = == = ",text)
+        setLevel(text)
     }
     const handleAge = (text) => {
         setAge(text)
+        mapLeveltoValue(text)
     }
 
     const onPress = async () => {
@@ -72,7 +98,7 @@ const StartTestScene = (props) => {
                     "name": name,
                     "childrenID": childrenID,
                     "age": age,
-                    "gender":gender
+                    "gender": gender
                 }),
                 headers: {
                     'Accept': 'application/json',
@@ -87,52 +113,69 @@ const StartTestScene = (props) => {
         }
     }
     return (
-        <View style={styles.containerStartTest} >
-            <Text style={styles.fontStartTest} >แบบทดสอบ</Text>
-            <Text style={styles.fontStartTestInput} >รหัสประจำตัวเด็ก</Text>
-            <InputBox text={childrenID} onChangeText={handleChildrenID} placeholder="รหัสประจำตัวผู้เข้าทำแบบทดสอบ"></InputBox>
-            <View style={styles.containerStartTestInput}>
-                <View>
-                    <Text style={styles.fontStartTestInput} >เพศ</Text>
-                    <SelectionInput onChangeGender={handleGender} value={gender}></SelectionInput>
+        <View style={styles(props.orientation).container}>
+            <View style={styles(props.orientation).containerStartTest} >
+                <Text style={styles(props.orientation).fontStartTest} >ข้อมูลผู้ทำแบบทดสอบ</Text>
+                {/* <Text style={styles(props.orientation).fontStartTestInput} >รหัสประจำตัวเด็ก</Text> */}
+                <InputBoxLogin text={childrenID} onChangeText={handleChildrenID} placeholder="รหัสประจำตัวเด็ก" icon="user" size={{ hp: hp('6%'), wp: wp('30%') }} />
+                {/* <InputBox text={childrenID} onChangeText={handleChildrenID} placeholder="รหัสประจำตัวผู้เข้าทำแบบทดสอบ"></InputBox> */}
+                <View style={styles(props.orientation).containerStartTestInput}>
+                    <Text style={styles(props.orientation).fontStartTestInfo} >เพศ : {gender == 'm' ? "ชาย" : "หญิง"} </Text>
+                    {/* <SelectionInput onChangeGender={handleGender} value={gender}></SelectionInput> */}
+                    <Text style={styles(props.orientation).fontStartTestInfo} >ชื่อ-สกุล : {gender == 'm' ? "เด็กชาย" : "เด็กหญิง"} {name} {surname}</Text>
+                    {/* <InputBox text={name} onChangeText={handleName} placeholder="ชื่อและนามสกุล"></InputBox> */}
+                    <Text style={styles(props.orientation).fontStartTestInfo} >อายุ : {age}</Text>
+                    {/* <InputBox text={age} onChangeText={handleAge} placeholder="อายุ"></InputBox> */}
                 </View>
-                <View>
-                    <Text style={styles.fontStartTestInput} >ชื่อ-สกุล</Text>
-                    <InputBox text={name} onChangeText={handleName} placeholder="ชื่อและนามสกุล"></InputBox>
+                <View style={styles(props.orientation).StartPosition}>
+                    <Text style={styles(props.orientation).fontStartTestInput} >แบบทดสอบ</Text>
+                    <View style={styles(props.orientation).Picker}>
+                        <Text style={styles(props.orientation).fontStartTestInfo} >ระดับ : </Text>
+                        {props.orientation == "portrait"? <SelectionInput onChangeItem={handleLevel} value={value} size={{ hp: hp('5%'), wp: wp('45%') }} items={pickerItem} title="ระดับแบบทดสอบ"/>:<SelectionInput onChangeItem={handleLevel} value={value} size={{ hp: hp('6%'), wp: wp('30%') }} items={pickerItem} title="ระดับแบบทดสอบ"/>}
+                        {props.orientation == "portrait"? null : <ButtonCurve text="เริ่มทำแบบทดสอบ" onPress={onPress} size={{ hp: hp('6%'), wp: wp('25%') }} />}
+                    </View>
+                    {props.orientation == "portrait"? <ButtonCurve text="เริ่มทำแบบทดสอบ" onPress={onPress} size={{ hp: hp('5%'), wp: wp('50%') }} />:null}
                 </View>
-            </View>
-            <Text style={styles.fontStartTestInput} >อายุ</Text>
-            <InputBox text={age} onChangeText={handleAge} placeholder="อายุ"></InputBox>
-            <View style={styles.buttonStartPosition}>
-                <ButtonStart style={styles.buttonStart} text="กดเพื่อเริ่มแบบทดสอบ" onPress={onPress} />
             </View>
         </View>
+
     );
 }
 
-const styles = StyleSheet.create({
+const styles = (props) => StyleSheet.create({
     container: {
         flex: 1,
-        //justifyContent: 'center', 
-        //alignItems: 'center',
-        flexDirection: 'row',
-        //backgroundColor : "gray"
+        // justifyContent: 'flex-start', 
+        // alignItems: 'flex-start',
+        // alignSelf:"flex-start",
+        //flexDirection: 'row',
+        // marginVertical:20,
+        // marginHorizontal:40,
+        backgroundColor: Color.Background
         //flex: 1 1 auto,
         //marginTop: 22
     },
     containerStartTest: {
         flex: 1,
-        width: width / 1.8,
+        //width: width / 1.8,
         flexDirection: 'column',
-        backgroundColor: "white",
-        margin: height - (height * 0.9)
+        backgroundColor: Color.White,
+        //margin: height - (height * 0.9),
+        marginVertical: hp("3%"),
+        marginRight: hp("3%"),
+        paddingHorizontal: wp("4%"),
+        paddingTop: hp("8%"),
+        backgroundColor: Color.White,
+        // borderTopRightRadius:50,
+        // borderBottomRightRadius:50,
+        borderRadius: hp("3.5%"),
         //justifyContent: 'center', 
         //alignItems: 'center'
         //flex: 1 1 auto, 
         //marginTop: 22
     },
     containerStartTestInput: {
-        flexDirection: 'row',
+        flexDirection: 'column',
         backgroundColor: "white",
         justifyContent: 'space-around',
         //alignItems: 'center',
@@ -145,71 +188,63 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         alignItems: 'center',
     },
-    buttonStartPosition: {
-        marginTop: 31,
-        marginBottom: 30,
-        alignSelf: "center"
+    StartPosition: {
+        flex: 1,
+        // alignSelf: "center",
+        marginTop: 12,
+        padding: 24,
+        borderTopLeftRadius: hp("3.5%"),
+        borderTopRightRadius: hp("3.5%"),
+        justifyContent: "flex-start",
+        alignItems: props == "portrait"? "center":"flex-start",
+        backgroundColor: Color.Sub_Background
+    },
+    Picker :{
+     flexDirection: "row" ,
+    //  alignContent:"center",
+    //  justifyContent:"center",
+     padding:12,
+    alignSelf:"center",
+    // alignItems:"center",
+    // justifyContent:"flex-end",
+    // alignItems: "flex-end",
+    // backgroundColor:"red",
     },
     buttonStart: {
-        height: 5200
+        height: hp('6%'),
+        width: wp('50%'),
+        padding:200,
     },
     fontStartTest: {
         color: 'black',
-        fontSize: 50,
-        fontWeight: "bold",
-        marginTop: 40,
-        marginBottom: 30,
-        alignSelf: "center",
-        fontFamily:"EkkamaiNew-Regular",
+        fontSize: props == "portrait" ? hp('4%') : hp('6%'),
+        // marginTop: 40,
+        // marginBottom: 30,
+        marginVertical: 12,
+        alignSelf: "flex-start",
+
+        fontFamily: "EkkamaiNew-Bold",
     },
     fontStartTestInput: {
-        color: 'black',
-        fontSize: 20,
-        marginLeft: 70,
-        marginTop: 10,
-        alignItems: 'center',
-        fontFamily:"EkkamaiNew-Regular",
-        justifyContent: 'center'
+        // color: 'black',
+        fontSize: hp('3.5%'),
+        // marginLeft: 70,
+        // marginTop: 10,
+        marginVertical: 12,
+        // alignItems: 'center',
+        alignSelf:'flex-start',
+        fontFamily: "EkkamaiNew-Bold",
+        // justifyContent: 'center'
     },
-    fontMenuProfile: {
-        color: 'white',
-        fontSize: 16,
-        fontWeight: "bold",
-        paddingTop: 10,
-        alignItems: 'center',
-        fontFamily:"EkkamaiNew-Regular",
-        justifyContent: 'center'
-    },
-    fontMenuContent: {
-        color: 'white',
-        fontSize: 15,
-        alignItems: 'center',
-        fontFamily:"EkkamaiNew-Regular",
-        paddingLeft: 5,
-    },
-    containerMenuContent: {
-        marginTop: 10,
-        flex: 5,
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start',
-    },
-    containerMenuContentRow: {
-        marginTop: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'row'
-    },
-    containerMenuFooter: {
-        flex: 1,
-        paddingBottom: 10,
-        justifyContent: 'flex-end',
-        alignItems: 'center',
-    },
-    containerContent: {
-        backgroundColor: "blue",
-        flex: 4,
-        justifyContent: 'center',
-        alignItems: 'center',
+    fontStartTestInfo: {
+        // color: 'black',
+        fontSize: hp('3%'),
+        // marginLeft: 70,
+        // marginTop: 10,
+        marginVertical: 8,
+
+        fontFamily: "EkkamaiNew-Regular",
+        // justifyContent: 'center'
     },
     background: {
         justifyContent: 'center',
@@ -217,21 +252,12 @@ const styles = StyleSheet.create({
         flex: 1,
         resizeMode: "cover",
     },
-    imageProfile: {
-        width: 100,
-        height: 100,
-        borderRadius: 50
-    },
-    icon: {
-        width: 40,
-        height: 40,
-        borderRadius: 20
-    },
 });
 const mapStateToProps = state => {
     return {
         text: state.global,
-        scene: state.scene
+        scene: state.scene,
+        orientation: state.orientation
     }
 }
 
@@ -244,6 +270,9 @@ const mapDispatchToProps = dispatch => {
         },
         upDateTestId: (testId) => {
             dispatch({ type: 'EDIT_TESTID', payload: testId })
+        },
+        upDateOrientation: (orientation) => {
+            dispatch({ type: 'EDIT_ORIENTATION', payload: orientation })
         }
 
     }

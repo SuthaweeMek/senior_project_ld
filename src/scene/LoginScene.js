@@ -31,7 +31,7 @@ import { NativeRouter, Route, Link } from "react-router-native";
 import backgroundLogin from '../resource/image/backgroundLogin.png'
 import Router from '../router'
 import Orientation from 'react-native-orientation';
-import ButtonCurveLogin from '../component/buttonCurveLogin';
+import ButtonCurveLogin from '../component/buttonCurve.js';
 import InputBoxLogin from '../component/inputboxLogin';
 import AsyncStorage from '@react-native-community/async-storage'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp,listenOrientationChange as lor,removeOrientationListener as rol} from '../utils/Device'
@@ -151,11 +151,11 @@ const LoginScene = (props) => {
                 <Text style={styles(props.orientation).fontTopic}>
                   เข้าสู่ระบบ
                             </Text>
-                <InputBoxLogin text={username} onChangeText={handleUser} placeholder="Username" icon="user" />
-                <InputBoxLogin text={password} onChangeText={handlePassword} placeholder="Password" icon="key" password={true}/>
+                <InputBoxLogin text={username} onChangeText={handleUser} placeholder="Username" icon="user" size={{hp:hp('6%'),wp:wp('80%')}}/>
+                <InputBoxLogin text={password} onChangeText={handlePassword} placeholder="Password" icon="key" size={{hp:hp('6%'),wp:wp('80%')}} password={true}/>
                 <Text style={styles(props.orientation).fontForget} onPress={() => { console.log("do something1") }}>ลืมรหัสผ่าน</Text>
                 <View style={styles(props.orientation).btnContainer}>
-                  <ButtonCurveLogin onPress={onPress} text="เข้าสู่ระบบ" />
+                  <ButtonCurveLogin onPress={onPress} text="เข้าสู่ระบบ" size={{hp:hp('6%'),wp:wp('90%')}} />
                 </View>
                 <Text style={styles(props.orientation).fontRegis} onPress={() => { console.log("do something2") }}>สมัครสมาชิก</Text>
                 <View style={{ flex: 1 }} />

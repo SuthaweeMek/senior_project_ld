@@ -9,27 +9,30 @@
 import React from 'react'
 import { Text, View, TouchableOpacity, Dimensions, StyleSheet } from 'react-native'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from '../utils/Device';
+import Color from '../resource/color'
 import Device from '../utils/Device'
 import { connect } from 'react-redux';
 
 
-const ButtonCurve = ({ text, onPress ,orientation}) => {
+const ButtonCurve = ({ text, onPress ,orientation,size}) => {
+  // console.log("ButtonCurve : size = ",size)
   return (
     <TouchableOpacity onPress={onPress} >
-      <View style={styles(orientation).btnStyle}>
-        <Text style={styles(orientation).btnTextStyle}> {text} </Text>
+      <View style={styles({orientation,size}).btnStyle}>
+        <Text style={styles({orientation,size}).btnTextStyle}> {text} </Text>
       </View>
     </TouchableOpacity>
   )
 }
 
-const styles = (props)  => StyleSheet.create({
+const styles = (props)  =>  StyleSheet.create({
+
   btnStyle: {
     // backgroundColor: '#66b4c1',
-    backgroundColor:'#24A0ED',
+    backgroundColor : Color.Surface,
     //paddingVertical: 10,
-    height: hp('6%'),
-    width: wp('90%'),
+    height: props.size.hp,
+    width: props.size.wp,
     borderRadius: height,
     shadowColor: "#000",
     shadowOffset: {
@@ -42,9 +45,10 @@ const styles = (props)  => StyleSheet.create({
     elevation: 5,
   },
   btnTextStyle: {
-    color: '#ffffff',
-    height: hp('6%'),
-    width: wp('90%'),
+    flex:1,
+    color: Color.White,
+    // height: hp('6%'),
+    // width: wp('90%'),
     fontSize: hp('3%'),
     //backgroundColor:"red",
     fontFamily: 'EkkamaiNew-Bold',

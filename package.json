@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.12.1",
+    "@react-native-picker/picker": "^1.9.10",
     "@react-navigation/native": "^5.8.9",
     "@terrylinla/react-native-sketch-canvas": "^0.8.0",
     "axios": "^0.20.0",

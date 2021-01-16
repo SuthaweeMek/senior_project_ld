@@ -24,24 +24,33 @@ import backgroundMenu from '../resource/image/backgroundMenu.png';
 import imageProfile from '../resource/image/dummyProfile.jpg';
 import WritingScene from './WritingScene'
 const image = { uri: "https://reactjs.org/logo-og.png" };
+import Color from '../resource/color'
 import Router from '../router'
 import { connect } from 'react-redux';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp,listenOrientationChange as lor,removeOrientationListener as rol} from '../utils/Device'
 import { Icon } from 'react-native-elements'
 
 const HomeScene = (props) => {
+
+  useEffect(()=>{
+    lor(props.upDateOrientation)
+    return rol()
+  }
+  ,[])
   const [onClick,setOnclick] = useState("test_scene")
-  // console.log("test", props.text)
+  // console.log("test", Color.White)
 
   props.upDateText("testtext")
 
   const newStyle = (fromscene) =>{
     var new_style = {}
-    console.log("onClick vs fromscene",onClick , "and ", fromscene,": ",onClick==fromscene)
-    const menu_clicked = {BG:{backgroundColor:"white",borderColor:"white"},
-    FG:{logocolor:"#24A0ED",color:"black"}}
-    const menu_unclick = {BG:{backgroundColor:"#24A0ED",borderColor:"#24A0ED"},
-    FG:{logocolor:"white",color:"white"}}
+    // console.log("onClick vs fromscene",onClick , "and ", fromscene,": ",onClick==fromscene)
+    const menu_clicked = {BG:{backgroundColor:Color.White,borderColor:Color.White,},
+    LG:{logocolor:Color.Background},
+    TX:{color:Color.Black,fontFamily:"EkkamaiNew-Bold"}}
+    const menu_unclick = {BG:{backgroundColor:Color.Background,borderColor:Color.Background},
+    LG:{logocolor:Color.Sub_Surface},
+    TX:{color:Color.White}}
 
     switch (fromscene) {
       case 'test_scene':
@@ -50,84 +59,91 @@ const HomeScene = (props) => {
         onClick==fromscene ? new_style = menu_clicked: new_style = menu_unclick
       case 'stat_scene':
         onClick==fromscene ? new_style = menu_clicked: new_style =menu_unclick
+      case 'exit_scene':
+        onClick==fromscene ? new_style = menu_clicked: new_style =menu_unclick
+      default:
+        null
       }
+      
+
   return (new_style)
   
 }
 
   return (
     <NativeRouter>
-      <StatusBar translucent={true} barStyle={"dark-content"} backgroundColor={"#00000000"} />
-      <View style={styles.container}>
+      <StatusBar translucent={true} barStyle={"light-content"} backgroundColor={"#00000000"} />
+      <View style={styles(props.orientation).container}>
 
         {/* <ImageBackground source={backgroundMenu} style={styles.backgroundMenu}> */}
-        <View style={styles.containerMenu}>
+        <View style={styles(props.orientation).containerMenu}>
 
-          <View style={styles.containerMenuProfile}>
-            <Image source={imageProfile} style={styles.imageProfile}></Image>
+          <View style={styles(props.orientation).containerMenuProfile}>
+            <Image source={imageProfile} style={styles(props.orientation).imageProfile}></Image>
             <Link to="/" >
-              <Text style={styles.fontMenuProfile}>Pig Piggy</Text>
+              <Text style={styles(props.orientation).fontMenuProfile}>Pig Piggy</Text>
             </Link>
           </View>
 
-          <View style={styles.containerMenuContent}>
+          <View style={styles(props.orientation).containerMenuContent}>
 
-            <Link to="/test" onPress={()=>{setOnclick("test_scene")}} >
-            <View style={[styles.containerMenuContentRow,newStyle("test_scene").BG]} >
+          <Link style={styles(props.orientation).link} to="/test" onPress={()=>{setOnclick("test_scene")}} >
+            <View style={[styles(props.orientation).containerMenuContentRow,newStyle("test_scene").BG]} >
             <Icon
               //reverse
               name={"pen"}
               type='font-awesome-5'
-              color= {newStyle("test_scene").FG.logocolor} 
+              color= {newStyle("test_scene").LG.logocolor} 
               size={wp('2.5%')}
-              style={styles.icon}
+              style={styles(props.orientation).icon}
             />
-                <Text style={[styles.fontMenuContent,{color:newStyle("test_scene").FG.color}]}>แบบทดสอบ</Text>
+                <Text style={[styles(props.orientation).fontMenuContent,newStyle("test_scene").TX]}>แบบทดสอบ</Text>
             </View>
             </Link>
 
-            <Link to="/result" onPress={()=>{setOnclick("result_scene")}}>
-            <View style={[styles.containerMenuContentRow,newStyle("result_scene").BG]} >
+
+            <Link style={styles(props.orientation).link} to="/result" onPress={()=>{setOnclick("result_scene")}}>
+            <View style={[styles(props.orientation).containerMenuContentRow,newStyle("result_scene").BG]} >
             <Icon
               //reverse
               name={"file-contract"}
               type='font-awesome-5'
-              color= {newStyle("result_scene").FG.logocolor} 
+              color= {newStyle("result_scene").LG.logocolor} 
               size={wp('2.5%')}
-              style={styles.icon}
+              style={styles(props.orientation).icon}
             />              
-                <Text style={[styles.fontMenuContent,{color:newStyle("result_scene").FG.color}]}>ผลลัพท์</Text>
+                <Text style={[styles(props.orientation).fontMenuContent,newStyle("result_scene").TX]}>ผลลัพท์</Text>
             </View>
             </Link>
 
-            <Link to="/stat" onPress={()=>{setOnclick("stat_scene")}} >
-            <View style={[styles.containerMenuContentRow,newStyle("stat_scene").BG]} >
+            <Link style={styles(props.orientation).link} to="/stat" onPress={()=>{setOnclick("stat_scene")}} >
+            <View style={[styles(props.orientation).containerMenuContentRow,newStyle("stat_scene").BG]} >
             <Icon
               //reverse
               name={"chart-bar"}
               type='font-awesome-5'
-              color= {newStyle("stat_scene").FG.logocolor} 
+              color= {newStyle("stat_scene").LG.logocolor} 
               size={wp('2.5%')}
-              style={styles.icon}
+              style={styles(props.orientation).icon}
             /> 
-                <Text style={[styles.fontMenuContent,{color:newStyle("stat_scene").FG.color}]}>สถิติ</Text>
+                <Text style={[styles(props.orientation).fontMenuContent,newStyle("stat_scene").TX]}>สถิติ</Text>
             </View>
             </Link>
 
-            <View style={styles.containerMenuFooter}>
-              <View style={styles.containerMenuContentRow}>
+            <View style={styles(props.orientation).containerMenuFooter}>
+              <View style={[styles(props.orientation).containerMenuContentRow,newStyle("exit_scene").BG]}>
               <Icon
               //reverse
               name={"door-open"}
               type='font-awesome-5'
-              color= {"white"} 
+              color= {newStyle("exit_scene").LG.logocolor} 
               size={wp('2.5%')}
-              style={styles.icon}
+              style={styles(props.orientation).icon}
             /> 
                 <TouchableOpacity
-                  onPress={() => props.upDateScene(-1)}
+                  onPress={() => {props.upDateScene(-1)}}
                 >
-                  <Text style={styles.fontMenuContent}>ออกจากระบบ</Text>
+                  <Text style={[styles(props.orientation).fontMenuContent,newStyle("exit_scene").TX]}>ออกจากระบบ</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -135,7 +151,7 @@ const HomeScene = (props) => {
           </View>
         </View>
         {/* </ImageBackground> */}
-        <View style={styles.containerContent}>
+        <View style={styles(props.orientation).containerContent}>
           <Router setScene={props.handleScene} handleTestId={props.handleTestId} />
         </View>
       </View>
@@ -143,17 +159,17 @@ const HomeScene = (props) => {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = (props) => StyleSheet.create({
   container: {
-    flex:1,
+    //flex:1,
     //justifyContent: 'center', 
     //alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor : "#24A0ED",
+    backgroundColor : Color.Background,
     // width : wp("25%"),
-    // height : hp ("100%")
+    height : hp ("100%")
     //flex: 1 1 auto,
     //marginTop: 22
   },
@@ -168,10 +184,9 @@ const styles = StyleSheet.create({
   },
   containerMenuProfile: {
     flex: 3,
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     alignItems: 'center',
-    alignSelf:'center'
-    // backgroundColor:"red"
+    alignSelf:'center',
   },
   fontMenuProfile: {
     color: 'white',
@@ -197,30 +212,30 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   containerMenuContentRow: {
-    marginVertical: 12,
-    // justifyContent: 'flex-start',
-    // alignItems: 'flex-start',
+    // marginVertical: 12,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
     // alignSelf:"flex-start",
-    alignSelf: 'center',
+    // alignSelf: 'center',
     flexDirection: 'row',
     width : wp("16%"),
     backgroundColor:"white",
     paddingLeft: wp("1%"),
-    borderTopLeftRadius: wp(1.8),
-    borderBottomLeftRadius: wp(1.8),
+    borderTopLeftRadius: wp("16%")/2,
+    borderBottomLeftRadius: wp("16%")/2,
     borderWidth: 2,
-    borderColor:"white",
+    // borderColor:"white",
   },
   containerMenuFooter: {
     flex: 1,
-    paddingBottom: 10,
+    paddingBottom: hp("2.7%"),
     justifyContent: 'flex-end',
     alignItems: 'center',
     
   },
   containerContent: {
     flex: 2,
-    backgroundColor:"white"
+    // backgroundColor:"white"
   },
   backgroundMenu: {
     // justifyContent: 'center',
@@ -232,19 +247,30 @@ const styles = StyleSheet.create({
     width: wp('11%'),
     height: wp('11%'),
     borderRadius: wp('11%')/2,
-    borderColor:"white",
+    borderColor:Color.White,
     borderWidth:3,
   },
   icon: {
-    width: wp(3.2),
-
+    height: wp("4%"),
+    width: wp("4%"),
+    justifyContent:'center'
   },
+  link:{
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    // alignSelf:'center',
+    flexDirection: 'row',
+    marginVertical:8,
+    borderTopLeftRadius: wp("16%")/2,
+    borderBottomLeftRadius: wp("16%")/2,
+  }
 });
 
 const mapStateToProps = state => {
   return {
     text: state.global,
-    scene: state.scene
+    scene: state.scene,
+    orientation: state.orientation,
   }
 }
 
@@ -256,8 +282,10 @@ const mapDispatchToProps = dispatch => {
     },
     upDateScene: (scene) => {
       dispatch({ type: 'EDIT_SCENE', payload: scene })
+    },
+    upDateOrientation: (orientation) => {
+      dispatch({ type: 'EDIT_ORIENTATION', payload: orientation })
     }
-
 
   }
 }
