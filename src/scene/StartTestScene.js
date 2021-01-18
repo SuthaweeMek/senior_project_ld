@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import {
     SafeAreaView,
     StyleSheet,
@@ -41,7 +41,11 @@ console.log("is tablet ?", Device.isTablet())
 console.log("Device height = ", height, " and width = ", width)
 
 const StartTestScene = (props) => {
-
+    useEffect(() => {
+        lor(props.upDateOrientation)
+        return(rol())
+    }    
+    ,[])
     const [name, setName] = useState('ทดสอบ')
     const [surname, setSurname] = useState('สมจริง')
     const [childrenID, setChildrenID] = useState('')
@@ -117,7 +121,7 @@ const StartTestScene = (props) => {
             <View style={styles(props.orientation).containerStartTest} >
                 <Text style={styles(props.orientation).fontStartTest} >ข้อมูลผู้ทำแบบทดสอบ</Text>
                 {/* <Text style={styles(props.orientation).fontStartTestInput} >รหัสประจำตัวเด็ก</Text> */}
-                <InputBoxLogin text={childrenID} onChangeText={handleChildrenID} placeholder="รหัสประจำตัวเด็ก" icon="user" size={{ hp: hp('6%'), wp: wp('30%') }} />
+                <InputBoxLogin text={childrenID} onChangeText={handleChildrenID} placeholder="รหัสประจำตัวเด็ก" icon="user" size={{ hp: hp('6%'), wp: wp('35%') }} />
                 {/* <InputBox text={childrenID} onChangeText={handleChildrenID} placeholder="รหัสประจำตัวผู้เข้าทำแบบทดสอบ"></InputBox> */}
                 <View style={styles(props.orientation).containerStartTestInput}>
                     <Text style={styles(props.orientation).fontStartTestInfo} >เพศ : {gender == 'm' ? "ชาย" : "หญิง"} </Text>
@@ -159,7 +163,6 @@ const styles = (props) => StyleSheet.create({
         flex: 1,
         //width: width / 1.8,
         flexDirection: 'column',
-        backgroundColor: Color.White,
         //margin: height - (height * 0.9),
         marginVertical: hp("3%"),
         marginRight: hp("3%"),
@@ -217,7 +220,7 @@ const styles = (props) => StyleSheet.create({
     },
     fontStartTest: {
         color: 'black',
-        fontSize: props == "portrait" ? hp('4%') : hp('6%'),
+        fontSize: props == "portrait" ? wp('4%') : wp('4%'),
         // marginTop: 40,
         // marginBottom: 30,
         marginVertical: 12,
@@ -227,7 +230,7 @@ const styles = (props) => StyleSheet.create({
     },
     fontStartTestInput: {
         // color: 'black',
-        fontSize: hp('3.5%'),
+        fontSize: wp('3%'),
         // marginLeft: 70,
         // marginTop: 10,
         marginVertical: 12,
@@ -237,8 +240,8 @@ const styles = (props) => StyleSheet.create({
         // justifyContent: 'center'
     },
     fontStartTestInfo: {
-        // color: 'black',
-        fontSize: hp('3%'),
+        // color: 'black',t
+        fontSize: wp('3%'),
         // marginLeft: 70,
         // marginTop: 10,
         marginVertical: 8,

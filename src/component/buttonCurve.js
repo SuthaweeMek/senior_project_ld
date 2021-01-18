@@ -49,7 +49,7 @@ const styles = (props)  =>  StyleSheet.create({
     color: Color.White,
     // height: hp('6%'),
     // width: wp('90%'),
-    fontSize: hp('3%'),
+    fontSize: props.orientation=="portrait"?wp("3%"):wp("2%"),
     //backgroundColor:"red",
     fontFamily: 'EkkamaiNew-Bold',
     //textTransform: 'uppercase',

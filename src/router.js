@@ -10,7 +10,7 @@ import React from 'react';
 
 
 
-import StatScene from './scene/StatScene'
+import ResultScene from './scene/ResultScene'
 import WritingScene from './scene/WritingScene'
 import HomeScene from './scene/HomeScene'
 import GameFirstScene from './scene/GameFirstScene'
@@ -52,7 +52,7 @@ const RouterComponent = (props) => {
     <React.Fragment>
       <Route exact path="/" render={() => <StartTestScene handleScene={props.setScene} handleTestId={props.handleTestId} />}/>
       <Route path="/test" render={() => <StartTestScene handleScene={props.setScene} handleTestId={props.handleTestId} />} />
-      <Route path="/result" component={StatScene} />
+      <Route path="/result" component={ResultScene} />
       <Route path="/stat" component={Stat} />
     </React.Fragment>
   );

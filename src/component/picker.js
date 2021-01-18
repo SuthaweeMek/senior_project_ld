@@ -119,7 +119,7 @@ const styles= (props) => StyleSheet.create({
     height:props.size.hp,
   },
   itemText:{
-    fontSize : props.orientation=="portrait"?hp("2.3%"):hp("3%"),
+    fontSize : props.orientation=="portrait"?wp("3%"):wp("2%"),
     fontFamily : "EkkamaiNew-Regular",
   },
   overlay:{
@@ -151,7 +151,7 @@ const styles= (props) => StyleSheet.create({
   infoModal:{
     zIndex:2,
     backgroundColor:Color.White,
-    width:props.orientation == "portrait"? hp("30%"):hp("60%"),
+    width:props.orientation == "portrait"? hp("40%"):hp("60%"),
     // alignSelf:"center",
     alignItems:"center",
     justifyContent:"center",
@@ -159,14 +159,15 @@ const styles= (props) => StyleSheet.create({
     margin:hp('3%'),
     padding:hp('3%'),
     borderRadius:hp('3%')
+    
   },
   textModal:{
     fontFamily : "EkkamaiNew-Regular",
-    fontSize:wp("3%")
+    fontSize:hp("3.2%")
   },
   titleModal:{
     fontFamily : "EkkamaiNew-Bold",
-    fontSize:wp("3.2%")
+    fontSize:hp("3.5%")
   }
 });
 

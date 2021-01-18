@@ -12,7 +12,7 @@ const inputbox = (props) => {
   const [clickInput,setClickInput] = useState({borderColor: Color.Cover,borderBottomWidth: 2})
   const [text,setText] = useState(props.text)
   const moveAnim = useRef(new Animated.Value(0)).current  // Initial value for top : 0
-  const sizeAnim = useRef(new Animated.Value(hp('3%'))).current // Initial value for fontSize: 28]
+  const sizeAnim = useRef(new Animated.Value(wp('2.7%'))).current // Initial value for fontSize: 28]
   const [textHolderColor,setTextholdercolor] = useState(Color.Cover)
 
     const placeholderAnimation = (clicked) => {
@@ -23,7 +23,7 @@ const inputbox = (props) => {
           useNativeDriver :false
       }),
       Animated.timing(sizeAnim, {
-          toValue: clicked ? hp('2%') :text =="" ? hp('3%') : hp('2%'),
+          toValue: clicked ? wp('2%') :text =="" ? wp('2.7%') : wp('2%'),
           duration: 300,
           useNativeDriver :false
       })
@@ -91,7 +91,7 @@ const styles = (props) => StyleSheet.create({
 },
   textinput:{ 
     fontFamily:"EkkamaiNew-Regular",
-    fontSize: hp('3%'),
+    fontSize: wp('3%'),
     // height: hp('5.9%'),
     width: props.size.wp,
     //marginTop : -10,

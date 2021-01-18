@@ -13,7 +13,7 @@ import {
   ScrollView,
   View,
   Text,
-  StatusBar,
+  StatusBar, 
   Button,
   ImageBackground,
   Image,
@@ -72,7 +72,9 @@ const HomeScene = (props) => {
 
   return (
     <NativeRouter>
-      <StatusBar translucent={true} barStyle={"light-content"} backgroundColor={"#00000000"} />
+      <StatusBar translucent={false} barStyle={"light-content"} backgroundColor={Color.Background} />
+      <SafeAreaView style={{flex:1}}>
+
       <View style={styles(props.orientation).container}>
 
         {/* <ImageBackground source={backgroundMenu} style={styles.backgroundMenu}> */}
@@ -155,6 +157,7 @@ const HomeScene = (props) => {
           <Router setScene={props.handleScene} handleTestId={props.handleTestId} />
         </View>
       </View>
+      </SafeAreaView>
     </NativeRouter>
   );
 }
