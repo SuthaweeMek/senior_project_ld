@@ -43,7 +43,7 @@ const Pagination = (props) => {
   );
 
   const renderItem = ({ item }) => {
-    const backgroundColor = item === selectedId ? Color.Background : Color.Sub_Background ;
+    const backgroundColor = item === props.selectedId ? Color.Background : Color.Sub_Background ;
     return (
       <Item
         item={item}
