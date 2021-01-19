@@ -16,7 +16,8 @@ import {
   StatusBar,
   Button,
   ImageBackground,
-  Image
+  Image,
+  TouchableOpacity
 } from 'react-native';
 import { NativeRouter, Route, Link } from "react-router-native";
 import backgroundMenu from '../resource/image/backgroundMenu.png';
@@ -24,9 +25,12 @@ import imageProfile from '../resource/image/dummyProfile.jpg';
 import WritingScene from './WritingScene'
 const image = { uri: "https://reactjs.org/logo-og.png" };
 import Router from '../router'
+import { connect } from 'react-redux';
+import LocalStorage from '../utils/LocalStorage'
 
-
-const HomeScene = () => {
+const HomeScene = (props) => {
+  console.log("test", props.text)
+  props.upDateText("testtext")
   return (
     <NativeRouter>
       <View style={styles.container}>
@@ -34,44 +38,53 @@ const HomeScene = () => {
         <ImageBackground source={backgroundMenu} style={styles.backgroundMenu}>
           <View style={styles.containerMenuProfile}>
 
-          
-              <Image source={imageProfile} style={styles.imageProfile}></Image>
-              <Link to="/" >
+
+            <Image source={imageProfile} style={styles.imageProfile}></Image>
+            <Link to="/" >
               <Text style={styles.fontMenuProfile}>Pig Piggy</Text>
             </Link>
           </View>
 
           <View style={styles.containerMenuContent}>
             <View style={styles.containerMenuContentRow}>
-              
-                <Image source={imageProfile} style={styles.icon}></Image>
-                <Link to="/test" >
-                <Text style={styles.fontMenuContent}>ทำแบบทดสอบ</Text>
+
+              <Image source={imageProfile} style={styles.icon}></Image>
+
+              <Link to="/test" >
+                <Text style={styles.fontMenuContent}>เริ่มทำแบบทดสอบ</Text>
               </Link>
             </View>
             <View style={styles.containerMenuContentRow}>
-              
-                <Image source={imageProfile} style={styles.icon}></Image>
-                <Link to="/result" >
+
+              <Image source={imageProfile} style={styles.icon}></Image>
+              <Link to="/result" >
                 <Text style={styles.fontMenuContent}>ผลลัพท์</Text>
               </Link>
             </View>
             <View style={styles.containerMenuContentRow}>
-              
-                <Image source={imageProfile} style={styles.icon}></Image>
-                <Link to="/stat" >
+
+              <Image source={imageProfile} style={styles.icon}></Image>
+              <Link to="/stat" >
                 <Text style={styles.fontMenuContent}>สถิติ</Text>
               </Link>
             </View>
 
             <View style={styles.containerMenuFooter}>
               <View style={styles.containerMenuContentRow}>
-               
-                  <Image source={imageProfile} style={styles.icon}></Image>
-                  <Link to="/logout" >
 
+                <Image source={imageProfile} style={styles.icon}></Image>
+
+                <TouchableOpacity
+                  onPress={() => {
+                    LocalStorage.clearStorage()
+
+                    props.upDateScene(-1)
+                  }
+
+                  }
+                >
                   <Text style={styles.fontMenuContent}>ออกจากระบบ</Text>
-                </Link>
+                </TouchableOpacity>
               </View>
             </View>
 
@@ -80,7 +93,7 @@ const HomeScene = () => {
 
         </ImageBackground>
         <View style={styles.containerContent}>
-          <Router/>
+          <Router setScene={props.handleScene} handleTestId={props.handleTestId} />
         </View>
       </View>
     </NativeRouter>
@@ -155,5 +168,26 @@ const styles = StyleSheet.create({
   },
 });
 
+const mapStateToProps = state => {
+  return {
+    text: state.global,
+    scene: state.scene
+  }
+}
 
-export default HomeScene;
+
+const mapDispatchToProps = dispatch => {
+  return {
+    upDateText: (text) => {
+      dispatch({ type: 'EDIT_GLOBAL', payload: text })
+    },
+    upDateScene: (scene) => {
+      dispatch({ type: 'EDIT_SCENE', payload: scene })
+    }
+
+
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScene);

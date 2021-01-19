@@ -61,8 +61,8 @@ const styles = StyleSheet.create({
     },
   imageHeart: {
     //backgroundColor: 'linear-gradient(121deg, rgba(0,241,157,1) 100%, rgba(67,87,199,1) 100%);',
-    height : height/15,
-    width : height/15,
+    height : height/20,
+    width : height/20,
     //borderRadius: width/10
   },
 })

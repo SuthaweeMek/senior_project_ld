@@ -6,41 +6,26 @@
  * @flow strict-local
  */
 
-import React from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-  Button
-} from 'react-native';
+import React, { useEffect } from 'react';
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,tt
-} from 'react-native/Libraries/NewAppScreen';
+import Router2Component from './router2'
 
-import HomeScene from './scene/HomeScene';
-import LoginScene from './scene/LoginScene';
-import Test from './scene/TestSprite';
-import TestSound from './scene/TestSound';
-import WritingScene from './scene/WritingScene';
-import ImageScene from './scene/ImageScene';
-import GameFirstScene from './scene/GameFirstScene';
-import StatScene from './scene/StatScene';
+
+import { Provider } from 'react-redux'; // <---- 
+import { createStore } from 'redux';    // <----
+import Reducer from './Reducer'
 const App = () => {
 
-return (
-  
-  <StatScene/>
-);
+
+
+  const store = createStore(Reducer);     // <----
+  return (
+    <Provider store={store}>
+      <Router2Component />
+    </Provider>
+  );
 }
 
 
 
-export default App;
+export default (App);

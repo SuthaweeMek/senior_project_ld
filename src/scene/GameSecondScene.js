@@ -14,6 +14,7 @@ import {
   Dimensions,
   Switch
 } from 'react-native';
+
 import { connect } from 'react-redux'; 
 import SpriteSheet from 'rn-sprite-sheet'
 import StatusHP from '../component/statusHP'
@@ -24,14 +25,14 @@ import Arrays from '../utils/Array'
 import Writing from '../component/writing'
 
 //alphabet
-var ary_th_alphabet = Arrays.CreatePlattern("th_alphabet_",44)
+var ary_th_vowel = Arrays.CreatePlattern("th_vowel_",36)
 //image
 import imageBackground from '../resource/image/LDSpotGameScene1.png'
 import imageHeart from '../resource/image/heartEmpty.png'
 import imagePlayer from '../resource/image/player_circle.png'
 import imageEnemy from '../resource/image/enemy1_circle.png'
-import imageGameSceneBG1 from '../resource/games/LDSpotGameSceneBG1.png'
-import imageGameSceneFG1 from '../resource/games/LDSpotGameSceneFG1.png'
+import imageGameSceneBG2 from '../resource/games/LDSpotGameSceneBG2.png'
+import imageGameSceneFG2 from '../resource/games/LDSpotGameSceneFG2.png'
 
 //sprite
 import spritePlayer from '../resource/sprite_sheet/player_character.png'
@@ -46,10 +47,10 @@ console.log("is tablet ?",Device.isTablet())
 console.log("Device height = ", height, " and width = ", width)
 
 //const spriteSize = height
-const GameFirstScene = (props) => {
+const GameSecondScene = (props) => {
   //HP Parameters
   const playerHeart = 5
-  const enemyHeart = 2
+  const enemyHeart = 1
   //State
   const [Transition, SetTransition] = useState(1);
   const [fps, setFps] = useState(16);
@@ -65,20 +66,14 @@ const GameFirstScene = (props) => {
   const enemyFade = useRef(new Animated.Value(1)).current; 
   const backgroundTransition = useRef(new Animated.Value(0)).current;
   //TH_alphabet
-  index ==0 ? Arrays.Shuffle(ary_th_alphabet) : null
-  index ==0 ? ary_th_alphabet.push("th_alphabet_45") : null
-
-  useEffect(() => {
-    playPlayer("idle")
-    playEnemy("idle")
-    Orientation.lockToLandscape();
-  }, [])
-
+  index ==0 ? Arrays.Shuffle(ary_th_vowel) : null
+  index ==0 ? ary_th_vowel.push("th_alphabet_45") : null
+  
   useEffect(() => {
     // code to run on component mount
     const time = 1000 // 1 second per loop
     var round = 0
-    setLoop(true)
+    Orientation.lockToLandscape();
     playPlayer("idle")
     playEnemy("idle")
     if(enemyHeartEmpty == enemyHeart ){
@@ -91,6 +86,7 @@ const GameFirstScene = (props) => {
           useNativeDriver:false
         }
       ).start();
+      setLoop(true)
       bgTransition()
     }
     else{
@@ -98,10 +94,7 @@ const GameFirstScene = (props) => {
         round = round + 1
         if (round == 2) {
           setModalVisible(true)
-          setLoop(true)
-          playPlayer("idle")
-          playEnemy("idle")
-          //clearInterval(interval)
+          clearInterval(interval)
           //play('idle')
         }
         return () => clearInterval(interval)
@@ -117,8 +110,7 @@ const GameFirstScene = (props) => {
     var multiplier = 4;
     console.log("index = ",index)
     if(index == multiplier || index == multiplier*2 || index == multiplier*3 || index == multiplier*4 || index == multiplier*5 
-      || index == multiplier*6 || index == multiplier*7 || index == multiplier*8 || index == multiplier*9 || index == multiplier*10
-      || index == multiplier*11){
+      || index == multiplier*6 || index == multiplier*7 || index == multiplier*8 || index == multiplier*9 ){
       setModalVisible(false)
       Attack()
     }
@@ -133,7 +125,7 @@ const GameFirstScene = (props) => {
       onFinish: () => console.log('Player Play')
     });
   };
- 
+
   playEffect = (type) => {
     effect.play({
       type,
@@ -162,11 +154,9 @@ const GameFirstScene = (props) => {
         duration: 5000,
         useNativeDriver:false
       }
-      
     ).start();
-    //setLoop(true)
     playPlayer('walk')
-    setTimeout(() => props.upDateScene(2),
+    setTimeout(() => props.upDateScene(3),
     5000
     )
     // const interval = setInterval(() => {
@@ -301,7 +291,7 @@ const GameFirstScene = (props) => {
     // resizeMode cover stretch
     <View style={styles.container}>
       <Animated.View style={[styles.fadingContainer,{ left:backgroundTransition}]}>  
-        <Image source={imageGameSceneBG1} resizeMode="stretch" style={[styles.background]} />
+        <Image source={imageGameSceneBG2} resizeMode="stretch" style={[styles.background]} />
       </Animated.View>
       <View style={styles.statusHP} >
         <View style={{ flexDirection: 'row' }}>
@@ -370,16 +360,16 @@ const GameFirstScene = (props) => {
         </Animated.View>
         
         <Modal animationType="fade" transparent={true} visible={modalVisible}>
-          <Writing modalState = {modalVisible} closeModal={HandleCloseModal} arrSound={ary_th_alphabet} setArrIndex={SetArrayIndex} arrIndex={index} />
+          <Writing modalState = {modalVisible} closeModal={HandleCloseModal} arrSound={ary_th_vowel} setArrIndex={SetArrayIndex} arrIndex={index} />
         </Modal>
         
       </View>
 
 
 
-      <Image source={imageGameSceneFG1} resizeMode="stretch" style={[styles.foreground]} />
+      <Image source={imageGameSceneFG2} resizeMode="stretch" style={[styles.foreground]} />
 
-      {/* <View style={{ paddingVertical: 30, paddingHorizontal: 30, position: 'absolute' }}>
+      <View style={{ paddingVertical: 30, paddingHorizontal: 30, position: 'absolute' }}>
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
           <Button onPress={() => playPlayer('idle')} title="Player" />
           <Button onPress={() => playEnemy('attacked')} title="Enemy" />
@@ -407,7 +397,7 @@ const GameFirstScene = (props) => {
             onValueChange={val => setResetAfterFinish(val)}
           />
         </View>
-      </View> */}
+      </View>
 
     </View>
     // </KeyboardAvoidingView>
@@ -452,10 +442,10 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     // alignItems: 'center',
     flex: 1,
-    //resizeMode: "cover",
+    // resizeMode: "cover",
     position: "absolute",
     left: 0,
-    width: width*2,
+    width: width * 2,
     height: height,
   },
   foreground: {
@@ -463,11 +453,11 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
 
     // resizeMode: "cover",
-    left :0,
-    //backgroundColor: 'black',
+    backgroundColor: 'black',
     justifyContent: 'flex-end',
     width: width * 2,
     height: height / 4.26,
+    opacity:1,
   },
   imageCircle: {
     width: height / 5,
@@ -486,12 +476,12 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    
       upDateScene: (scene) => {
         dispatch({type: 'EDIT_SCENE', payload: scene})
     }
 
 
   }
-} 
-export default connect(mapStateToProps,mapDispatchToProps)(GameFirstScene);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(GameSecondScene);

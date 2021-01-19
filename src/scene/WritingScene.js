@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     resizeMode: 'cover',
     //alignItems: "center",
-    margin: 20,
+    padding: 20,
     justifyContent: "center"
   },
 });
