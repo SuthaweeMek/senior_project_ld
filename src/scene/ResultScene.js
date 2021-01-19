@@ -58,6 +58,8 @@ const ResultScene = (props) => {
         return rol()
       }
       ,[])
+    
+    // useEffect(()=>{setReportList},[orientation])
 
     useEffect(() => {
         fetch(`http://10.0.2.2:8000/test/?page=${1}`, {
@@ -108,7 +110,7 @@ const ResultScene = (props) => {
         onPress={() => setModalVisible(true)}
         >
             <TouchableOpacity onPress={() => setModalVisible(true)}>
-            <Text> {item} </Text>
+            <Text style={styles({orientation}).textResult}> {item} </Text>
             <Text style={styles({orientation}).textResult}>โมเดลทำนาย : เขียนถูก</Text>
             <Text style={styles({orientation}).textResult}>ความน่าจะเป็น : 99%</Text> 
             <Image source={require('../resource/image/alphabet.jpg')} style={{
@@ -160,14 +162,14 @@ const ResultScene = (props) => {
     if (selectItem) {
         return (<>
             <Modal
-                animationType="slide"
+                animationType="fade"
                 transparent={true}
                 visible={modalVisible}
                 onRequestClose={() => {
                     Alert.alert("Modal has been closed.");
                 }}
             >
-                <TouchableOpacity style={{ ...styles.centeredView, backgroundColor: '#00000080' }} onPress={() => setModalVisible(!modalVisible)}>
+                <TouchableOpacity style={ styles({orientation}).centeredView} onPress={() => setModalVisible(!modalVisible)}>
 
                     <Image source={require('../resource/image/alphabet.jpg')} style={{
                         width: "50%",
@@ -440,7 +442,7 @@ const styles=(props) => StyleSheet.create({
         fontFamily:Font.Bold
     },
     containerImageResult:{
-        flex : 10,
+        flex : 14,
         flexDirection:'column',
         justifyContent:"center",
         alignItems:"center",
@@ -450,7 +452,8 @@ const styles=(props) => StyleSheet.create({
     },
     imageResult:{
         // color: "white",
-        // width: '29%',
+        // width: wp('20%'),
+        // flex:2,
         padding: "1%",
         // borderRightWidth:0.5,
         // borderLeftWidth:0.5,
@@ -458,12 +461,14 @@ const styles=(props) => StyleSheet.create({
     },
     textResult:{
         fontFamily:Font.Regular,
-        fontSize:hp('2%'),
+        fontSize:wp('1.6%'),
     },
 
     centeredView: {
-        width:wp('100%'),
-        height:hp('100%'),
+        flex:1,
+        // width: wp('15%'),
+        // height:hp('15%'),
+        backgroundColor: '#00000080',
         justifyContent: "center",
         alignItems: "center",
     },
