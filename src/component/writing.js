@@ -35,7 +35,9 @@ const writing = (props) => {
   //set ary_sound , vowel , vocab
   ary_sound = props.arrSound
   index = props.arrIndex
-
+  collect = props.collecting
+  filename = props.name
+  console.log("array sound = ",ary_sound)
   //hook
   
 
@@ -49,7 +51,10 @@ const writing = (props) => {
     // loaded successfully
     //console.log('duration in seconds: ' + whoosh.getDuration() + 'number of channels: ' + whoosh.getNumberOfChannels());
     if(ary_sound[index].includes("th_alphabet")){
-      var multiplier = 4;
+      console.log("colect :",collect)
+      
+      collect == true ? multiplier = 1 : multiplier = 4;
+      console.log("multiplier :",multiplier ,"index : ",index)
       if(index == multiplier || index == multiplier*2 || index == multiplier*3 || index == multiplier*4 || index == multiplier*5 
         || index == multiplier*6 || index == multiplier*7 || index == multiplier*8 || index == multiplier*9 || index == multiplier*10
         || index == multiplier*11 ){
@@ -62,13 +67,13 @@ const writing = (props) => {
         
       }
       else{
-        doubly = false
+        multiplier == 1 ? doubly=true : doubly = false
         play()
      }
     }
 
     if(ary_sound[index].includes("th_vowel")){
-      var multiplier = 4;
+      collect == true ? multiplier = 1 : multiplier = 4;
       if(index == multiplier || index == multiplier*2 || index == multiplier*3 || index == multiplier*4 || index == multiplier*5 
         || index == multiplier*6 || index == multiplier*7 || index == multiplier*8 || index == multiplier*9 || index == multiplier*10
         ){
@@ -81,13 +86,13 @@ const writing = (props) => {
         
       }
       else{
-        doubly = false
+        multiplier == 1 ? doubly=true : doubly = false
         play()
      }
     }
 
     if(ary_sound[index].includes("th_vocab")){
-      var multiplier = 4;
+      collect == true ? multiplier = 1 : multiplier = 2;
       if(index == multiplier || index == multiplier*2 || index == multiplier*3 || index == multiplier*4 || index == multiplier*5 
         || index == multiplier*6 || index == multiplier*7 || index == multiplier*8 || index == multiplier*9 || index == multiplier*10
         ){
@@ -100,7 +105,7 @@ const writing = (props) => {
         
       }
       else{
-        doubly = false
+        multiplier == 1 ? doubly=true : doubly = false
         play()
      }
     }
@@ -163,7 +168,7 @@ const writing = (props) => {
   }
   const Save = () => {
     console.log("YES");
-    canvasRef.current.save('jpg', false, 'RNSketchCanvas', ary_sound[index], true, false, false)
+    canvasRef.current.save('jpg', false, 'RNSketchCanvas', ary_sound[index]+"_"+filename, true, false, false)
     console.log("check")
     canvasRef.current.getBase64("jpg", false, false, false, false, CheckCallback)
     Clear()   

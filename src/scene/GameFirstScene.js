@@ -64,13 +64,17 @@ const GameFirstScene = (props) => {
   const effectSpeed = useRef(new Animated.Value(0)).current;
   const enemyFade = useRef(new Animated.Value(1)).current; 
   const backgroundTransition = useRef(new Animated.Value(0)).current;
-  //TH_alphabet
-  index ==0 ? Arrays.Shuffle(ary_th_alphabet) : null
-  index ==0 ? ary_th_alphabet.push("th_alphabet_45") : null
+  
 
   useEffect(() => {
     playPlayer("idle")
     playEnemy("idle")
+
+    //TH_alphabet
+    // index ==0 ? Arrays.Shuffle(ary_th_alphabet) : null
+    // ary_th_alphabet.includes("th_alphabet_end") ? null : ary_th_alphabet.push("th_alphabet_end")
+    Arrays.Shuffle(ary_th_alphabet)
+    ary_th_alphabet.push("th_alphabet_end")
     Orientation.lockToLandscape();
   }, [])
 
@@ -166,9 +170,11 @@ const GameFirstScene = (props) => {
     ).start();
     //setLoop(true)
     playPlayer('walk')
-    setTimeout(() => props.upDateScene(2),
+    console.log("END SCENE 1")
+    setTimeout(() => props.handleScene(2),
     5000
     )
+    
     // const interval = setInterval(() => {
     //   setBackgroundTransition({ left: -speed })
 
@@ -263,6 +269,7 @@ const GameFirstScene = (props) => {
   const SetArrayIndex = () =>{
     console.log("index : ",index)
     setIndex(index+1)
+
   }
 
   const FadeInView = (props) => {

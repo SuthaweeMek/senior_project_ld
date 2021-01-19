@@ -24,19 +24,19 @@ import Rand from '../utils/Rand';
 import Arrays from '../utils/Array'
 import Writing from '../component/writing'
 
-//alphabet
+//vowel
 var ary_th_vowel = Arrays.CreatePlattern("th_vowel_",36)
 //image
 import imageBackground from '../resource/image/LDSpotGameScene1.png'
 import imageHeart from '../resource/image/heartEmpty.png'
 import imagePlayer from '../resource/image/player_circle.png'
-import imageEnemy from '../resource/image/enemy1_circle.png'
+import imageEnemy from '../resource/image/enemy2_circle.png'
 import imageGameSceneBG2 from '../resource/games/LDSpotGameSceneBG2.png'
 import imageGameSceneFG2 from '../resource/games/LDSpotGameSceneFG2.png'
 
 //sprite
 import spritePlayer from '../resource/sprite_sheet/player_character.png'
-import spriteEnemy from '../resource/sprite_sheet/enemy1_character.png'
+import spriteEnemy from '../resource/sprite_sheet/enemy2_character.png'
 import spriteEffect1 from '../resource/sprite_sheet/effect1.png'
 
 //dimesions
@@ -65,15 +65,24 @@ const GameSecondScene = (props) => {
   const effectSpeed = useRef(new Animated.Value(0)).current;
   const enemyFade = useRef(new Animated.Value(1)).current; 
   const backgroundTransition = useRef(new Animated.Value(0)).current;
-  //TH_alphabet
-  index ==0 ? Arrays.Shuffle(ary_th_vowel) : null
-  index ==0 ? ary_th_vowel.push("th_alphabet_45") : null
   
+  
+  useEffect(() => {
+    playPlayer("idle")
+    playEnemy("idle")
+    //TH_alphabet
+    // index ==0 ? Arrays.Shuffle(ary_th_vowel) : null
+    // index ==0 ? ary_th_vowel.push("th_vowel_end") : null
+    Arrays.Shuffle(ary_th_vowel)
+    ary_th_vowel.push("th_vowel_end")
+    Orientation.lockToLandscape();
+  }, [])
+
   useEffect(() => {
     // code to run on component mount
     const time = 1000 // 1 second per loop
     var round = 0
-    Orientation.lockToLandscape();
+    setLoop(true)
     playPlayer("idle")
     playEnemy("idle")
     if(enemyHeartEmpty == enemyHeart ){
@@ -86,7 +95,6 @@ const GameSecondScene = (props) => {
           useNativeDriver:false
         }
       ).start();
-      setLoop(true)
       bgTransition()
     }
     else{
@@ -94,7 +102,10 @@ const GameSecondScene = (props) => {
         round = round + 1
         if (round == 2) {
           setModalVisible(true)
-          clearInterval(interval)
+          setLoop(true)
+          playPlayer("idle")
+          playEnemy("idle")
+          //clearInterval(interval)
           //play('idle')
         }
         return () => clearInterval(interval)
@@ -156,8 +167,9 @@ const GameSecondScene = (props) => {
       }
     ).start();
     playPlayer('walk')
-    setTimeout(() => props.upDateScene(3),
-    5000
+    console.log("END SCENE 2")
+    setTimeout(() => props.handleScene(3),
+      5000
     )
     // const interval = setInterval(() => {
     //   setBackgroundTransition({ left: -speed })
@@ -289,6 +301,7 @@ const GameSecondScene = (props) => {
   return (
     // <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
     // resizeMode cover stretch
+    <>
     <View style={styles.container}>
       <Animated.View style={[styles.fadingContainer,{ left:backgroundTransition}]}>  
         <Image source={imageGameSceneBG2} resizeMode="stretch" style={[styles.background]} />
@@ -372,7 +385,7 @@ const GameSecondScene = (props) => {
       <View style={{ paddingVertical: 30, paddingHorizontal: 30, position: 'absolute' }}>
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
           <Button onPress={() => playPlayer('idle')} title="Player" />
-          <Button onPress={() => playEnemy('attacked')} title="Enemy" />
+          <Button onPress={() => playEnemy('idle')} title="Enemy" />
           <Button onPress={() => bgTransition()} title="BG Move" />
           <Button onPress={() => setModalVisible(true)} title="Modal" />
           <Button onPress={() => Attack()} title="Attack" />
@@ -400,6 +413,7 @@ const GameSecondScene = (props) => {
       </View>
 
     </View>
+    </>
     // </KeyboardAvoidingView>
   );
 }
