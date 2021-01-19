@@ -22,11 +22,7 @@ import {
   LearnMoreLinks,
   Colors,
   DebugInstructions,
-<<<<<<< HEAD
   ReloadInstructions,
-=======
-  ReloadInstructions, tt
->>>>>>> ec1efef3e726aedbfd3b38f80a719e26de848b18
 } from 'react-native/Libraries/NewAppScreen';
 
 import HomeScene from './scene/HomeScene';
@@ -39,13 +35,6 @@ import GameFirstScene from './scene/GameFirstScene';
 import GameSecondScene from './scene/GameSecondScene';
 import GameThirdScene from './scene/GameThirdScene';
 import Router2Component from './router2'
-<<<<<<< HEAD
-import CollectingScene from './scene/CollectingScene'
-
-const App = () => {
-  return (
-      <CollectingScene/>
-=======
 import Pagination from './component/pagination'
 import Input from './component/inputboxLogin'
 
@@ -58,7 +47,6 @@ const App = () => {
      <Provider store={store}>
       <Router2Component />
      </Provider>
->>>>>>> ec1efef3e726aedbfd3b38f80a719e26de848b18
   );
 }
 
