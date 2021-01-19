@@ -8,35 +8,60 @@
 
 import React from 'react'
 import { Text, View, TouchableOpacity, Dimensions, StyleSheet } from 'react-native'
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from '../utils/Device';
+import Color from '../resource/color'
+import Device from '../utils/Device'
+import { connect } from 'react-redux';
 
 
-const width = Dimensions.get('window').width
-
-
-const ButtonCurve = ({ text, onPress }) => {
+const ButtonCurve = ({ text, onPress ,orientation,size}) => {
+  // console.log("ButtonCurve : size = ",size)
   return (
-    <TouchableOpacity onPress={onPress}>
-      <View style={styles.btnStyle}>
-        <Text style={styles.btnTextStyle}> {text} </Text>
+    <TouchableOpacity onPress={onPress} >
+      <View style={styles({orientation,size}).btnStyle}>
+        <Text style={styles({orientation,size}).btnTextStyle}> {text} </Text>
       </View>
     </TouchableOpacity>
   )
 }
 
-const styles = StyleSheet.create({
+const styles = (props)  =>  StyleSheet.create({
+
   btnStyle: {
-    backgroundColor: 'linear-gradient(121deg, rgba(0,241,157,1) 100%, rgba(67,87,199,1) 100%);',
-    paddingVertical: 10,
-    width: 200,
-    borderRadius: width/10
+    // backgroundColor: '#66b4c1',
+    backgroundColor : Color.Surface,
+    //paddingVertical: 10,
+    height: props.size.hp,
+    width: props.size.wp,
+    borderRadius: height,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
   btnTextStyle: {
-    color: '#ffffff',
-    fontSize: 16,
-    textTransform: 'uppercase',
+    flex:1,
+    color: Color.White,
+    // height: hp('6%'),
+    // width: wp('90%'),
+    fontSize: props.orientation=="portrait"?wp("3%"):wp("2%"),
+    //backgroundColor:"red",
+    fontFamily: 'EkkamaiNew-Bold',
+    //textTransform: 'uppercase',
+    textAlignVertical :'center',
     textAlign: 'center',
-    fontFamily: 'Quicksand-Medium'
   }
 })
 
-export default ButtonCurve;
+const mapStateToProps = state => {
+  return {
+    orientation: state.orientation,
+  }
+}
+
+export default connect(mapStateToProps, null)(ButtonCurve);

@@ -14,6 +14,7 @@ import {
   Dimensions,
   Switch
 } from 'react-native';
+import { connect } from 'react-redux'; 
 import SpriteSheet from 'rn-sprite-sheet'
 import StatusHP from '../component/statusHP'
 import Orientation from 'react-native-orientation';
@@ -374,7 +375,7 @@ const GameThirdScene = (props) => {
         </Animated.View>
         
         <Modal animationType="fade" transparent={true} visible={modalVisible}>
-          <Writing modalState = {modalVisible} closeModal={HandleCloseModal} arrSound={ary_th_vocab} setArrIndex={SetArrayIndex} arrIndex={index}/>
+          <Writing modalState = {modalVisible} closeModal={HandleCloseModal} arrSound={ary_th_vocab} setArrIndex={SetArrayIndex} arrIndex={index} />
         </Modal>
         
       </View>
@@ -484,5 +485,22 @@ const styles = StyleSheet.create({
   },
 });
 
+const mapStateToProps = state => {
+  return {
+      scene: state.scene
+  }
+}
 
-export default GameThirdScene;
+
+const mapDispatchToProps = dispatch => {
+  return {
+
+      upDateScene: (scene) => {
+        dispatch({type: 'EDIT_SCENE', payload: scene})
+    }
+
+
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(GameThirdScene);

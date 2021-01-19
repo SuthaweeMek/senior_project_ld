@@ -15,6 +15,7 @@ import HomeScene from './scene/HomeScene'
 import GameFirstScene from './scene/GameFirstScene';
 import GameSecondScene from './scene/GameSecondScene';
 import GameThirdScene from './scene/GameThirdScene';
+import LoginScene from './scene/LoginScene'
 //import TestSprite from './scene/TestSprite'
 import {
     SafeAreaView,
@@ -29,25 +30,29 @@ import {
 } from 'react-native';
 import { NativeRouter, Route, Link, Redirect } from "react-router-native";
 
+import { connect } from 'react-redux';
 
-const Router2Component = () => {
+const Router2Component = (props) => {
+    //console.log(props.scene)
     let history = useHistory();
-    const [scene, setScene] = useState(0);
+    const [testId, setTestId] = useState(0);
     return (
         <NativeRouter>
             <React.Fragment>
 
                 {
-               scene == 0 ? <Redirect to="/home"></Redirect> :
-               scene == 1 ? <Redirect to="/gameFirstScene"></Redirect> : 
-               scene == 2 ? <Redirect to="/gameSecondScene"></Redirect> :
-               scene == 3 ? <Redirect to="/gameThirdScene"></Redirect> :
-               scene == 4 ? <Redirect to="/home "></Redirect> : null
+                    props.scene == -1 ? <Redirect to="login"></Redirect> :
+                        props.scene == 0 ? <Redirect to="/home"></Redirect> :
+                            props.scene == 1 ? <Redirect to="/gameFirstScene"></Redirect> :
+                                props.scene == 2 ? <Redirect to="/gameSecondScene"></Redirect> :
+                                    props.scene == 3 ? <Redirect to="/gameThirdScene"></Redirect> :
+                                        props.scene == 4 ? <Redirect to="/home "></Redirect> : null
                 }
-                <Route exact path="/home" render={props => <HomeScene handleScene = {setScene} />}  />
-                <Route path="/gameFirstScene" render={props => <GameFirstScene handleScene = {setScene} />} />
-                <Route path="/gameSecondScene" render={props => <GameSecondScene handleScene = {setScene} />} />
-                <Route path="/gameThirdScene" render={props => <GameThirdScene handleScene = {setScene} />} />
+                <Route exact path="/home" render={props => <HomeScene />} />
+                <Route path="/login" render={props => <LoginScene />} />
+                <Route path="/gameFirstScene" render={props => <GameFirstScene />} />
+                <Route path="/gameSecondScene" render={props => <GameSecondScene />} />
+                <Route path="/gameThirdScene" render={props => <GameThirdScene />} />
             </React.Fragment>
         </NativeRouter>
 
@@ -126,5 +131,22 @@ const styles = StyleSheet.create({
         borderRadius: 20
     },
 });
+const mapStateToProps = state => {
+    return {
+        text: state.global,
+        scene: state.scene
+    }
+}
 
-export default Router2Component;
+
+const mapDispatchToProps = dispatch => {
+    return {
+        upDateText: (text) => {
+            dispatch({ type: 'EDIT_GLOBAL', payload: text })
+        },
+        upDateScene: (scene) => {
+            dispatch({ type: 'EDIT_SCENE', payload: scene })
+        }
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Router2Component);
