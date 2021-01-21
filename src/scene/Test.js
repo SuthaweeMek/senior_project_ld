@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity,Image,View,Dimensions } from "react-native";
 import Device from '../utils/Device';
-
+import Color from '../resource/color';
+import Font from '../resource/font';
 
 //dimesions
 width = Device.isPortrait() ? Dimensions.get('screen').height : Dimensions.get('screen').width //1:4.65
@@ -32,7 +33,7 @@ const App = () => {
 
   const Item = ({ item, onPress, style }) => (
     <TouchableOpacity
-            style={{ color: "white", alignItems: "center",backgroundColor:"red", padding: 50,
+            style={{ color: Color.width, alignItems: "center",backgroundColor:"red", padding: 50,
             marginVertical: 20,
             marginHorizontal: 20,flex:1,}}
         onPress={() => setModalVisible(true)}
@@ -91,7 +92,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: StatusBar.currentHeight || 0,
-    backgroundColor:"blue"
+    backgroundColor: Color.Blue
   },
   item: {
     padding: 50,

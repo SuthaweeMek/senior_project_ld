@@ -4,7 +4,8 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
-
+import Color from '../resource/color';
+import Font from '../resource/font';
 const App = () => {
   let [singleFile, setSingleFile] = useState(null);
 
@@ -802,7 +803,7 @@ const styles = StyleSheet.create({
   buttonStyle: {
     backgroundColor: '#307ecc',
     borderWidth: 0,
-    color: '#FFFFFF',
+    color: Color.White,
     borderColor: '#307ecc',
     height: 40,
     alignItems: 'center',
@@ -812,7 +813,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   buttonTextStyle: {
-    color: '#FFFFFF',
+    color: Color.White,
     paddingVertical: 10,
     fontSize: 16,
   },
