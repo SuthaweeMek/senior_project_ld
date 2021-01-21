@@ -67,7 +67,8 @@ const PickerCurve = (props) => {
                 <FlatList
                   data={items}
                   renderItem={renderItem}
-                  keyExtractor={item => item.level}
+                  key={item=>item.key}
+                  keyExtractor={item => item.key}
                   extraData={value}
                 />
             </View>

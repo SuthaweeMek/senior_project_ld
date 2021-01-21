@@ -2,7 +2,7 @@ import Device from './utils/Device'
 init_state = {
     global: 'init',
     testId: 0,
-    scene: 0,
+    scene: -1,
     orientation : Device.orientation(),
 }
 
