@@ -171,7 +171,7 @@ const GameThirdScene = (props) => {
     //setLoop(true)
     playPlayer('walk')
     console.log("END SCENE 3")
-    setTimeout(() => props.handleScene(0),
+    setTimeout(() => props.upDateScene(0),
     5000
     )
     

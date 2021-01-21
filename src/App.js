@@ -9,6 +9,7 @@
 import React, { useEffect } from 'react';
 
 import Router2Component from './router2'
+import CollectingScene from './scene/CollectingScene'
 
 
 import { Provider } from 'react-redux'; // <---- 
@@ -21,7 +22,7 @@ const App = () => {
   const store = createStore(Reducer);     // <----
   return (
     <Provider store={store}>
-      <Router2Component />
+      <CollectingScene />
     </Provider>
   );
 }

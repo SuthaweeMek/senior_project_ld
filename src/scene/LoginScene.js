@@ -75,6 +75,7 @@ const LoginScene = (props) => {
         LocalStorage.saveData("token", JSON.stringify(responseJson))
         props.upDateScene(0)
       }).catch((error) => {
+        alert("Login Failed")
         console.log('error: ' + error);
       });
   }

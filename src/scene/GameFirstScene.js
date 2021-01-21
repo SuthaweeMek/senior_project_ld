@@ -49,7 +49,7 @@ console.log("Device height = ", height, " and width = ", width)
 const GameFirstScene = (props) => {
   //HP Parameters
   const playerHeart = 5
-  const enemyHeart = 2
+  const enemyHeart = 1
   //State
   const [Transition, SetTransition] = useState(1);
   const [fps, setFps] = useState(16);
@@ -171,7 +171,7 @@ const GameFirstScene = (props) => {
     //setLoop(true)
     playPlayer('walk')
     console.log("END SCENE 1")
-    setTimeout(() => props.handleScene(2),
+    setTimeout(() => props.upDateScene(2),
     5000
     )
     

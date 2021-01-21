@@ -144,7 +144,7 @@ const writing = (props) => {
     data.append('prediction', 1);
     data.append('ImageName', image);
     data.append('label',ary_sound[index-1])
-    data.append('TestID',props.testId)
+    data.append('TestID',1)
     //Please change file upload URL
     let res = await fetch(
       'http://10.0.2.2:8000/classifications/',
@@ -202,7 +202,7 @@ const writing = (props) => {
             <View style={{ flexDirection: 'row', justifyContent: "flex-start",alignContent:"flex-start" }}>
               <Button
                 onPress={play}
-                title="sound"
+                title="play"
                 color="#841584"
                 accessibilityLabel="Learn more about this purple button"
               />  
@@ -214,7 +214,7 @@ const writing = (props) => {
             />
             </View>
             <SketchCanvas
-              style={{ flex: 1, justifyContent: "center", flexDirection: 'row' }}
+              style={{  flex:1,justifyContent: "center", flexDirection: 'row' }}
               strokeColor={'black'}
               strokeWidth={3}
               ref={canvasRef}
@@ -240,21 +240,21 @@ const writing = (props) => {
             />
           </ImageBackground>
           <View style={{ flexDirection: 'row', justifyContent: "flex-end" }}>
-            <Button onPress={
+            <Button
+                onPress={Save}
+                title="Save"
+                color="#631584"
+                accessibilityLabel="Learn more about this purple button"
+              />
+            {/* <Button onPress={
               props.closeModal
             } title="Close"
               color="#841123"
-            />
+            /> */}
             <Button
               onPress={Undo}
               title="Undo"
               color="#841584"
-              accessibilityLabel="Learn more about this purple button"
-            />
-            <Button
-              onPress={Save}
-              title="Save"
-              color="#631584"
               accessibilityLabel="Learn more about this purple button"
             />
             <Button
