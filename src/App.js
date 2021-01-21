@@ -31,6 +31,7 @@ import Test from './scene/TestSprite';
 import TestSound from './scene/TestSound';
 import WritingScene from './scene/WritingScene';
 import ImageScene from './scene/ImageScene';
+import Regist from './scene/RegistScene';
 import GameFirstScene from './scene/GameFirstScene';
 import GameSecondScene from './scene/GameSecondScene';
 import GameThirdScene from './scene/GameThirdScene';

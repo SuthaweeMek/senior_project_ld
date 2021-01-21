@@ -31,16 +31,19 @@ import { NativeRouter, Route, Link } from "react-router-native";
 import backgroundLogin from '../resource/image/backgroundLogin.png'
 import Router from '../router'
 import Orientation from 'react-native-orientation';
-import ButtonCurveLogin from '../component/buttonCurveLogin';
+import ButtonCurveLogin from '../component/buttonCurve.js';
 import InputBoxLogin from '../component/inputboxLogin';
 import AsyncStorage from '@react-native-community/async-storage'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp,listenOrientationChange as lor,removeOrientationListener as rol} from '../utils/Device'
 import Device from '../utils/Device'
 import { connect } from 'react-redux';
+import SelectionInput from '../component/picker';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 // //dimesions
 // width = Device.isPortrait() ? Dimensions.get('window').height : Dimensions.get('window').width //1:4.65
 // height = Device.isPortrait() ? Dimensions.get('window').width : Dimensions.get('window').height //1:4.65  
+
 
 const RegistScene = (props) => {
   const [token, setToken] = useState('5')
@@ -51,6 +54,29 @@ const RegistScene = (props) => {
   const fadeAnim = useRef(new Animated.Value(0)).current // Initial value for fontSize: 28
   // console.log("ore",orientation,"style : ",orientation=="portrait" ? "portrait":"landscape"," hp wp",hp(100),"and",wp(100))
   // console.log("orientation ",Device.orientation())
+
+  const [key, setCurrentStudy] = useState("1")
+  const [value, setValue] = useState({key: "1", value: "ประถมศึกษาปีที่ 1"})
+  const pickerItem = [
+    {
+        key: "1", value: "ประถมศึกษาปีที่ 1" 
+    },
+    {
+        key: "2", value: "ประถมศึกษาปีที่ 2"
+    },
+    {
+        key: "3", value: "ประถมศึกษาปีที่ 3"
+    },
+    {
+        key: "4", value: "ประถมศึกษาปีที่ 4"
+    },
+    {
+        key: "5", value: "ประถมศึกษาปีที่ 5"
+    },
+    {
+        key: "6", value: "ประถมศึกษาปีที่ 6"
+    },
+  ];
   const saveData = async (STORAGE_KEY, value) => {
     try {
       await AsyncStorage.setItem(STORAGE_KEY, value)
@@ -110,6 +136,22 @@ const RegistScene = (props) => {
     setPassword(text)
   }
 
+  const handleName = (text) => {
+    setName(text)
+  }
+
+  const handleSurname = (text) => {
+    setSurname(text)
+  }
+
+  const handleID = (text) => {
+    setID(text)
+  }
+  const handleCurrentStudy = (text) => {
+    setCurrentStudy(text)
+}
+
+
   useEffect(()=>{
   // console.log("testtttttttttt",props.upDateOrientation)
   
@@ -137,32 +179,45 @@ const RegistScene = (props) => {
     
     <NativeRouter>
       <StatusBar translucent={true} barStyle={"dark-content"} backgroundColor={"#00000000"} />
-      <ImageBackground source={backgroundLogin} style={styles(props.orientation).background} resizeMode={"stretch"}>
+      {/* <ImageBackground source={backgroundLogin} style={styles(props.orientation).background} resizeMode={"stretch"}> */}
         <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={{ flex: 1 }}
+          // behavior={props.orientation=="landscape"? Platform.OS === "ios" ? "padding" : "height": Platform.OS === "ios" ? "padding" : "height"}
+          behavior={Platform.OS === "ios" ? "padding" :null}  
+          style={styles(props.orientation).container}
         >
-          <SafeAreaView style={{ flex: 1 }}>
+          <SafeAreaView style={styles(props.orientation).container}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
               <Animated.View style={[styles(props.orientation).inner,{top : moveAnim,opacity : fadeAnim}]}>
-                <View style={{ flex: 1 }} />
-                <Image style={styles(props.orientation).logo} source={logo} resizeMode="contain" />
+                <View style={{ flex: 1 ,flexDirection : 'column',alignContent:'center',justifyContent:'space-between'}}>
                 <Text style={styles(props.orientation).fontTopic}>
-                  เข้าสู่ระบบ
+                  ระบบสมัครสมาชิก 
                             </Text>
-                <InputBoxLogin text={username} onChangeText={handleUser} placeholder="Username" icon="user" />
-                <InputBoxLogin text={password} onChangeText={handlePassword} placeholder="Password" icon="key" password={true}/>
-                <Text style={styles(props.orientation).fontForget} onPress={() => { console.log("do something1") }}>ลืมรหัสผ่าน</Text>
+                <InputBoxLogin  onChangeText={handleID} placeholder="ID Number" icon="number" size={{hp:hp('6%'),wp:wp('25%')}}/>
+                             
+                <InputBoxLogin text={username} onChangeText={handleUser} placeholder="Username" icon="user" size={{hp:hp('6%'),wp:wp('25%')}}/>
+                <InputBoxLogin text={password} onChangeText={handlePassword} placeholder="Password" icon="key" size={{hp:hp('6%'),wp:wp('25%')}} password={true}/>
+               
+                <InputBoxLogin  onChangeText={handleName} placeholder="Name" icon="user" size={{hp:hp('6%'),wp:wp('25%')}}/>
+                <InputBoxLogin onChangeText={handleSurname} placeholder="Surname" icon="key" size={{hp:hp('6%'),wp:wp('25%')}}/>
+               
                 <View style={styles(props.orientation).btnContainer}>
-                  <ButtonCurveLogin onPress={onPress} text="เข้าสู่ระบบ" />
+                {props.orientation == "portrait"? <SelectionInput onChangeItem={handleCurrentStudy} value={value} size={{ hp: hp('6%'), wp: wp('50%') }} items={pickerItem} title="ระดับแบบทดสอบ"/>:<SelectionInput onChangeItem={handleCurrentStudy} value={value} size={{ hp: hp('6%'), wp: wp('50%') }} items={pickerItem} title="ระดับชั้นปีที่กำลังศึกษา"/>}
                 </View>
-                <Text style={styles(props.orientation).fontRegis} onPress={() => { console.log("do something2") }}>สมัครสมาชิก</Text>
+                
+                <View style={styles(props.orientation).btnContainer}>
+                  <ButtonCurveLogin onPress={onPress} text="สมัครสมาชิก" size={{hp:hp('6%'),wp:wp('50%')}} />
+                </View>
+                </View>
+                        
+                
+              
+               
                 <View style={{ flex: 1 }} />
               </Animated.View>
             </TouchableWithoutFeedback>
           </SafeAreaView>
         </KeyboardAvoidingView>
-      </ImageBackground>
+      {/* </ImageBackground> */}
     </NativeRouter>
 
     
@@ -173,6 +228,9 @@ const RegistScene = (props) => {
 
 
 const styles = (props) => StyleSheet.create({
+  container:{
+    flex: 1
+  },
   logo : {
     height: hp('20%'),
     marginBottom: 36,
@@ -181,8 +239,10 @@ const styles = (props) => StyleSheet.create({
     fontFamily: 'EkkamaiNew-Bold',
     // color: "#66b4c1",
     color:"black",
-    fontSize: hp('5%'),
-    marginBottom: 36,
+    fontSize: hp('7%'),
+    marginBottom: 6,
+    alignSelf:'center',
+    marginTop:hp('7%'),
   },
   fontForget: {
     fontSize: hp('2%'),
@@ -224,7 +284,7 @@ const styles = (props) => StyleSheet.create({
     marginBottom: 48
   },
   btnContainer: {
-    marginVertical: 24
+    marginVertical: 15
   }
 });
 
