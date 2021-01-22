@@ -22,7 +22,7 @@ const App = () => {
   const store = createStore(Reducer);     // <----
   return (
     <Provider store={store}>
-      <CollectingScene />
+      <Router2Component />
     </Provider>
   );
 }
