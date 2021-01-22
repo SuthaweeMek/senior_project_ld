@@ -36,31 +36,7 @@ import { connect } from 'react-redux';
 const Router2Component = (props) => {
     //console.log(props.scene)
     let history = useHistory();
-    const [testId, setTestId] = useState(0);
-    const refreshToken = async () => {
-        await fetch('http://10.0.2.2:8000/api/token/refresh', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                refresh: await LocalStorage.readData("refresh")
-            })
-        }).then((response) => {
-            if (response.ok) {
-                return response.json()
-            }
-            else throw new Error(response.status);
-        })
-            .then((responseJson) => {
-                console.log('Refresh already')
-                LocalStorage.saveData("access", responseJson.access)
-            }).catch((error) => {
-                props.upDateScene(-1)
-            });
-    }
- 
+
     return (
         <NativeRouter>
             <React.Fragment>
@@ -71,13 +47,15 @@ const Router2Component = (props) => {
                             props.scene == 1 ? <Redirect to="/gameFirstScene"></Redirect> :
                                 props.scene == 2 ? <Redirect to="/gameSecondScene"></Redirect> :
                                     props.scene == 3 ? <Redirect to="/gameThirdScene"></Redirect> :
-                                        props.scene == 4 ? <Redirect to="/home "></Redirect> : null
+                                        props.scene == 4 ? <Redirect to="/home "></Redirect> :
+                                            props.scene == 5 ? <Redirect to="/registScene"></Redirect> : null
                 }
                 <Route exact path="/home" render={props => <HomeScene />} />
-                <Route path="/login" render={props => <RegistScene />} />
+                <Route path="/login" render={props => <LoginScene />} />
                 <Route path="/gameFirstScene" render={props => <GameFirstScene />} />
                 <Route path="/gameSecondScene" render={props => <GameSecondScene />} />
                 <Route path="/gameThirdScene" render={props => <GameThirdScene />} />
+                <Route path="/registScene" render={props => <RegistScene />} />
             </React.Fragment>
         </NativeRouter>
 

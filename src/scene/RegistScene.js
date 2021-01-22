@@ -92,7 +92,7 @@ const RegistScene = (props) => {
       key: "6", value: "ประถมศึกษาปีที่ 6"
     },
   ];
-  const checkStateregist = (stateRegist) => {
+  const checkStateregist = async (stateRegist) => {
     switch (stateRegist) {
       case 2:
         if (username == "") {
@@ -126,7 +126,7 @@ const RegistScene = (props) => {
           console.log("currentDate is empty")
           break
         }
-        fetch('http://10.0.2.2:8000/users/', {
+        let res = await fetch('http://10.0.2.2:8000/users/', {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -142,19 +142,16 @@ const RegistScene = (props) => {
             education:key.key,
             is_student: registTypeSelect == "student"? 1:0  
           })
-        }).then((response) => {
-          console.log(response.json())
-          if (response.ok) {
-            return response.json()
-          }
-          else throw new Error(response.status);
         })
-          .then((responseJson) => {
+          let responseJson = await res.json();
+          if (res.ok) {
             alert("Register Success")
-          }).catch((error) => {
+            props.upDateScene(-1)
+          }
+          else{
             alert("Register Failed")
-            console.log('error: ' + error.message);
-          });
+            console.log('error: ' , responseJson);
+          }
         break
     }
   }

@@ -55,8 +55,9 @@ const LoginScene = (props) => {
   // console.log("orientation ",Device.orientation())
 
 
-  const onPress = () => {
-    fetch('http://10.0.2.2:8000/api/token/', {
+  const onPress = async () => {
+
+    let res = await fetch('http://10.0.2.2:8000/api/token/', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -66,20 +67,19 @@ const LoginScene = (props) => {
         userid: username,
         password: password
       })
-    }).then((response) => {
-      if (response.ok) {
-        return response.json()
-      }
-      else throw new Error(response.status);
     })
-      .then((responseJson) => {
+    
+    let responseJson = await res.json();
+      if (res.ok) {
         LocalStorage.saveData("token", JSON.stringify(responseJson))
         props.upDateScene(0)
-      }).catch((error) => {
+      }
+      else{
         alert("Login Failed")
-        console.log('error: ' + error);
-      });
+        console.log('error: ' , responseJson);
+      }
   }
+   
   const handleUser = (text) => {
     setUsername(text)
   }
@@ -135,7 +135,7 @@ const LoginScene = (props) => {
                 <View style={styles(props.orientation).btnContainer}>
                   <ButtonCurveLogin onPress={onPress} text="เข้าสู่ระบบ" size={{hp:hp('6%'),wp:wp('90%')}} />
                 </View>
-                <Text style={styles(props.orientation).fontRegis} onPress={() => { console.log("do something2") }}>สมัครสมาชิก</Text>
+                <Text style={styles(props.orientation).fontRegis} onPress={() => { props.upDateScene(5) }}>สมัครสมาชิก</Text>
                 <View style={{ flex: 1 }} />
               </Animated.View>
             </TouchableWithoutFeedback>
