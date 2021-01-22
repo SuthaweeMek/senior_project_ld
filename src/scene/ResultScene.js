@@ -350,7 +350,7 @@ const styles=(props) => StyleSheet.create({
         flexDirection: 'row',
         marginTop: "2%",
         paddingBottom: "1%",
-        borderBottomColor: "black",
+        borderBottomColor: Color.Black,
         borderBottomWidth: 1,
     },
     itemTable:{
@@ -474,7 +474,7 @@ const styles=(props) => StyleSheet.create({
     },
     modalView: {
         margin: 20,
-        backgroundColor: "white",
+        backgroundColor: Color.White,
         borderRadius: 20,
         padding: 35,
         alignItems: "center",
@@ -488,14 +488,14 @@ const styles=(props) => StyleSheet.create({
         elevation: 5
     },
     openButton: {
-        backgroundColor: "#F194FF",
+        backgroundColor: Color.OpenButton,
         borderRadius: 20,
         padding: 10,
         elevation: 2
     },
     textStyle: {
-        color: "white",
-        fontWeight: "bold",
+        color: Color.White,
+        fontWeight: Font.Bold,
         textAlign: "center"
     },
     modalText: {

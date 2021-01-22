@@ -22,6 +22,8 @@ import Device from '../utils/Device';
 import Rand from '../utils/Rand';
 import Arrays from '../utils/Array'
 import Writing from '../component/writing'
+import Color from '../resource/color';
+import Font from '../resource/font';
 
 //alphabet
 var ary_th_vocab = Arrays.CreatePlattern("th_vocab_",10)
@@ -455,7 +457,7 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
 
     // resizeMode: "cover",
-    backgroundColor: 'black',
+    backgroundColor: Color.Black,
     justifyContent: 'flex-end',
     width: width * 2,
     height: height / 4.26,

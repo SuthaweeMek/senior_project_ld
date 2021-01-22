@@ -37,8 +37,8 @@ import AsyncStorage from '@react-native-community/async-storage'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp,listenOrientationChange as lor,removeOrientationListener as rol} from '../utils/Device'
 import Device from '../utils/Device'
 import { connect } from 'react-redux';
-import Color from '../resource/color';
-
+import Color from '../resource/color'
+import Font from '../resource/font'
 // //dimesions
 // width = Device.isPortrait() ? Dimensions.get('window').height : Dimensions.get('window').width //1:4.65
 // height = Device.isPortrait() ? Dimensions.get('window').width : Dimensions.get('window').height //1:4.65  
@@ -183,15 +183,15 @@ const styles = (props) => StyleSheet.create({
     marginBottom: 36,
   },
   fontTopic: {
-    fontFamily: 'EkkamaiNew-Bold',
+    fontFamily: Font.Bold,
     // color: "#66b4c1",
-    color:"black",
+    color:Color.Black,
     fontSize: hp('5%'),
     marginBottom: 36,
   },
   fontForget: {
     fontSize: hp('2%'),
-    fontFamily: 'EkkamaiNew-Bold',
+    fontFamily: Font.Bold,
     textAlign: "right",
     width: wp('85%'),
     marginTop: 10,
@@ -202,7 +202,7 @@ const styles = (props) => StyleSheet.create({
     fontSize: hp('2%'),
     marginBottom: 36,
     textDecorationLine: 'underline',
-    fontFamily: 'EkkamaiNew-Bold',
+    fontFamily: Font.Bold,
   },
   background: {
     flex: 1,
@@ -221,7 +221,7 @@ const styles = (props) => StyleSheet.create({
     //margin: height - (height * 0.95)
   },
   header: {
-    fontFamily: 'EkkamaiNew-Bold',
+    fontFamily: Font.Bold,
     fontSize: hp('4%'),
     flex: 2,
     textAlignVertical: "center",

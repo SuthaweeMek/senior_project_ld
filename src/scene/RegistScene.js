@@ -412,7 +412,7 @@ const styles = (props) => StyleSheet.create({
     marginBottom: 36,
   },
   fontTopic: {
-    fontFamily: 'EkkamaiNew-Bold',
+    fontFamily: Font.Bold,
     // color: "#66b4c1",
     color: "black",
     fontSize: props=="portrait"?wp('6%'):wp('4%'),
@@ -423,20 +423,11 @@ const styles = (props) => StyleSheet.create({
     width:wp("78%")
     // marginTop: hp('3%'),
   },
-  fontForget: {
-    fontSize: props=="portrait"?wp('6%'):wp('4%'),
-    fontFamily: 'EkkamaiNew-Bold',
-    textAlign: "right",
-    width: wp('85%'),
-    marginTop: 10,
-    //backgroundColor:"red"
-
-  },
   fontRegis: {
     fontSize: hp('2%'),
     marginBottom: 36,
     textDecorationLine: 'underline',
-    fontFamily: 'EkkamaiNew-Bold',
+    fontFamily: Font.Bold,
   },
   background: {
     flex: 1,
@@ -464,7 +455,7 @@ const styles = (props) => StyleSheet.create({
     // margin:hp('3%')
   },
   header: {
-    fontFamily: 'EkkamaiNew-Bold',
+    fontFamily: Font.Bold,
     fontSize: hp('4%'),
     flex: 2,
     textAlignVertical: "center",
