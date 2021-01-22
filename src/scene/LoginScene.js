@@ -37,6 +37,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp,listenOrientationChange as lor,removeOrientationListener as rol} from '../utils/Device'
 import Device from '../utils/Device'
 import { connect } from 'react-redux';
+import Color from '../resource/color';
 
 // //dimesions
 // width = Device.isPortrait() ? Dimensions.get('window').height : Dimensions.get('window').width //1:4.65
@@ -136,7 +137,7 @@ const LoginScene = (props) => {
     
     
     <NativeRouter>
-      <StatusBar translucent={true} barStyle={"dark-content"} backgroundColor={"#00000000"} />
+      <StatusBar translucent={false} barStyle={"light-content"} backgroundColor={Color.Background} />
       {/* <ImageBackground source={backgroundLogin} style={styles(props.orientation).background} resizeMode={"stretch"}> */}
         <KeyboardAvoidingView
           // behavior={props.orientation=="landscape"? Platform.OS === "ios" ? "padding" : "height": Platform.OS === "ios" ? "padding" : "height"}
