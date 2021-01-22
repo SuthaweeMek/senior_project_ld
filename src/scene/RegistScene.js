@@ -193,10 +193,9 @@ const RegistScene = (props) => {
 
   useEffect(() => {
     console.log(stateregist)
-    switch (stateregist) {
-      case 1:
-        console.log("wow")
-        setStepcolor([{ backgroundColor: Color.Gray }, { backgroundColor: Color.Gray }])
+    switch(stateregist){
+      case 1 : 
+        setStepcolor([{backgroundColor:Color.Gray},{backgroundColor:Color.Gray}])
         break
       case 2:
         setStepcolor([{ backgroundColor: Color.Background }, { backgroundColor: Color.Gray }])
@@ -246,20 +245,16 @@ const RegistScene = (props) => {
               <View style={[styles(props.orientation).containerFill]}>
                 <View style={{ flexDirection: "row", width: wp(90) }}>
                   {/* <View style={{flexDirection:"column",width:wp(50)}}> */}
-                  <TouchableOpacity onPress={() => {
-                    stateregist == 1 ? null :
-                    stateregist == 2 ? setStateregist(1) : setStateregist(2)
-                  }}
-                    disabled={stateregist == 1 ? true : false}>
-                    <Icon
-                      //reverse
-                      name={"chevron-back"}
-                      type='ionicon'
-                      color={"black"}
-                      size={wp('6%')}
-                      style={{ alignSelf: "flex-start", opacity: stateregist == 1 ? 0 : 1 }}
-                    />
-                  </TouchableOpacity>
+                      <TouchableOpacity onPress={() =>  {stateregist == 1 ? console.log("go to login scene") :setStateregist(stateregist-1)}}>
+                      <Icon
+                                //reverse
+                                name={"chevron-back"}
+                                type='ionicon'
+                                color= {"black"} 
+                                size={wp('6%')}
+                                style={{alignSelf:"flex-start"}}
+                                />
+                    </TouchableOpacity>
 
                   {/* </View> */}
 
@@ -307,17 +302,17 @@ const RegistScene = (props) => {
 
                 {stateregist == 1 ? <>
                   <Text style={[styles(props.orientation).textTitle]} >ประเภทสมาชิก</Text>
-                  <View style={{ flexDirection: "row" }}>
-                    <TouchableOpacity disabled={registTypeSelect == "student" ? true : false} onPress={() => { setRegisttypeSelect("student") }}>
-                      <View style={[styles(props.orientation).containerRegistType, { opacity: registTypeSelect == "student" ? 0.5 : 1 }]}>
+                  <View style={{flexDirection:"row"}}>
+                    <TouchableOpacity disabled={registTypeSelect=="student"?true:false} onPress={()=>{setRegisttypeSelect("student") ,setCurrentStudy("1")}}>
+                      <View style={[styles(props.orientation).containerRegistType,{opacity:registTypeSelect=="student"?1:0.5}]}>
                         <Image source={imageRegistTypeStudent} style={styles(props.orientation).imageRegistType} />
                         <Text style={styles(props.orientation).textRegistType}>นักเรียน</Text>
                       </View>
                     </TouchableOpacity>
-                    <TouchableOpacity disabled={registTypeSelect == "personnel" ? true : false} onPress={() => { setRegisttypeSelect("personnel") }}>
-                      <View style={[styles(props.orientation).containerRegistType, { opacity: registTypeSelect == "personnel" ? 0.5 : 1 }]}>
-                        <Image source={imageRegistTypeDocter} style={styles(props.orientation).imageRegistType} />
-                        <Text style={styles(props.orientation).textRegistType}>บุคลากร</Text>
+                    <TouchableOpacity disabled={registTypeSelect=="personnel"?true:false} onPress={()=>{setRegisttypeSelect("personnel"),setCurrentStudy("0")}}>
+                      <View style={[styles(props.orientation).containerRegistType,{opacity:registTypeSelect=="personnel"?1:0.5}]}>
+                        <Image source={imageRegistTypeDocter} style={styles(props.orientation).imageRegistType}/>
+                        <Text style={styles(props.orientation).textRegistType}>บุคลากร</Text>        
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -337,16 +332,25 @@ const RegistScene = (props) => {
                 {stateregist == 3 ? <>
                   <Text style={[styles(props.orientation).textTitle]} >ข้อมูลส่วนตัว</Text>
                   <InputBoxLogin text={idnumber} onChangeText={handleID} placeholder="ID Number" icon="id-card" size={{ hp: hp('6%'), wp: wp('80%') }} />
-                  <InputBoxLogin text={name} onChangeText={handleName} placeholder="Name" icon="user" size={{ hp: hp('6%'), wp: wp('80%') }} />
-                  <InputBoxLogin text={surname} onChangeText={handleSurname} placeholder="Surname" icon="key" size={{ hp: hp('6%'), wp: wp('80%') }} />
-
-                  {/* <View style={{}}> */}
-                  <View style={styles(props.orientation).containerInfo}>
-                    <Text style={styles(props.orientation).textInfo}>วันเกิด : </Text>
-                    <DateTimePicker onChangeDate={handleCurrentDate} size={{ hp: hp('6%'), wp: wp('35%') }} />
+                  
+                  {registTypeSelect=="student"?
+                  <View style={{flexDirection:"row"}}>
+                    <InputBoxLogin text={name} onChangeText={handleName} placeholder="Name" icon="user" size={{ hp: hp('6%'), wp: wp('39%') }} />
+                    <View style={{width:wp('2%')}}></View>
+                    <InputBoxLogin text={surname} onChangeText={handleSurname} placeholder="Surname" icon="user" size={{ hp: hp('6%'), wp: wp('39%') }} />
                   </View>
-                  {/* </View> */}
-                  {registTypeSelect == "student" ?
+                  :<>
+                      <InputBoxLogin text={name} onChangeText={handleName} placeholder="Name" icon="user" size={{ hp: hp('6%'), wp: wp('80%') }} />
+                      <InputBoxLogin text={surname} onChangeText={handleSurname} placeholder="Surname" icon="user-friends" size={{ hp: hp('6%'), wp: wp('80%') }} />
+
+                  </>}
+                  {registTypeSelect=="student"?
+                    <View style={styles(props.orientation).containerInfo}>
+                      <Text style={styles(props.orientation).textInfo}>วันเกิด : </Text>
+                      <DateTimePicker onChangeDate={handleCurrentDate} size={{ hp: hp('6%'), wp: wp('35%') } }/>
+                    </View>
+                  :null}
+                  {registTypeSelect=="student"?
                     <View style={styles(props.orientation).containerInfo} >
                       <Text style={styles(props.orientation).textInfo}>ระดับชั้นปีที่กำลังศึกษา : </Text>
                       {props.orientation == "portrait" ? <SelectionInput onChangeItem={handleCurrentStudy} value={value} size={{ hp: hp('6%'), wp: wp('35%') }} items={pickerItem} title="ระดับชั้นปีที่กำลังศึกษา" /> : <SelectionInput onChangeItem={handleCurrentStudy} value={value} size={{ hp: hp('6%'), wp: wp('35%') }} items={pickerItem} title="ระดับชั้นปีที่กำลังศึกษา" />}
@@ -361,8 +365,8 @@ const RegistScene = (props) => {
                   <ButtonCurveLogin onPress={() => {
                     stateregist == 1 ? setStateregist(2) :
                       stateregist == 2 ? checkStateregist(2) : checkStateregist(3)
-                  }}
-                    text={stateregist == 1 ? "ถัดไป > " : "สมัครสมาชิก"}
+                    }} 
+                    text={stateregist == 3 ? "สมัครสมาชิก" : "ถัดไป >"} 
                     size={{ hp: hp('6%'), wp: wp('30%') }} />
                 </View>
               </View>
@@ -433,7 +437,8 @@ const styles = (props) => StyleSheet.create({
     backgroundColor: Color.White,
     padding: wp("2%"),
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    height:hp("90%"),
     // margin:hp('3%')
   },
   header: {
@@ -483,11 +488,11 @@ const styles = (props) => StyleSheet.create({
     paddingLeft: 12,
     fontFamily: Font.Regular,
   },
-  containerRegistType: {
-    padding: 12,
-    margin: 12,
-    height: props == "portrait" ? wp('35%') : wp('25%'),
-    width: props == "portrait" ? wp('35%') : wp('25%'),
+  containerRegistType:{
+    padding : 12,
+    margin :12,
+    height : props=="portrait"?wp('30%'):wp('20%'),
+    width : props=="portrait"?wp('30%'):wp('20%'),
     // flexDirection:"row",
     // borderColor : Color.Surface,
     backgroundColor: Color.Background,
@@ -502,9 +507,13 @@ const styles = (props) => StyleSheet.create({
     height: props == "portrait" ? wp('30%') : wp('20%'),
     width: props == "portrait" ? wp('30%') : wp('20%'),
   },
-  textRegistType: {
-    fontFamily: Font.Bold,
-    fontSize: wp('3%')
+  imageRegistType:{
+    height:props=="portrait"?wp('25%'):wp('16%'),
+    width:props=="portrait"?wp('25%'):wp('16%'),
+  }, 
+  textRegistType:{
+    fontFamily:Font.Bold,
+    fontSize:wp('3%')
   },
   textTitle: {
     fontFamily: Font.Bold,
