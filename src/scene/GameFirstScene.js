@@ -22,7 +22,8 @@ import Device from '../utils/Device';
 import Rand from '../utils/Rand';
 import Arrays from '../utils/Array'
 import Writing from '../component/writing'
-
+import Color from '../resource/color';
+import Font from '../resource/font';
 //alphabet
 var ary_th_alphabet = Arrays.CreatePlattern("th_alphabet_",44)
 //image

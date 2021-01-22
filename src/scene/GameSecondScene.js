@@ -23,8 +23,9 @@ import Device from '../utils/Device';
 import Rand from '../utils/Rand';
 import Arrays from '../utils/Array'
 import Writing from '../component/writing'
-
-//vowel
+import Color from '../resource/color';
+import Font from '../resource/font';
+//alphabet
 var ary_th_vowel = Arrays.CreatePlattern("th_vowel_",36)
 //image
 import imageBackground from '../resource/image/LDSpotGameScene1.png'
@@ -467,7 +468,7 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
 
     // resizeMode: "cover",
-    backgroundColor: 'black',
+    backgroundColor: Color.Black,
     justifyContent: 'flex-end',
     width: width * 2,
     height: height / 4.26,

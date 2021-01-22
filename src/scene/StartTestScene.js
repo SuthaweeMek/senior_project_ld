@@ -29,10 +29,10 @@ import { connect } from 'react-redux';
 import InputBox from '../component/inputBox';
 import SelectionInput from '../component/picker';
 // import ButtonStart from '../component/buttonStart';
-import Color from '../resource/color'
 import Device from '../utils/Device';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientationChange as lor, removeOrientationListener as rol } from '../utils/Device'
-
+import Color from '../resource/color';
+import Font from '../resource/font';
 
 import LocalStorage from '../utils/LocalStorage'
 
@@ -53,24 +53,24 @@ const StartTestScene = (props) => {
     const [surname, setSurname] = useState('สมจริง')
     const [childrenID, setChildrenID] = useState('')
     const [gender, setGender] = useState('m')
-    const [level, setLevel] = useState("level_1")
-    const [value, setValue] = useState({level: "level_1", value: "ระดับที่ 1"})
+    const [key, setKey] = useState("level_1")
+    const [value, setValue] = useState({key: "level_1", value: "ระดับที่ 1"})
     const [age, setAge] = useState('16')
     const pickerItem = [
         {
-            level: "level_1", value: "ระดับที่ 1" 
+            key: "level_1", value: "ระดับที่ 1" 
         },
         {
-            level: "level_2", value: "ระดับที่ 2"
+            key: "level_2", value: "ระดับที่ 2"
         },
         {
-            level: "level_3", value: "ระดับที่ 3"
+            key: "level_3", value: "ระดับที่ 3"
         },
         {
-            level: "level_4", value: "ระดับที่ 4"
+            key: "level_4", value: "ระดับที่ 4"
         },
         {
-            level: "level_5", value: "ระดับที่ 5"
+            key: "level_5", value: "ระดับที่ 5"
         },
       ];
     console.log("what ?",props.orientation == "portrait"?"true":"false")
@@ -83,9 +83,9 @@ const StartTestScene = (props) => {
     const handleChildrenID = (text) => {
         setChildrenID(text)
     }
-    const handleLevel = (text) => {
+    const handleKey = (text) => {
         console.log("level = == = ",text)
-        setLevel(text)
+        setKey(text)
     }
     const handleAge = (text) => {
         setAge(text)
@@ -140,7 +140,7 @@ const StartTestScene = (props) => {
                     <Text style={styles(props.orientation).fontStartTestInput} >แบบทดสอบ</Text>
                     <View style={styles(props.orientation).Picker}>
                         <Text style={styles(props.orientation).fontStartTestInfo} >ระดับ : </Text>
-                        {props.orientation == "portrait"? <SelectionInput onChangeItem={handleLevel} value={value} size={{ hp: hp('5%'), wp: wp('45%') }} items={pickerItem} title="ระดับแบบทดสอบ"/>:<SelectionInput onChangeItem={handleLevel} value={value} size={{ hp: hp('6%'), wp: wp('30%') }} items={pickerItem} title="ระดับแบบทดสอบ"/>}
+                        {props.orientation == "portrait"? <SelectionInput onChangeItem={handleKey} value={value} size={{ hp: hp('5%'), wp: wp('45%') }} items={pickerItem} title="ระดับแบบทดสอบ"/>:<SelectionInput onChangeItem={handleKey} value={value} size={{ hp: hp('6%'), wp: wp('30%') }} items={pickerItem} title="ระดับแบบทดสอบ"/>}
                         {props.orientation == "portrait"? null : <ButtonCurve text="เริ่มทำแบบทดสอบ" onPress={onPress} size={{ hp: hp('6%'), wp: wp('25%') }} />}
                     </View>
                     {props.orientation == "portrait"? <ButtonCurve text="เริ่มทำแบบทดสอบ" onPress={onPress} size={{ hp: hp('5%'), wp: wp('50%') }} />:null}
@@ -184,7 +184,7 @@ const styles = (props) => StyleSheet.create({
     },
     containerStartTestInput: {
         flexDirection: 'column',
-        backgroundColor: "white",
+        backgroundColor: Color.white,
         justifyContent: 'space-around',
         //alignItems: 'center',
         //flex: 1 1 auto,
@@ -224,14 +224,14 @@ const styles = (props) => StyleSheet.create({
         padding:200,
     },
     fontStartTest: {
-        color: 'black',
+        color: Color.Black,
         fontSize: props == "portrait" ? wp('4%') : wp('4%'),
         // marginTop: 40,
         // marginBottom: 30,
         marginVertical: 12,
         alignSelf: "flex-start",
 
-        fontFamily: "EkkamaiNew-Bold",
+        fontFamily: "Font-Bold",
     },
     fontStartTestInput: {
         // color: 'black',
@@ -241,7 +241,7 @@ const styles = (props) => StyleSheet.create({
         marginVertical: 12,
         // alignItems: 'center',
         alignSelf:'flex-start',
-        fontFamily: "EkkamaiNew-Bold",
+        fontFamily: "Font-Bold",
         // justifyContent: 'center'
     },
     fontStartTestInfo: {
@@ -251,7 +251,7 @@ const styles = (props) => StyleSheet.create({
         // marginTop: 10,
         marginVertical: 8,
 
-        fontFamily: "EkkamaiNew-Regular",
+        fontFamily: "Font-Regular",
         // justifyContent: 'center'
     },
     background: {

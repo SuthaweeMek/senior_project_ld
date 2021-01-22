@@ -24,13 +24,13 @@ import backgroundMenu from '../resource/image/backgroundMenu.png';
 import imageProfile from '../resource/image/dummyProfile.jpg';
 import WritingScene from './WritingScene'
 const image = { uri: "https://reactjs.org/logo-og.png" };
-import Color from '../resource/color'
 import Router from '../router'
 import { connect } from 'react-redux';
 import LocalStorage from '../utils/LocalStorage'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp,listenOrientationChange as lor,removeOrientationListener as rol} from '../utils/Device'
 import { Icon } from 'react-native-elements'
-
+import Color from '../resource/color';
+import Font from '../resource/font';
 const HomeScene = (props) => {
 
   useEffect(()=>{
@@ -199,19 +199,19 @@ const styles = (props) => StyleSheet.create({
     alignSelf:'center',
   },
   fontMenuProfile: {
-    color: 'white',
+    color: Color.White,
     fontSize: wp('3%'),
     // fontWeight: "bold",
     paddingTop: 12,
     alignItems: 'center',
-    fontFamily:"EkkamaiNew-Bold",
+    fontFamily:Font.Bold,
     justifyContent: 'center'
   },
   fontMenuContent: {
-    color: 'white',
+    color: Color.White,
     fontSize: wp('1.8%'),
     alignItems: 'center',
-    fontFamily:"EkkamaiNew-Regular",
+    fontFamily:Font.Regular,
     paddingLeft: 5,
     // backgroundColor:"green",
   },
@@ -229,7 +229,7 @@ const styles = (props) => StyleSheet.create({
     // alignSelf: 'center',
     flexDirection: 'row',
     width : wp("16%"),
-    backgroundColor:"white",
+    backgroundColor:Color.White,
     paddingLeft: wp("1%"),
     borderTopLeftRadius: wp("16%")/2,
     borderBottomLeftRadius: wp("16%")/2,

@@ -15,10 +15,14 @@ const inputbox = (props) => {
   const sizeAnim = useRef(new Animated.Value(wp('2.7%'))).current // Initial value for fontSize: 28]
   const [textHolderColor,setTextholdercolor] = useState(Color.Cover)
 
+  useEffect(()=>{
+    placeholderAnimation()
+  },[props.orientation])
+
     const placeholderAnimation = (clicked) => {
       Animated.parallel([
       Animated.timing(moveAnim, {
-          toValue: clicked ? -(hp('2.5%')):text =="" ? 0 :-(hp('2.5%')),
+          toValue: clicked ? -(hp('2.5%')):text =="" ? 0 : -(hp('2.5%')),
           duration: 300,
           useNativeDriver :false
       }),
