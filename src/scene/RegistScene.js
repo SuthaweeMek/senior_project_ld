@@ -60,18 +60,24 @@ const RegistScene = (props) => {
   const [name, setName] = useState('')
   const [surname, setSurname] = useState('')
   const [stateregist, setStateregist] = useState(1)
+<<<<<<< HEAD
   const [registTypeSelect, setRegisttypeSelect] = useState("student")
   const [currentDate, setCurrentDate] = useState(null)
   const [stepColor, setStepcolor] = useState([{ backgroundColor: Color.Gray }, { backgroundColor: Color.Gray }])
 
+=======
+  const [registTypeSelect, setRegistTypeSelect] = useState("student")
+  const [currentDate,setCurrentDate] = useState(null)
+  const [stepColor,setStepcolor] = useState([{backgroundColor:Color.Gray},{backgroundColor:Color.Gray}])
+  
+>>>>>>> 8aeef8c2f8dde215f837b048c7b822fafbc65931
 
   const moveAnim = useRef(new Animated.Value(-25)).current  // Initial value for top : 0
   const fadeAnim = useRef(new Animated.Value(0)).current // Initial value for fontSize: 28
   // console.log("ore",orientation,"style : ",orientation=="portrait" ? "portrait":"landscape"," hp wp",hp(100),"and",wp(100))
   // console.log("orientation ",Device.orientation())
 
-  const [key, setCurrentStudy] = useState("1")
-  const [value, setValue] = useState({ key: "1", value: "ประถมศึกษาปีที่ 1" })
+  const [currentStudy, setCurrentStudy] = useState({ key: "1", value: "ประถมศึกษาปีที่ 1" })
   const pickerItem = [
     {
       key: "1", value: "ประถมศึกษาปีที่ 1"
@@ -126,6 +132,7 @@ const RegistScene = (props) => {
           console.log("currentDate is empty")
           break
         }
+<<<<<<< HEAD
         let res = await fetch('http://10.0.2.2:8000/users/', {
           method: 'POST',
           headers: {
@@ -152,6 +159,11 @@ const RegistScene = (props) => {
             alert("Register Failed")
             console.log('error: ' , responseJson);
           }
+=======
+        console.log("currentstudy ",currentStudy)
+        console.log("date ",currentDate)
+        alert("Registed")
+>>>>>>> 8aeef8c2f8dde215f837b048c7b822fafbc65931
         break
     }
   }
@@ -303,13 +315,13 @@ const RegistScene = (props) => {
                 {stateregist == 1 ? <>
                   <Text style={[styles(props.orientation).textTitle]} >ประเภทสมาชิก</Text>
                   <View style={{flexDirection:"row"}}>
-                    <TouchableOpacity disabled={registTypeSelect=="student"?true:false} onPress={()=>{setRegisttypeSelect("student") ,setCurrentStudy("1"),setCurrentDate(null)}}>
+                    <TouchableOpacity disabled={registTypeSelect=="student"?true:false} onPress={()=>{setRegistTypeSelect("student") ,setCurrentStudy("1"),setCurrentDate(null)}}>
                       <View style={[styles(props.orientation).containerRegistType,{opacity:registTypeSelect=="student"?1:0.5}]}>
                         <Image source={imageRegistTypeStudent} style={styles(props.orientation).imageRegistType} />
                         <Text style={styles(props.orientation).textRegistType}>นักเรียน</Text>
                       </View>
                     </TouchableOpacity>
-                    <TouchableOpacity disabled={registTypeSelect=="personnel"?true:false} onPress={()=>{setRegisttypeSelect("personnel"),setCurrentStudy("0"),setCurrentDate(new Date)}}>
+                    <TouchableOpacity disabled={registTypeSelect=="personnel"?true:false} onPress={()=>{setRegistTypeSelect("personnel"),setCurrentStudy({ key: "0", value: "personel" }),setCurrentDate(new Date)}}>
                       <View style={[styles(props.orientation).containerRegistType,{opacity:registTypeSelect=="personnel"?1:0.5}]}>
                         <Image source={imageRegistTypeDocter} style={styles(props.orientation).imageRegistType}/>
                         <Text style={styles(props.orientation).textRegistType}>บุคลากร</Text>        
@@ -352,12 +364,21 @@ const RegistScene = (props) => {
                   :null}
                   {registTypeSelect=="student"?
                     <View style={styles(props.orientation).containerInfo} >
+<<<<<<< HEAD
                       <Text style={styles(props.orientation).textInfo}>ระดับชั้นปีที่กำลังศึกษา : </Text>
                       {props.orientation == "portrait" ? <SelectionInput onChangeItem={handleCurrentStudy} value={value} size={{ hp: hp('6%'), wp: wp('35%') }} items={pickerItem} title="ระดับชั้นปีที่กำลังศึกษา" /> : <SelectionInput onChangeItem={handleCurrentStudy} value={value} size={{ hp: hp('6%'), wp: wp('35%') }} items={pickerItem} title="ระดับชั้นปีที่กำลังศึกษา" />}
                     </View>
                     : null}
 
 
+=======
+                    <Text style={styles(props.orientation).textInfo}>ระดับชั้นปีที่กำลังศึกษา : </Text>
+                    {props.orientation == "portrait" ? <SelectionInput onChangeItem={handleCurrentStudy} value={currentStudy} size={{ hp: hp('6%'), wp: wp('35%') }} items={pickerItem} title="ระดับชั้นปีที่กำลังศึกษา" /> : <SelectionInput onChangeItem={handleCurrentStudy}  size={{ hp: hp('6%'), wp: wp('35%') }} items={pickerItem} title="ระดับชั้นปีที่กำลังศึกษา" />}
+                  </View>
+                  :null}
+    
+                 
+>>>>>>> 8aeef8c2f8dde215f837b048c7b822fafbc65931
                 </>
                   : null}
 
