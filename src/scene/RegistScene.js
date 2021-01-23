@@ -303,13 +303,13 @@ const RegistScene = (props) => {
                 {stateregist == 1 ? <>
                   <Text style={[styles(props.orientation).textTitle]} >ประเภทสมาชิก</Text>
                   <View style={{flexDirection:"row"}}>
-                    <TouchableOpacity disabled={registTypeSelect=="student"?true:false} onPress={()=>{setRegisttypeSelect("student") ,setCurrentStudy("1")}}>
+                    <TouchableOpacity disabled={registTypeSelect=="student"?true:false} onPress={()=>{setRegisttypeSelect("student") ,setCurrentStudy("1"),setCurrentDate(null)}}>
                       <View style={[styles(props.orientation).containerRegistType,{opacity:registTypeSelect=="student"?1:0.5}]}>
                         <Image source={imageRegistTypeStudent} style={styles(props.orientation).imageRegistType} />
                         <Text style={styles(props.orientation).textRegistType}>นักเรียน</Text>
                       </View>
                     </TouchableOpacity>
-                    <TouchableOpacity disabled={registTypeSelect=="personnel"?true:false} onPress={()=>{setRegisttypeSelect("personnel"),setCurrentStudy("0")}}>
+                    <TouchableOpacity disabled={registTypeSelect=="personnel"?true:false} onPress={()=>{setRegisttypeSelect("personnel"),setCurrentStudy("0"),setCurrentDate(new Date)}}>
                       <View style={[styles(props.orientation).containerRegistType,{opacity:registTypeSelect=="personnel"?1:0.5}]}>
                         <Image source={imageRegistTypeDocter} style={styles(props.orientation).imageRegistType}/>
                         <Text style={styles(props.orientation).textRegistType}>บุคลากร</Text>        
