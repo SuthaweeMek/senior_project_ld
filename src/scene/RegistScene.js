@@ -374,7 +374,8 @@ const RegistScene = (props) => {
                   {registTypeSelect=="student"?
                     <View style={styles(props.orientation).containerInfo} >
                     <Text style={styles(props.orientation).textInfo}>ระดับชั้นปีที่กำลังศึกษา : </Text>
-                    {props.orientation == "portrait" ? <SelectionInput onChangeItem={handleCurrentStudy} value={currentStudy} size={{ hp: hp('6%'), wp: wp('35%') }} items={pickerItem} title="ระดับชั้นปีที่กำลังศึกษา" /> : <SelectionInput onChangeItem={handleCurrentStudy}  size={{ hp: hp('6%'), wp: wp('35%') }} items={pickerItem} title="ระดับชั้นปีที่กำลังศึกษา" />}
+                    {props.orientation == "portrait" ? <SelectionInput onChangeItem={handleCurrentStudy} value={currentStudy} size={{ hp: hp('6%'), wp: wp('35%') }} items={pickerItem} title="ระดับชั้นปีที่กำลังศึกษา" /> : 
+                    <SelectionInput onChangeItem={handleCurrentStudy}  value={currentStudy} size={{ hp: hp('6%'), wp: wp('35%') }} items={pickerItem} title="ระดับชั้นปีที่กำลังศึกษา" />}
                   </View>
                   :null}
     
