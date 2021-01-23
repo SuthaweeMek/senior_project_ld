@@ -32,12 +32,8 @@ const generateData = (number,split) => {
 }
 
 const Pagination = (props) => {
-  
-  const [selectedId, setSelectedId] = useState("1");
   page = props.paging
-  console.log("props page",props.paging,"props number",props.number,"props split",props.split)
   DATA = generateData(props.number,props.split)
-  console.log("selected :",selectedId)
   var orientation = props.orientation
   
   const Item = ({ item, onPress, style }) => (
@@ -47,18 +43,18 @@ const Pagination = (props) => {
   );
 
   const renderItem = ({ item }) => {
-    const backgroundColor = item === selectedId ? Color.Background : Color.Sub_Background ;
+    const backgroundColor = item === props.selectedId ? Color.Background : Color.Sub_Background ;
     return (
       <Item
         item={item}
-        onPress={() => setSelectedId(item)}
+        onPress={() => props.setSelectedId(item)}
         style={{ backgroundColor }}
       />
     );
   };
 
   useEffect(() => {
-},[selectedId])
+},[props.selectedId])
 
   return (
     <SafeAreaView style={styles({orientation}).container}>
@@ -66,7 +62,7 @@ const Pagination = (props) => {
         data={DATA[page]}
         renderItem={renderItem}
         keyExtractor={(item) => item}
-        extraData={selectedId}
+        extraData={props.selectedId}
         horizontal={true}
         initialNumToRender={2}
       />

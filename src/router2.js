@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { useHistory } from "react-router-dom";
 
@@ -30,13 +30,13 @@ import {
     Image
 } from 'react-native';
 import { NativeRouter, Route, Link, Redirect } from "react-router-native";
-
+import LocalStorage from './utils/LocalStorage'
 import { connect } from 'react-redux';
 
 const Router2Component = (props) => {
     //console.log(props.scene)
     let history = useHistory();
-    const [testId, setTestId] = useState(0);
+
     return (
         <NativeRouter>
             <React.Fragment>
@@ -47,13 +47,15 @@ const Router2Component = (props) => {
                             props.scene == 1 ? <Redirect to="/gameFirstScene"></Redirect> :
                                 props.scene == 2 ? <Redirect to="/gameSecondScene"></Redirect> :
                                     props.scene == 3 ? <Redirect to="/gameThirdScene"></Redirect> :
-                                        props.scene == 4 ? <Redirect to="/home "></Redirect> : null
+                                        props.scene == 4 ? <Redirect to="/home "></Redirect> :
+                                            props.scene == 5 ? <Redirect to="/registScene"></Redirect> : null
                 }
                 <Route exact path="/home" render={props => <HomeScene />} />
-                <Route path="/login" render={props => <RegistScene />} />
+                <Route path="/login" render={props => <LoginScene />} />
                 <Route path="/gameFirstScene" render={props => <GameFirstScene />} />
                 <Route path="/gameSecondScene" render={props => <GameSecondScene />} />
                 <Route path="/gameThirdScene" render={props => <GameThirdScene />} />
+                <Route path="/registScene" render={props => <RegistScene />} />
             </React.Fragment>
         </NativeRouter>
 
@@ -62,76 +64,6 @@ const Router2Component = (props) => {
 
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        //justifyContent: 'center', 
-        //alignItems: 'center',
-        flexDirection: 'row',
-        //backgroundColor : "gray"
-        //flex: 1 1 auto,
-        //marginTop: 22
-    },
-    containerMenuProfile: {
-        flex: 4,
-        justifyContent: 'flex-end',
-        alignItems: 'center',
-    },
-    fontMenuProfile: {
-        color: 'white',
-        fontSize: 16,
-        fontWeight: "bold",
-        paddingTop: 10,
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    fontMenuContent: {
-        color: 'white',
-        fontSize: 15,
-        alignItems: 'center',
-        paddingLeft: 5,
-    },
-    containerMenuContent: {
-        marginTop: 10,
-        flex: 5,
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start',
-    },
-    containerMenuContentRow: {
-        marginTop: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'row'
-    },
-    containerMenuFooter: {
-        flex: 1,
-        paddingBottom: 10,
-        justifyContent: 'flex-end',
-        alignItems: 'center',
-    },
-    containerContent: {
-        backgroundColor: "blue",
-        flex: 4,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    backgroundMenu: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        flex: 1,
-        resizeMode: "cover",
-    },
-    imageProfile: {
-        width: 100,
-        height: 100,
-        borderRadius: 50
-    },
-    icon: {
-        width: 40,
-        height: 40,
-        borderRadius: 20
-    },
-});
 const mapStateToProps = state => {
     return {
         text: state.global,

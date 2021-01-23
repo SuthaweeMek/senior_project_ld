@@ -33,6 +33,7 @@ import Router from '../router'
 import Orientation from 'react-native-orientation';
 import ButtonCurveLogin from '../component/buttonCurve.js';
 import InputBoxLogin from '../component/inputboxLogin';
+import LocalStorage from '../utils/LocalStorage'
 import AsyncStorage from '@react-native-community/async-storage'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp,listenOrientationChange as lor,removeOrientationListener as rol} from '../utils/Device'
 import Device from '../utils/Device'
@@ -52,57 +53,33 @@ const LoginScene = (props) => {
   const fadeAnim = useRef(new Animated.Value(0)).current // Initial value for fontSize: 28
   // console.log("ore",orientation,"style : ",orientation=="portrait" ? "portrait":"landscape"," hp wp",hp(100),"and",wp(100))
   // console.log("orientation ",Device.orientation())
-  const saveData = async (STORAGE_KEY, value) => {
-    try {
-      await AsyncStorage.setItem(STORAGE_KEY, value)
-    } catch (e) {
-      alert('Failed to save the data to the storage')
-    }
-  }
 
- 
 
-  const readData = async () => {
-    try {
-      const userToken = await AsyncStorage.getItem(STORAGE_KEY)
+  const onPress = async () => {
 
-      if (userToken !== null) {
-        setToken(userToken)
-        console.log('checkcheck')
-
-      }
-    } catch (e) {
-      alert('Failed to fetch the data from storage')
-    }
-  }
-
-  const onPress = () => {
-    fetch('http://10.0.2.2:8000/api/token/', {
+    let res = await fetch('http://10.0.2.2:8000/api/token/', {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        username: username,
+        userid: username,
         password: password
       })
-    }).then((response) => response.json())
-      .then((responseJson) => {
-        console.log(responseJson)
-        if (responseJson.detail === undefined && !(responseJson.password !== undefined || responseJson.username !== undefined)) {
-          setToken(responseJson.access)
-          saveData('@token', responseJson.access)
-          saveData('@refreshtoken', responseJson.refresh)
-          props.upDateScene(0)
-        }
-        else {
-          alert("Login failed")
-        }
-
-      })
-      ;
+    })
+    
+    let responseJson = await res.json();
+      if (res.ok) {
+        LocalStorage.saveData("token", JSON.stringify(responseJson))
+        props.upDateScene(0)
+      }
+      else{
+        alert("Login Failed")
+        console.log('error: ' , responseJson);
+      }
   }
+   
   const handleUser = (text) => {
     setUsername(text)
   }
@@ -158,7 +135,7 @@ const LoginScene = (props) => {
                 <View style={styles(props.orientation).btnContainer}>
                   <ButtonCurveLogin onPress={onPress} text="เข้าสู่ระบบ" size={{hp:hp('6%'),wp:wp('90%')}} />
                 </View>
-                <Text style={styles(props.orientation).fontRegis} onPress={() => { console.log("do something2") }}>สมัครสมาชิก</Text>
+                <Text style={styles(props.orientation).fontRegis} onPress={() => { props.upDateScene(5) }}>สมัครสมาชิก</Text>
                 <View style={{ flex: 1 }} />
               </Animated.View>
             </TouchableWithoutFeedback>

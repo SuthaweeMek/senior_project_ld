@@ -26,6 +26,7 @@ import WritingScene from './WritingScene'
 const image = { uri: "https://reactjs.org/logo-og.png" };
 import Router from '../router'
 import { connect } from 'react-redux';
+import LocalStorage from '../utils/LocalStorage'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp,listenOrientationChange as lor,removeOrientationListener as rol} from '../utils/Device'
 import { Icon } from 'react-native-elements'
 import Color from '../resource/color';
@@ -143,7 +144,13 @@ const HomeScene = (props) => {
               style={styles(props.orientation).icon}
             /> 
                 <TouchableOpacity
-                  onPress={() => {props.upDateScene(-1)}}
+                  onPress={() => {
+                    LocalStorage.clearStorage()
+
+                    props.upDateScene(-1)
+                  }
+
+                  }
                 >
                   <Text style={[styles(props.orientation).fontMenuContent,newStyle("exit_scene").TX]}>ออกจากระบบ</Text>
                 </TouchableOpacity>

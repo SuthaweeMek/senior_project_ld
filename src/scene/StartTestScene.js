@@ -34,6 +34,9 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientatio
 import Color from '../resource/color';
 import Font from '../resource/font';
 
+import LocalStorage from '../utils/LocalStorage'
+
+
 width = Device.isPortrait() ? Dimensions.get('screen').height : Dimensions.get('screen').width //1:4.65
 height = Device.isPortrait() ? Dimensions.get('screen').width : Dimensions.get('screen').height //1:4.65
 
@@ -106,11 +109,13 @@ const StartTestScene = (props) => {
                 }),
                 headers: {
                     'Accept': 'application/json',
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + await LocalStorage.readData("token")
                 },
             }
         );
         let responseJson = await res.json();
+        console.log(responseJson)
         if (res.status == 200) {
             props.upDateTestId(responseJson.id)
             props.upDateScene(1)
