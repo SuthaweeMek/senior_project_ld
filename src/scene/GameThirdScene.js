@@ -24,7 +24,7 @@ import Arrays from '../utils/Array'
 import Writing from '../component/writing'
 import Color from '../resource/color';
 import Font from '../resource/font';
-
+import {widthPercentageToDP as wp, heightPercentageToDP as hp,listenOrientationChange as lor,removeOrientationListener as rol} from '../utils/Device'
 //alphabet
 var ary_th_vocab = Arrays.CreatePlattern("th_vocab_",10)
 //image
@@ -164,7 +164,7 @@ const GameThirdScene = (props) => {
     Animated.timing(
       backgroundTransition,
       {
-        toValue: -width,
+        toValue: -wp('100%'),
         duration: 5000,
         useNativeDriver:false
       }
@@ -223,7 +223,7 @@ const GameThirdScene = (props) => {
       }
       if (loop == 3) {
         Animated.timing(effectSpeed,{
-          toValue:width,
+          toValue:wp('100%'),
           duration:2000,
           useNativeDriver:false
         }).start()
@@ -281,7 +281,7 @@ const GameThirdScene = (props) => {
       Animated.timing(
         fadeAnim,
         {
-          toValue: width,
+          toValue: wp('100%'),
           duration: 2000,
           useNativeDriver:false
         }
@@ -322,14 +322,14 @@ const GameThirdScene = (props) => {
         </View>
       </View>
       <View style={styles.field}>
-        <View style={{left:"50%"}}>
+        <View style={{left:"30%"}}>
           <SpriteSheet
             ref={ref => (player = ref)}
             source={spritePlayer}
             columns={9}
             rows={6}
-            height={height / 2.76} // set either, none, but not both
-            //ywidth={281}
+            // height={height / 2.76} // set either, none, but not both
+            width={wp('15%')}
             imageStyle={{ marginTop: -1 }}
             animations={{
               idle: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
@@ -344,8 +344,8 @@ const GameThirdScene = (props) => {
               source={spriteEffect1}
               columns={9}
               rows={6}
-              height={height / 2.76} // set either, none, but not both
-              //width={100}
+              // height={height / 2.76} // set either, none, but not both
+              width={wp('15%')}
               imageStyle={{ marginTop: -1 }}
               animations={{
                 red : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,],
@@ -365,8 +365,8 @@ const GameThirdScene = (props) => {
             source={spriteEnemy}
             columns={9}
             rows={6}
-            height={height / 2} // set either, none, but not both
-            //width={100}
+            // height={height / 2.76} // set either, none, but not both
+            width={wp('15%')}
             imageStyle={{ marginTop: -1 }}
             animations={{
               idle: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
@@ -453,7 +453,7 @@ const styles = StyleSheet.create({
   enemy:{
     alignItems:"flex-end",
     flex:1,
-    right:"50%"
+    right:"30%"
   },
   background: {
     // justifyContent: 'center',
@@ -464,9 +464,8 @@ const styles = StyleSheet.create({
     //backgroundColor:"red",
     position: "absolute",
     left: 0,
-    width: width * 2,
-    height: height- height/4.62-height/4.62/2,
-    opacity:1,
+    width: wp('200%'),
+    height: hp('100%'),
   },
   foreground: {
     // justifyContent: 'center',
@@ -475,13 +474,12 @@ const styles = StyleSheet.create({
     // resizeMode: "cover",
     backgroundColor: Color.Black,
     justifyContent: 'flex-end',
-    width: width * 2,
-    height: height/4.62,
-    opacity:1,
+    width: wp('200'),
+    height: hp('23%')
   },
   imageCircle: {
-    width: height / 5,
-    height: height / 5,
+    width: hp('20%'),
+    height: hp('20%'),
     margin: 10,
     borderRadius: 50
   },

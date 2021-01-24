@@ -16,12 +16,16 @@ import {
   Modal,
   Dimensions,
   ImageBackground,
+  TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux'; 
 import { SketchCanvas } from '@terrylinla/react-native-sketch-canvas';
 import Device from '../utils/Device';
-import imageBook from '../resource/image/book.png';
+import imageBook from '../resource/image/booksmall.png';
 import Sound from 'react-native-sound'
+import { Icon } from 'react-native-elements'
+import Color from '../resource/color'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientationChange as lor, removeOrientationListener as rol } from '../utils/Device'
 
 //dimesions
 width = Device.isPortrait() ? Dimensions.get('screen').height : Dimensions.get('screen').width //1:4.65
@@ -200,18 +204,36 @@ const writing = (props) => {
         <View style={styles.centeredView}>
           <ImageBackground source={imageBook} style={styles.image}>
             <View style={{ flexDirection: 'row', justifyContent: "flex-start",alignContent:"flex-start" }}>
-              <Button
+              <TouchableOpacity onPress={play}>
+                <Icon
+                name={"volume-up"}
+                type = "font-awesome5"
+                color= {Color.Gray} 
+                size={hp("5%")}
+                style={{margin:5}}
+                />         
+              </TouchableOpacity>
+              <TouchableOpacity onPress={Clear}>
+                <Icon
+                name={"eraser"}
+                type = "fontisto"
+                color= {Color.Gray} 
+                size={hp("4%")}
+                style={{margin:5}}
+                />         
+              </TouchableOpacity>
+              {/* <Button
                 onPress={play}
                 title="play"
                 color="#841584"
                 accessibilityLabel="Learn more about this purple button"
-              />  
-              <Button
+              />   */}
+              {/* <Button
               onPress={Clear}
               title="clear"
               color="#191584"
               accessibilityLabel="Learn more about this purple button"
-            />
+            /> */}
             </View>
             <SketchCanvas
               style={{  flex:1,justifyContent: "center", flexDirection: 'row' }}
@@ -240,29 +262,32 @@ const writing = (props) => {
             />
           </ImageBackground>
           <View style={{ flexDirection: 'row', justifyContent: "flex-end" }}>
-            <Button
-                onPress={Save}
-                title="Save"
-                color="#631584"
-                accessibilityLabel="Learn more about this purple button"
-              />
             {/* <Button onPress={
               props.closeModal
             } title="Close"
               color="#841123"
             /> */}
-            <Button
+            {/* <Button
               onPress={Undo}
               title="Undo"
               color="#841584"
               accessibilityLabel="Learn more about this purple button"
-            />
-            <Button
+            /> */} 
+            <View style={{width:wp('20%'),padding:15}}>
+              <Button
+                onPress={Save}
+                title="ส่งคำตอบ"
+                // color={Color.Yellow}  
+                accessibilityLabel="Learn more about this purple button"
+              />
+            </View>
+
+            {/* <Button
               onPress={Upload}
               title="Upload"
               color="#639584"
               accessibilityLabel="Learn more about this purple button"
-            />
+            /> */}
           </View>
           
         </View>
@@ -306,11 +331,10 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     flexDirection: 'column',
-    resizeMode: 'center',
-    
+    resizeMode: 'center',    
     //backgroundColor:"blue",
     //alignItems: "center",
-    marginHorizontal : width/3,
+    marginHorizontal : wp('33.33'),
     margin: 50,
     padding : 30,
     // paddingHorizontal :50,
