@@ -55,9 +55,10 @@ const ResultScene = (props) => {
     const [selectedId, setSelectedId] = useState("1");
     const [resultNumber, setResultNumber] = useState("0");
     const [imageModal, setImageModal] = useState("");
-    const [testId, setTestId] = useState(1);
+    const [testId, setTestId] = useState(-1);
     const [testResult, setTestResult] = useState([]);
-
+    const [name, setName] = useState("")
+    const [selectDate, setSelectDate] = useState("")
     useEffect(() => {
         lor(props.upDateOrientation)
         return rol()
@@ -167,7 +168,7 @@ const ResultScene = (props) => {
                 });
         }
         queryImage()
-    }, [selectTab, testId])
+    }, [testId, selectTab])
 
     const getTestResult = async (id) => {
         await fetch(`http://10.0.2.2:8000/classificationsresult/?testid=${id}`, {
@@ -218,7 +219,7 @@ const ResultScene = (props) => {
 
     );
 
-    const renderItem = ({ item,index }) => {
+    const renderItem = ({ item, index }) => {
         //const backgroundColor = item === selectedId ? "#6e3b6e" : "#f9c2ff";
         return (
             <Item
@@ -231,28 +232,30 @@ const ResultScene = (props) => {
 
 
     const itemList = reportList.map((element, index) => {
-        console.log("element", element)
         return (<>
-            < View style={styles({ orientation }).containerItemTable
-            }>
-                <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.id}</Text></View>
-                <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>นายศุทธวีร์ วีระพงษ์</Text></View>
-                <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.created === undefined ? "Pending" : element.created.split("T")[0]}</Text></View>
-                <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.LDResult}</Text></View>
-                <View style={styles({ orientation }).itemTable} >
-                    <Button
-                        title=" ๐ ๐ ๐ "
-                        onPress={async () => {
-                            setImageList([])
-                            await getTestResult(element.id)
-                            setSelectItem(1)
-                            setSelectTab(0)
-                        }}
-                        color={Color.Sub_Surface}
-                    />
-                </View>
-            </View >
-        </>)
+            {element.childrenID ?
+                < View style={styles({ orientation }).containerItemTable
+                }>
+                    <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.id}</Text></View>
+                    <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.childrenID.name + " " + element.childrenID.surname}</Text></View>
+                    <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.created === undefined ? "Pending" : element.created.split("T")[0]}</Text></View>
+                    <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.LDResult}</Text></View>
+                    <View style={styles({ orientation }).itemTable} >
+                        <Button
+                            title=" ๐ ๐ ๐ "
+                            onPress={async () => {
+                                setImageList([])
+                                await getTestResult(element.id)
+                                setSelectItem(1)
+                                setSelectTab(0)
+                                setSelectDate(element.created.split("T")[0])
+                                setName(element.childrenID.name + " " + element.childrenID.surname)
+                            }}
+                            color={Color.Sub_Surface}
+                        />
+                    </View>
+                </View > : null
+            }</>)
 
     })
 
@@ -283,7 +286,10 @@ const ResultScene = (props) => {
                 <View style={{ flexDirection: 'row', justifyContent: "flex-start", alignItems: "center", }}>
 
 
-                    <TouchableOpacity onPress={() => setSelectItem(0)} >
+                    <TouchableOpacity onPress={() => {
+                        setSelectItem(0)
+                        setTestId(-1)
+                    }} >
                         <Icon
                             //reverse
                             name={"chevron-back"}
@@ -292,21 +298,21 @@ const ResultScene = (props) => {
                             size={wp('4%')}
                         />
                     </TouchableOpacity>
-                    <Text style={styles({ orientation }).textIDPersonal}>000</Text>
+                    <Text style={styles({ orientation }).textIDPersonal}>{testId}</Text>
                 </View>
 
 
 
                 <View style={styles({ orientation }).containerinfoPersonal}>
                     <View style={{ flex: 1 }}>
-                        <Text style={styles({ orientation }).textInfoPersonal}>นายทดสอบ สมจริง</Text>
+                        <Text style={styles({ orientation }).textInfoPersonal}>{name}</Text>
                         <Text style={styles({ orientation }).textInfoPersonal}>ความน่าจะเป็น 97.2431%</Text>
                         <Text style={styles({ orientation }).textInfoPersonal}>พยัญชนะ : {orientation == "portrait" ? "\n\n" : null}เขียนถูก {testResult.countAlphabetTrue} ตัว <Text style={{ color: Color.Correct }}>เขียนผิด</Text> {testResult.countAlphabetFalse}ตัว <Text style={{ color: Color.Wrong }} >เขียนกลับด้าน</Text> {testResult.countAlphabetMirror} ตัว</Text>
                         <Text style={styles({ orientation }).textInfoPersonal}>สระ : {orientation == "portrait" ? "\n\n" : null}เขียนถูก {testResult.countVowelTrue} ตัว <Text style={{ color: Color.Correct }}>เขียนผิด</Text> {testResult.countVowelFalse} ตัว <Text style={{ color: Color.Wrong }} >เขียนกลับด้าน</Text> {testResult.countVowelMirror} ตัว</Text>
                         <Text style={styles({ orientation }).textInfoPersonal}>คำสะกด : {orientation == "portrait" ? "\n\n" : null}เขียนถูก {testResult.countVocabTrue} ตัว <Text style={{ color: Color.Correct }}>เขียนผิด</Text> {testResult.countVocabFalse} ตัว </Text>
                     </View>
                     <View style={{ backgroundColor: "white", alignItems: "flex-end" }}>
-                        <Text style={styles({ orientation }).dateInfoPersonal}>11/20/2020</Text>
+                        <Text style={styles({ orientation }).dateInfoPersonal}>{selectDate}</Text>
                     </View>
                 </View>
 
@@ -381,7 +387,7 @@ const ResultScene = (props) => {
                             {paging > 0 ? <TouchableOpacity onPress={() => { setPaging(paging - 1) }} style={styles({ orientation }).buttonPagination} >
                                 <Text style={styles({ orientation }).textButtonPagination}>ก่อน</Text>
                             </TouchableOpacity> : null}
-                            <Pagination paging={paging} number={resultNumber} split={5} selectedId={selectedId} setSelectedId={setSelectedId}/>
+                            <Pagination paging={paging} number={resultNumber} split={5} selectedId={selectedId} setSelectedId={setSelectedId} />
                             {/* วิธีคิด pagging คือต้องเอา number/split -1*/}
                             {paging < resultNumber / 5 - 1 ? <TouchableOpacity onPress={() => { setPaging(paging + 1) }} style={styles({ orientation }).buttonPagination} >
                                 <Text style={styles({ orientation }).textButtonPagination}>หลัง</Text>
@@ -592,7 +598,7 @@ const styles = (props) => StyleSheet.create({
     },
     textStyle: {
         color: Color.White,
-        fontWeight:'bold',
+        fontWeight: 'bold',
         textAlign: "center"
     },
     modalText: {

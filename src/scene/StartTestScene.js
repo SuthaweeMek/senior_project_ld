@@ -101,6 +101,7 @@ const StartTestScene = (props) => {
                     "LDResult": 0,
                     "UserID": props.userId,
                     "childrenID": childrenID,
+                    "vocabtype": vocabType.key
                 }),
                 headers: {
                     'Accept': 'application/json',

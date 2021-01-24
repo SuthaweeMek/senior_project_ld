@@ -148,7 +148,7 @@ const writing = (props) => {
     data.append('prediction', 1);
     data.append('ImageName', image);
     data.append('label',ary_sound[index-1])
-    data.append('TestID',1)
+    data.append('TestID',props.testId)
     //Please change file upload URL
     let res = await fetch(
       'http://10.0.2.2:8000/classifications/',
