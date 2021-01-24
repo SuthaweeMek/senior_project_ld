@@ -30,8 +30,11 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp,listenOrientationC
 import { Icon } from 'react-native-elements'
 import Color from '../resource/color';
 import Font from '../resource/font';
-const HomeScene = (props) => {
 
+
+
+const HomeScene = (props) => {
+  userrole = props.userrole
   useEffect(()=>{
     lor(props.upDateOrientation)
     return rol()
@@ -103,7 +106,9 @@ const HomeScene = (props) => {
             </View>
             </Link>
 
-
+          
+            {userrole=="teacher"?
+            <>
             <Link style={styles(props.orientation).link} to="/result" onPress={()=>{setOnclick("result_scene")}}>
             <View style={[styles(props.orientation).containerMenuContentRow,newStyle("result_scene").BG]} >
             <Icon
@@ -131,6 +136,8 @@ const HomeScene = (props) => {
                 <Text style={[styles(props.orientation).fontMenuContent,newStyle("stat_scene").TX]}>สถิติ</Text>
             </View>
             </Link>
+            </>
+            :null}
 
             <View style={styles(props.orientation).containerMenuFooter}>
               <View style={[styles(props.orientation).containerMenuContentRow,newStyle("exit_scene").BG]}>
@@ -274,6 +281,7 @@ const mapStateToProps = state => {
     text: state.global,
     scene: state.scene,
     orientation: state.orientation,
+    userrole: state.userrole,
   }
 }
 
@@ -288,6 +296,9 @@ const mapDispatchToProps = dispatch => {
     },
     upDateOrientation: (orientation) => {
       dispatch({ type: 'EDIT_ORIENTATION', payload: orientation })
+    },
+    upDateUserrole: (userrole) => {
+      dispatch({ type: 'EDIT_USERROLE', payload: userrole })
     }
 
   }

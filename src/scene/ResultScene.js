@@ -392,7 +392,7 @@ const styles=(props) => StyleSheet.create({
     textIDPersonal:{
         fontSize : wp(4),
         marginVertical: 12,
-        fontFamily:Font.Bold
+        fontFamily:Font.Bold,
     },
     containerinfoPersonal:{
         flex: 1.5,
@@ -420,7 +420,7 @@ const styles=(props) => StyleSheet.create({
     titleImagePersonal:{
         marginLeft: "3%",
         fontSize: wp("2.5%"),
-        fontFamily: Font.Bold
+        fontFamily: Font.Bold,
     },
     backgroundSelectTab:{
         backgroundColor: Color.White, 
@@ -495,7 +495,7 @@ const styles=(props) => StyleSheet.create({
     },
     textStyle: {
         color: Color.White,
-        fontWeight: Font.Bold,
+        fontWeight:'bold',
         textAlign: "center"
     },
     modalText: {
