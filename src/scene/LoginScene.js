@@ -73,6 +73,7 @@ const LoginScene = (props) => {
       if (res.ok) {
         LocalStorage.saveData("token", JSON.stringify(responseJson))
         props.upDateUserId(responseJson.userId)
+        props.upDateUserRole(responseJson.is_student===true?'student':'teacher')
         props.upDateScene(0)
       }
       else{
@@ -231,7 +232,12 @@ const mapDispatchToProps = dispatch => {
       },
       upDateUserId: (userId) =>{
         dispatch({type: 'EDIT_USERID', payload: userId})
-      }
+      },
+      
+        upDateUserRole: (userrole) => {
+          dispatch({type:'EDIT_USERROLE',payload :userrole})
+        }
+      
   }
 }
 
