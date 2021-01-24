@@ -489,11 +489,7 @@ const styles = (props) => StyleSheet.create({
     textIDPersonal: {
         fontSize: wp(4),
         marginVertical: 12,
-<<<<<<< HEAD
-        fontFamily:Font.Bold,
-=======
         fontFamily: Font.Bold
->>>>>>> 56173b5a6de3d3383680d198f2f4295e498fedb6
     },
     containerinfoPersonal: {
         flex: 1.5,
