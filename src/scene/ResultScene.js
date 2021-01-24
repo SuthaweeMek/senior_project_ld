@@ -60,11 +60,101 @@ const ResultScene = (props) => {
     const [testId, setTestId] = useState(-1);
     const [testResult, setTestResult] = useState([]);
     const [name, setName] = useState("")
-    const [selectDate, setSelectDate] = useState(new Date())
+    const [selectDate, setSelectDate] = useState("")
     const [modalEditVisible, setModalEditVisible] = useState(false);
     const [editPrediction, setEditPrediction] = useState(0);
 
     const [selectedModalId, setSelectedModalId] = useState({ index: 0, item: "panding" });
+
+    const queryTest = async () => {
+        fetch(`http://10.0.2.2:8000/test/?page=${selectedId}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + await LocalStorage.readData("token")
+            },
+        }).then((response) => {
+            if (response.ok) {
+                return response.json()
+            }
+            else throw new Error(response.status);
+        }
+        ).then((responseJson) => {
+            setResultNumber(responseJson.count)
+            setReportList(responseJson.articles)
+        }).catch((error) => {
+            console.log('error: ' + error);
+        });
+    }
+
+    const queryTestSearch = async () => {
+        if (search == "") {
+            fetch(`http://10.0.2.2:8000/test/?page=${selectedId}`, {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + await LocalStorage.readData("token")
+                },
+            }).then((response) => {
+                if (response.ok) {
+                    return response.json()
+                }
+                else throw new Error(response.status);
+            })
+                .then((responseJson) => {
+                    setResultNumber(responseJson.count)
+                    setReportList(responseJson.articles)
+                }).catch((error) => {
+                    console.log('error: ' + error);
+                });
+        }
+        else {
+            fetch(`http://10.0.2.2:8000/test/?page=${selectedId}&condition=${search}`, {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + await LocalStorage.readData("token")
+                },
+            }).then((response) => {
+                if (response.ok) {
+                    return response.json()
+                }
+                else throw new Error(response.status);
+            })
+                .then((responseJson) => {
+                    setResultNumber(responseJson.count)
+                    setReportList(responseJson.articles)
+                }).catch((error) => {
+                    console.log('error: ' + error);
+                });
+        }
+    }
+
+    const queryImage = async () => {
+        setImageList([])
+        await fetch(`http://10.0.2.2:8000/classifications/?testid=${testId}&type=${selectTab}`, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + await LocalStorage.readData("token")
+            },
+
+        }).then((response) => {
+            if (response.ok) {
+                return response.json()
+            }
+            else throw new Error(response.status);
+        })
+            .then((responseJson) => {
+                setImageList(responseJson.articles)
+            }).catch((error) => {
+                console.log('error: ' + error);
+            });
+    }
 
     useEffect(() => {
         lor(props.upDateOrientation)
@@ -94,109 +184,46 @@ const ResultScene = (props) => {
         },
     ];
     useEffect(() => {
-        const queryTest = async () => {
-            fetch(`http://10.0.2.2:8000/test/?page=${selectedId}`, {
-                method: 'GET',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + await LocalStorage.readData("token")
-                },
-            }).then((response) => {
-                if (response.ok) {
-                    return response.json()
-                }
-                else throw new Error(response.status);
-            }
-            ).then((responseJson) => {
-                setResultNumber(responseJson.count)
-                setReportList(responseJson.articles)
-            }).catch((error) => {
-                console.log('error: ' + error);
-            });
-        }
+        
         queryTest()
     }, [selectedId])
 
 
-    const handleEditPrediction = (item) => {
-        // setEditPrediction(text)
-        console.log("คุณแก้ไขการทำนายสำเร็จ id=",item.id," และแก้เป็น",editPrediction,"คือ",mapNumberToLabel[editPrediction])
-         Alert.alert("คุณแก้ไขการทำนายสำเร็จ id="+item.id+"แก้เป็น" +editPrediction+ "คือ"+mapNumberToLabel[editPrediction])
+    const handleEditPrediction = async (item) => {
+        console.log(editPrediction)
+        let res = await fetch('http://10.0.2.2:8000/classifications/edit/prediction/', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + await LocalStorage.readData("token")
+          },
+          body: JSON.stringify({
+            id: item.id,
+            prediction: editPrediction,
+          })
+        })
+          let responseJson = await res.json();
+          if (res.ok) {
+              
+            alert("Edit Success")
+            queryImage()
+            getTestResult(testId)
+            console.log("checkedit",responseJson)
+          }
+          else{
+            alert("Edit Failed")
+            console.log('error: ' , responseJson);
+          }
     }
 
     useEffect(() => {
-        const queryTest = async () => {
-            if (search == "") {
-                fetch(`http://10.0.2.2:8000/test/?page=${selectedId}`, {
-                    method: 'GET',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + await LocalStorage.readData("token")
-                    },
-                }).then((response) => {
-                    if (response.ok) {
-                        return response.json()
-                    }
-                    else throw new Error(response.status);
-                })
-                    .then((responseJson) => {
-                        setResultNumber(responseJson.count)
-                        setReportList(responseJson.articles)
-                    }).catch((error) => {
-                        console.log('error: ' + error);
-                    });
-            }
-            else {
-                fetch(`http://10.0.2.2:8000/test/?page=${selectedId}&condition=${search}`, {
-                    method: 'GET',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + await LocalStorage.readData("token")
-                    },
-                }).then((response) => {
-                    if (response.ok) {
-                        return response.json()
-                    }
-                    else throw new Error(response.status);
-                })
-                    .then((responseJson) => {
-                        setResultNumber(responseJson.count)
-                        setReportList(responseJson.articles)
-                    }).catch((error) => {
-                        console.log('error: ' + error);
-                    });
-            }
-        }
-        queryTest()
+       
+        queryTestSearch()
     }, [search])
 
 
     useEffect(() => {
-        const queryImage = async () => {
-            setImageList([])
-            await fetch(`http://10.0.2.2:8000/classifications/?testid=${testId}&type=${selectTab}`, {
-                method: 'GET',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + await LocalStorage.readData("token")
-                },
-
-            }).then((response) => {
-                if (response.ok) {
-                    return response.json()
-                }
-                else throw new Error(response.status);
-            })
-                .then((responseJson) => {
-                    setImageList(responseJson.articles)
-                }).catch((error) => {
-                    console.log('error: ' + error);
-                });
-        }
         queryImage()
     }, [testId, selectTab])
 

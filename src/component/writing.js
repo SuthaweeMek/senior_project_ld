@@ -25,6 +25,8 @@ import imageBook from '../resource/image/booksmall.png';
 import Sound from 'react-native-sound'
 import { Icon } from 'react-native-elements'
 import Color from '../resource/color'
+
+import LocalStorage from '../utils/LocalStorage'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientationChange as lor, removeOrientationListener as rol } from '../utils/Device'
 
 //dimesions
@@ -146,7 +148,7 @@ const writing = (props) => {
     var image = `data:image/png;base64,` + base64
     const data = new FormData();
     data.append('prediction', 1);
-    data.append('ImageName', tmage);
+    data.append('ImageName', image);
     data.append('label',ary_sound[index-1])
     data.append('TestID',props.testId)
     //Please change file upload URL
@@ -157,7 +159,8 @@ const writing = (props) => {
         body: data,
         headers: {
           'Accept': 'application/json',
-          'Content-Type': 'multipart/form-data; ',
+          'Content-Type': 'multipart/form-data; ',  
+          'Authorization': 'Bearer ' + await LocalStorage.readData("token")
         },
       }
     );

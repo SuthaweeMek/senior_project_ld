@@ -13,7 +13,7 @@ import {
   ScrollView,
   View,
   Text,
-  StatusBar, 
+  StatusBar,
   Button,
   ImageBackground,
   Image,
@@ -27,7 +27,7 @@ const image = { uri: "https://reactjs.org/logo-og.png" };
 import Router from '../router'
 import { connect } from 'react-redux';
 import LocalStorage from '../utils/LocalStorage'
-import {widthPercentageToDP as wp, heightPercentageToDP as hp,listenOrientationChange as lor,removeOrientationListener as rol} from '../utils/Device'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientationChange as lor, removeOrientationListener as rol } from '../utils/Device'
 import { Icon } from 'react-native-elements'
 import Color from '../resource/color';
 import Font from '../resource/font';
@@ -36,141 +36,146 @@ import Font from '../resource/font';
 
 const HomeScene = (props) => {
   userrole = props.userrole
-  useEffect(()=>{
+  console.log("checkname",props.firstname)
+  useEffect(() => {
     lor(props.upDateOrientation)
     return rol()
   }
-  ,[])
-  const [onClick,setOnclick] = useState("test_scene")
+    , [])
+  const [onClick, setOnclick] = useState("test_scene")
   // console.log("test", Color.White)
 
   props.upDateText("testtext")
 
-  const newStyle = (fromscene) =>{
+  const newStyle = (fromscene) => {
     var new_style = {}
     // console.log("onClick vs fromscene",onClick , "and ", fromscene,": ",onClick==fromscene)
-    const menu_clicked = {BG:{backgroundColor:Color.White,borderColor:Color.White,},
-    LG:{logocolor:Color.Background},
-    TX:{color:Color.Black,fontFamily:"EkkamaiNew-Bold"}}
-    const menu_unclick = {BG:{backgroundColor:Color.Background,borderColor:Color.Background},
-    LG:{logocolor:Color.Sub_Surface},
-    TX:{color:Color.White}}
+    const menu_clicked = {
+      BG: { backgroundColor: Color.White, borderColor: Color.White, },
+      LG: { logocolor: Color.Background },
+      TX: { color: Color.Black, fontFamily: "EkkamaiNew-Bold" }
+    }
+    const menu_unclick = {
+      BG: { backgroundColor: Color.Background, borderColor: Color.Background },
+      LG: { logocolor: Color.Sub_Surface },
+      TX: { color: Color.White }
+    }
 
     switch (fromscene) {
       case 'test_scene':
-        onClick==fromscene ? new_style = menu_clicked: new_style = menu_unclick
+        onClick == fromscene ? new_style = menu_clicked : new_style = menu_unclick
       case 'result_scene':
-        onClick==fromscene ? new_style = menu_clicked: new_style = menu_unclick
+        onClick == fromscene ? new_style = menu_clicked : new_style = menu_unclick
       case 'stat_scene':
-        onClick==fromscene ? new_style = menu_clicked: new_style =menu_unclick
+        onClick == fromscene ? new_style = menu_clicked : new_style = menu_unclick
       case 'exit_scene':
-        onClick==fromscene ? new_style = menu_clicked: new_style =menu_unclick
+        onClick == fromscene ? new_style = menu_clicked : new_style = menu_unclick
       default:
         null
-      }
-      
+    }
 
-  return (new_style)
-  
-}
+
+    return (new_style)
+
+  }
 
   return (
     <NativeRouter>
       <StatusBar translucent={false} barStyle={"light-content"} backgroundColor={Color.Background} />
-      <SafeAreaView style={{flex:1}}>
+      <SafeAreaView style={{ flex: 1 }}>
 
-      <View style={styles(props.orientation).container}>
+        <View style={styles(props.orientation).container}>
 
-        {/* <ImageBackground source={backgroundMenu} style={styles.backgroundMenu}> */}
-        <View style={styles(props.orientation).containerMenu}>
+          {/* <ImageBackground source={backgroundMenu} style={styles.backgroundMenu}> */}
+          <View style={styles(props.orientation).containerMenu}>
 
-          <View style={styles(props.orientation).containerMenuProfile}>
-            <Image source={imageProfile} style={styles(props.orientation).imageProfile}></Image>
-            <Link to="/" >
-              <Text style={styles(props.orientation).fontMenuProfile}>Pig Piggy</Text>
-            </Link>
-          </View>
-
-          <View style={styles(props.orientation).containerMenuContent}>
-
-          <Link style={styles(props.orientation).link} to="/test" onPress={()=>{setOnclick("test_scene")}} >
-            <View style={[styles(props.orientation).containerMenuContentRow,newStyle("test_scene").BG]} >
-            <Icon
-              //reverse
-              name={"pen"}
-              type='font-awesome-5'
-              color= {newStyle("test_scene").LG.logocolor} 
-              size={wp('2.5%')}
-              style={styles(props.orientation).icon}
-            />
-                <Text style={[styles(props.orientation).fontMenuContent,newStyle("test_scene").TX]}>แบบทดสอบ</Text>
+            <View style={styles(props.orientation).containerMenuProfile}>
+              <Image source={imageProfile} style={styles(props.orientation).imageProfile}></Image>
+              <Link to="/" >
+                <Text style={styles(props.orientation).fontMenuProfile}>{props.firstname}</Text>
+              </Link>
             </View>
-            </Link>
 
-          
-            {userrole=="teacher"?
-            <>
-            <Link style={styles(props.orientation).link} to="/result" onPress={()=>{setOnclick("result_scene")}}>
-            <View style={[styles(props.orientation).containerMenuContentRow,newStyle("result_scene").BG]} >
-            <Icon
-              //reverse
-              name={"file-contract"}
-              type='font-awesome-5'
-              color= {newStyle("result_scene").LG.logocolor} 
-              size={wp('2.5%')}
-              style={styles(props.orientation).icon}
-            />              
-                <Text style={[styles(props.orientation).fontMenuContent,newStyle("result_scene").TX]}>ผลลัพท์</Text>
-            </View>
-            </Link>
+            <View style={styles(props.orientation).containerMenuContent}>
 
-            <Link style={styles(props.orientation).link} to="/stat" onPress={()=>{setOnclick("stat_scene")}} >
-            <View style={[styles(props.orientation).containerMenuContentRow,newStyle("stat_scene").BG]} >
-            <Icon
-              //reverse
-              name={"chart-bar"}
-              type='font-awesome-5'
-              color= {newStyle("stat_scene").LG.logocolor} 
-              size={wp('2.5%')}
-              style={styles(props.orientation).icon}
-            /> 
-                <Text style={[styles(props.orientation).fontMenuContent,newStyle("stat_scene").TX]}>สถิติ</Text>
-            </View>
-            </Link>
-            </>
-            :null}
+              <Link style={styles(props.orientation).link} to="/test" onPress={() => { setOnclick("test_scene") }} >
+                <View style={[styles(props.orientation).containerMenuContentRow, newStyle("test_scene").BG]} >
+                  <Icon
+                    //reverse
+                    name={"pen"}
+                    type='font-awesome-5'
+                    color={newStyle("test_scene").LG.logocolor}
+                    size={wp('2.5%')}
+                    style={styles(props.orientation).icon}
+                  />
+                  <Text style={[styles(props.orientation).fontMenuContent, newStyle("test_scene").TX]}>แบบทดสอบ</Text>
+                </View>
+              </Link>
 
-            <View style={styles(props.orientation).containerMenuFooter}>
-              <View style={[styles(props.orientation).containerMenuContentRow,newStyle("exit_scene").BG]}>
-              <Icon
-              //reverse
-              name={"door-open"}
-              type='font-awesome-5'
-              color= {newStyle("exit_scene").LG.logocolor} 
-              size={wp('2.5%')}
-              style={styles(props.orientation).icon}
-            /> 
-                <TouchableOpacity
-                  onPress={() => {
-                    LocalStorage.clearStorage()
 
-                    props.upDateScene(-1)
-                  }
+              {userrole == "teacher" ?
+                <>
+                  <Link style={styles(props.orientation).link} to="/result" onPress={() => { setOnclick("result_scene") }}>
+                    <View style={[styles(props.orientation).containerMenuContentRow, newStyle("result_scene").BG]} >
+                      <Icon
+                        //reverse
+                        name={"file-contract"}
+                        type='font-awesome-5'
+                        color={newStyle("result_scene").LG.logocolor}
+                        size={wp('2.5%')}
+                        style={styles(props.orientation).icon}
+                      />
+                      <Text style={[styles(props.orientation).fontMenuContent, newStyle("result_scene").TX]}>ผลลัพท์</Text>
+                    </View>
+                  </Link>
 
-                  }
-                >
-                  <Text style={[styles(props.orientation).fontMenuContent,newStyle("exit_scene").TX]}>ออกจากระบบ</Text>
-                </TouchableOpacity>
+                  <Link style={styles(props.orientation).link} to="/stat" onPress={() => { setOnclick("stat_scene") }} >
+                    <View style={[styles(props.orientation).containerMenuContentRow, newStyle("stat_scene").BG]} >
+                      <Icon
+                        //reverse
+                        name={"chart-bar"}
+                        type='font-awesome-5'
+                        color={newStyle("stat_scene").LG.logocolor}
+                        size={wp('2.5%')}
+                        style={styles(props.orientation).icon}
+                      />
+                      <Text style={[styles(props.orientation).fontMenuContent, newStyle("stat_scene").TX]}>สถิติ</Text>
+                    </View>
+                  </Link>
+                </>
+                : null}
+
+              <View style={styles(props.orientation).containerMenuFooter}>
+                <View style={[styles(props.orientation).containerMenuContentRow, newStyle("exit_scene").BG]}>
+                  <Icon
+                    //reverse
+                    name={"door-open"}
+                    type='font-awesome-5'
+                    color={newStyle("exit_scene").LG.logocolor}
+                    size={wp('2.5%')}
+                    style={styles(props.orientation).icon}
+                  />
+                  <TouchableOpacity
+                    onPress={() => {
+                      LocalStorage.clearStorage()
+
+                      props.upDateScene(-1)
+                    }
+
+                    }
+                  >
+                    <Text style={[styles(props.orientation).fontMenuContent, newStyle("exit_scene").TX]}>ออกจากระบบ</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
 
+            </View>
+          </View>
+          {/* </ImageBackground> */}
+          <View style={styles(props.orientation).containerContent}>
+            <Router setScene={props.handleScene} handleTestId={props.handleTestId} />
           </View>
         </View>
-        {/* </ImageBackground> */}
-        <View style={styles(props.orientation).containerContent}>
-          <Router setScene={props.handleScene} handleTestId={props.handleTestId} />
-        </View>
-      </View>
       </SafeAreaView>
     </NativeRouter>
   );
@@ -184,26 +189,26 @@ const styles = (props) => StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor : Color.Background,
+    backgroundColor: Color.Background,
     // width : wp("25%"),
-    height : hp ("100%")
+    height: hp("100%")
     //flex: 1 1 auto,
     //marginTop: 22
   },
-  containerMenu :{
+  containerMenu: {
     // flex:1,
     flexDirection: 'column',
-    justifyContent: 'center', 
+    justifyContent: 'center',
     alignItems: 'flex-end',
     // backgroundColor:"green",
-    width : wp("19%"),
+    width: wp("19%"),
     // height : hp ("100%")
   },
   containerMenuProfile: {
     flex: 3,
     justifyContent: 'center',
     alignItems: 'center',
-    alignSelf:'center',
+    alignSelf: 'center',
   },
   fontMenuProfile: {
     color: Color.White,
@@ -211,14 +216,14 @@ const styles = (props) => StyleSheet.create({
     // fontWeight: "bold",
     paddingTop: 12,
     alignItems: 'center',
-    fontFamily:Font.Bold,
+    fontFamily: Font.Bold,
     justifyContent: 'center'
   },
   fontMenuContent: {
     color: Color.White,
     fontSize: wp('1.8%'),
     alignItems: 'center',
-    fontFamily:Font.Regular,
+    fontFamily: Font.Regular,
     paddingLeft: 5,
     // backgroundColor:"green",
   },
@@ -235,11 +240,11 @@ const styles = (props) => StyleSheet.create({
     // alignSelf:"flex-start",
     // alignSelf: 'center',
     flexDirection: 'row',
-    width : wp("16%"),
-    backgroundColor:Color.White,
+    width: wp("16%"),
+    backgroundColor: Color.White,
     paddingLeft: wp("1%"),
-    borderTopLeftRadius: wp("16%")/2,
-    borderBottomLeftRadius: wp("16%")/2,
+    borderTopLeftRadius: wp("16%") / 2,
+    borderBottomLeftRadius: wp("16%") / 2,
     borderWidth: 2,
     // borderColor:"white",
   },
@@ -248,7 +253,7 @@ const styles = (props) => StyleSheet.create({
     paddingBottom: hp("2.7%"),
     justifyContent: 'flex-end',
     alignItems: 'center',
-    
+
   },
   containerContent: {
     flex: 2,
@@ -263,23 +268,23 @@ const styles = (props) => StyleSheet.create({
   imageProfile: {
     width: wp('11%'),
     height: wp('11%'),
-    borderRadius: wp('11%')/2,
-    borderColor:Color.White,
-    borderWidth:3,
+    borderRadius: wp('11%') / 2,
+    borderColor: Color.White,
+    borderWidth: 3,
   },
   icon: {
     height: wp("4%"),
     width: wp("4%"),
-    justifyContent:'center'
+    justifyContent: 'center'
   },
-  link:{
+  link: {
     // justifyContent: 'center',
     // alignItems: 'center',
     // alignSelf:'center',
     flexDirection: 'row',
-    marginVertical:8,
-    borderTopLeftRadius: wp("16%")/2,
-    borderBottomLeftRadius: wp("16%")/2,
+    marginVertical: 8,
+    borderTopLeftRadius: wp("16%") / 2,
+    borderBottomLeftRadius: wp("16%") / 2,
   }
 });
 
@@ -289,6 +294,7 @@ const mapStateToProps = state => {
     scene: state.scene,
     orientation: state.orientation,
     userrole: state.userrole,
+    firstname: state.firstname
   }
 }
 

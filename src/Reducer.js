@@ -3,10 +3,11 @@ init_state = {
     global: 'init',
     testId: 0,
     scene: -1,
-    orientation : Device.orientation(),
-    userId:0,
+    orientation: Device.orientation(),
+    userId: 0,
     scene: -1,
-    userrole : 'teacher',
+    userrole: 'teacher',
+    firstname: 'Pending'
 }
 
 export default Reducer = (state = init_state, action) => {
@@ -33,13 +34,18 @@ export default Reducer = (state = init_state, action) => {
             }
         case 'EDIT_USERID':
             return {
-                    ...state,
-                    userId: action.payload,
+                ...state,
+                userId: action.payload,
             }
         case 'EDIT_USERROLE':
             return {
                 ...state,
                 userrole: action.payload
+            }
+        case 'EDIT_NAME':
+            return {
+                ...state,
+                firstname: action.payload
             }
         default:
             return state

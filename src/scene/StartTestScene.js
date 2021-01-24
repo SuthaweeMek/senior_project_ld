@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     SafeAreaView,
     StyleSheet,
@@ -44,20 +44,16 @@ console.log("is tablet ?", Device.isTablet())
 console.log("Device height = ", height, " and width = ", width)
 
 const StartTestScene = (props) => {
-    useEffect(() => {
-        lor(props.upDateOrientation)
-        return(rol())
-    }    
-    ,[])
-    const [name, setName] = useState('ทดสอบ')
-    const [surname, setSurname] = useState('สมจริง')
+
+    const [name, setName] = useState('')
+    const [surname, setSurname] = useState('')
     const [childrenID, setChildrenID] = useState('')
     const [gender, setGender] = useState('m')
-    const [vocabType, setVocabType] = useState({key: "1", value: "ระดับที่ 1"})
-    const [age, setAge] = useState('16')
+    const [vocabType, setVocabType] = useState({ key: "1", value: "ระดับที่ 1" })
+    const [age, setAge] = useState('')
     const pickerItem = [
         {
-            key: "1", value: "ระดับที่ 1" 
+            key: "1", value: "ระดับที่ 1"
         },
         {
             key: "2", value: "ระดับที่ 2"
@@ -71,19 +67,88 @@ const StartTestScene = (props) => {
         {
             key: "5", value: "ระดับที่ 5"
         },
-      ];
-    console.log("what ?",props.orientation == "portrait"?"true":"false")
+    ];
+    console.log("what ?", props.orientation == "portrait" ? "true" : "false")
     console.log(props.orientation)
     console.log(childrenID)
     console.log(gender)
+    const queryChildren = async () => {
+        if (childrenID.length == 6) {
+            let res = await fetch(
+                `http://10.0.2.2:8000/users/children/?childrenID=${childrenID}`,
+                {
+                    method: 'get',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + await LocalStorage.readData("token")
+                    },
+                }
+            );
+            let responseJson = await res.json();
+            if (res.status == 200) {
+                setName(responseJson.children[0].name)
+                setSurname(responseJson.children[0].surname)
+                setAge(responseJson.age)
+            }
+            else {
+                alert("Cant find children")
+            }
+        }
+    }
+
+
+    const queryChildrenById = async () => {
+
+        let res = await fetch(
+            `http://10.0.2.2:8000/users/children/?id=${props.userId}`,
+            {
+                method: 'get',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + await LocalStorage.readData("token")
+                },
+            }
+        );
+        let responseJson = await res.json();
+        if (res.status == 200) {
+            setChildrenID(responseJson.children[0].childrenID)
+            setName(responseJson.children[0].name)
+            setSurname(responseJson.children[0].surname)
+            setAge(responseJson.age)
+        }
+        else {
+            alert("Cant find children")
+        }
+
+    }
+
+
+    useEffect(() => {
+        lor(props.upDateOrientation)
+        console.log(props.userrole)
+        if (props.userrole == 'student') {
+            console.log('check')
+            queryChildrenById()
+        }
+        return (rol())
+    }
+        , [])
+    useEffect(() => {
+        queryChildren()
+
+    }
+        , [childrenID])
     const handleName = (text) => {
         setName(text)
     }
-    const handleChildrenID = (text) => {
+    const handleChildrenID = async (text) => {
         setChildrenID(text)
+
     }
     const handleKey = (text) => {
-        console.log("level = == = ",text)
+        console.log("level = == = ", text)
         setVocabType(text)
     }
     const handleAge = (text) => {
@@ -122,7 +187,8 @@ const StartTestScene = (props) => {
             <View style={styles(props.orientation).containerStartTest} >
                 <Text style={styles(props.orientation).fontStartTest} >ข้อมูลผู้ทำแบบทดสอบ</Text>
                 {/* <Text style={styles(props.orientation).fontStartTestInput} >รหัสประจำตัวเด็ก</Text> */}
-                <InputBoxLogin text={childrenID} onChangeText={handleChildrenID} placeholder="รหัสประจำตัวเด็ก" icon="user" size={{ hp: hp('6%'), wp: wp('35%') }} />
+                {props.userrole == "student" ? <Text style={styles(props.orientation).fontStartTestInfo} >{"รหัสประจำตัวเด็ก : " + childrenID} </Text>
+                    : <InputBoxLogin text={childrenID} onChangeText={handleChildrenID} placeholder="รหัสประจำตัวเด็ก" icon="user" size={{ hp: hp('6%'), wp: wp('35%') }} />}
                 {/* <InputBox text={childrenID} onChangeText={handleChildrenID} placeholder="รหัสประจำตัวผู้เข้าทำแบบทดสอบ"></InputBox> */}
                 <View style={styles(props.orientation).containerStartTestInput}>
                     <Text style={styles(props.orientation).fontStartTestInfo} >เพศ : {gender == 'm' ? "ชาย" : "หญิง"} </Text>
@@ -136,10 +202,10 @@ const StartTestScene = (props) => {
                     <Text style={styles(props.orientation).fontStartTestInput} >แบบทดสอบ</Text>
                     <View style={styles(props.orientation).Picker}>
                         <Text style={styles(props.orientation).fontStartTestInfo} >ระดับ : </Text>
-                        {props.orientation == "portrait"? <SelectionInput onChangeItem={handleKey} value={vocabType} size={{ hp: hp('5%'), wp: wp('45%') }} items={pickerItem} title="ระดับแบบทดสอบ"/>:<SelectionInput onChangeItem={handleKey} value={vocabType} size={{ hp: hp('6%'), wp: wp('30%') }} items={pickerItem} title="ระดับแบบทดสอบ"/>}
-                        {props.orientation == "portrait"? null : <ButtonCurve text="เริ่มทำแบบทดสอบ" onPress={onPress} size={{ hp: hp('6%'), wp: wp('25%') }} />}
+                        {props.orientation == "portrait" ? <SelectionInput onChangeItem={handleKey} value={vocabType} size={{ hp: hp('5%'), wp: wp('45%') }} items={pickerItem} title="ระดับแบบทดสอบ" /> : <SelectionInput onChangeItem={handleKey} value={vocabType} size={{ hp: hp('6%'), wp: wp('30%') }} items={pickerItem} title="ระดับแบบทดสอบ" />}
+                        {props.orientation == "portrait" ? null : <ButtonCurve text="เริ่มทำแบบทดสอบ" onPress={onPress} size={{ hp: hp('6%'), wp: wp('25%') }} />}
                     </View>
-                    {props.orientation == "portrait"? <ButtonCurve text="เริ่มทำแบบทดสอบ" onPress={onPress} size={{ hp: hp('5%'), wp: wp('50%') }} />:null}
+                    {props.orientation == "portrait" ? <ButtonCurve text="เริ่มทำแบบทดสอบ" onPress={onPress} size={{ hp: hp('5%'), wp: wp('50%') }} /> : null}
                 </View>
             </View>
         </View>
@@ -200,24 +266,24 @@ const styles = (props) => StyleSheet.create({
         borderTopLeftRadius: hp("3.5%"),
         borderTopRightRadius: hp("3.5%"),
         justifyContent: "flex-start",
-        alignItems: props == "portrait"? "center":"flex-start",
+        alignItems: props == "portrait" ? "center" : "flex-start",
         backgroundColor: Color.Sub_Background
     },
-    Picker :{
-     flexDirection: "row" ,
-    //  alignContent:"center",
-    //  justifyContent:"center",
-     padding:12,
-    alignSelf:"center",
-    // alignItems:"center",
-    // justifyContent:"flex-end",
-    // alignItems: "flex-end",
-    // backgroundColor:"red",
+    Picker: {
+        flexDirection: "row",
+        //  alignContent:"center",
+        //  justifyContent:"center",
+        padding: 12,
+        alignSelf: "center",
+        // alignItems:"center",
+        // justifyContent:"flex-end",
+        // alignItems: "flex-end",
+        // backgroundColor:"red",
     },
     buttonStart: {
         height: hp('6%'),
         width: wp('50%'),
-        padding:200,
+        padding: 200,
     },
     fontStartTest: {
         color: Color.Black,
@@ -236,7 +302,7 @@ const styles = (props) => StyleSheet.create({
         // marginTop: 10,
         marginVertical: 12,
         // alignItems: 'center',
-        alignSelf:'flex-start',
+        alignSelf: 'flex-start',
         fontFamily: Font.Bold,
         // justifyContent: 'center'
     },
@@ -263,7 +329,8 @@ const mapStateToProps = state => {
         scene: state.scene,
         orientation: state.orientation,
         testId: state.testId,
-        userId:state.userId
+        userId: state.userId,
+        userrole: state.userrole
     }
 }
 
