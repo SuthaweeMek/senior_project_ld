@@ -71,6 +71,11 @@ const RegistScene = (props) => {
   // console.log("orientation ",Device.orientation())
 
   const [currentStudy, setCurrentStudy] = useState({ key: "1", value: "ประถมศึกษาปีที่ 1" })
+
+  const formatDate =  (date) =>{
+    return String(date.getFullYear())+"-"+String(date.getMonth()+1)+"-"+String(date.getDate())
+  }
+
   const pickerItem = [
     {
       key: "1", value: "ประถมศึกษาปีที่ 1"
@@ -125,6 +130,7 @@ const RegistScene = (props) => {
           console.log("currentDate is empty")
           break
         }
+        console.log(currentDate)
         let res = await fetch('http://10.0.2.2:8000/users/', {
           method: 'POST',
           headers: {
@@ -156,10 +162,6 @@ const RegistScene = (props) => {
   }
 
 
-  const formatDate = (date) =>{
-    format = String(date.getFullYear())+"-"+String(date.getMonth()+1)+"-"+String(date.getDate())
-    return format
-  }
 
   const handleUser = (text) => {
     setUsername(text)
@@ -352,7 +354,7 @@ const RegistScene = (props) => {
                   {registTypeSelect=="student"?
                     <View style={styles(props.orientation).containerInfo} >
                     <Text style={styles(props.orientation).textInfo}>ระดับชั้นปีที่กำลังศึกษา : </Text>
-                    {props.orientation == "portrait" ? <SelectionInput onChangeItem={handleCurrentStudy} value={currentStudy} size={{ hp: hp('6%'), wp: wp('35%') }} items={pickerItem} title="ระดับชั้นปีที่กำลังศึกษา" /> : <SelectionInput onChangeItem={handleCurrentStudy}  size={{ hp: hp('6%'), wp: wp('35%') }} items={pickerItem} title="ระดับชั้นปีที่กำลังศึกษา" />}
+                    {props.orientation == "portrait" ? <SelectionInput onChangeItem={handleCurrentStudy} value={currentStudy} size={{ hp: hp('6%'), wp: wp('35%') }} items={pickerItem} title="ระดับชั้นปีที่กำลังศึกษา" /> : <SelectionInput onChangeItem={handleCurrentStudy}  value={currentStudy}  size={{ hp: hp('6%'), wp: wp('35%') }} items={pickerItem} title="ระดับชั้นปีที่กำลังศึกษา" />}
                   </View>
                   :null}
     
