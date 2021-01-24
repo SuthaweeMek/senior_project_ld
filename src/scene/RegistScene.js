@@ -91,6 +91,10 @@ const RegistScene = (props) => {
       key: "6", value: "ประถมศึกษาปีที่ 6"
     },
   ];
+  const checkRegexID = (ID) =>{
+    re = /^HN\d{8}/
+    return re.test(ID)
+  }
   const checkStateregist = async (stateRegist) => {
     switch (stateRegist) {
       case 2:
@@ -113,6 +117,13 @@ const RegistScene = (props) => {
           console.log("idnumber is empty")
           break
         }
+        if (idnumber == "") {
+          console.log("idnumber is empty")
+          break
+        }
+        if (!checkRegexID(idnumber)){
+          console.log("ID IS WRONG FORMAT")
+        }
         if (name == "") {
           console.log("name is empty")
           break
@@ -125,6 +136,7 @@ const RegistScene = (props) => {
           console.log("currentDate is empty")
           break
         }
+        
         let res = await fetch('http://10.0.2.2:8000/users/', {
           method: 'POST',
           headers: {
@@ -234,12 +246,13 @@ const RegistScene = (props) => {
       {/* <ImageBackground source={backgroundLogin} style={styles(props.orientation).background} resizeMode={"stretch"}> */}
       <KeyboardAvoidingView
         // behavior={props.orientation=="landscape"? Platform.OS === "ios" ? "padding" : "height": Platform.OS === "ios" ? "padding" : "height"}
-        behavior={Platform.OS === "ios" ? "padding" : null}
+        behavior={Platform.OS === "ios" ? "padding" : ""}
         style={styles(props.orientation).container}
       >
         <SafeAreaView style={styles(props.orientation).container}>
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <Animated.View style={[styles(props.orientation).inner, { top: moveAnim, opacity: fadeAnim }]}>
+              <ScrollView>
               <View style={{ flex: 1 }} />
               <View style={[styles(props.orientation).containerFill]}>
                 <View style={{ flexDirection: "row", width: wp(90) }}>
@@ -330,7 +343,7 @@ const RegistScene = (props) => {
 
                 {stateregist == 3 ? <>
                   <Text style={[styles(props.orientation).textTitle]} >ข้อมูลส่วนตัว</Text>
-                  <InputBoxLogin text={idnumber} onChangeText={handleID} placeholder="ID Number" icon="id-card" size={{ hp: hp('6%'), wp: wp('80%') }} />
+                  <InputBoxLogin text={idnumber} maxLength={10} onChangeText={handleID} placeholder="ID Number" icon="id-card" size={{ hp: hp('6%'), wp: wp('80%') }} />
                   
                   {registTypeSelect=="student"?
                   <View style={{flexDirection:"row"}}>
@@ -375,6 +388,8 @@ const RegistScene = (props) => {
 
 
               <View style={{ flex: 1 }} />
+              </ScrollView>
+
             </Animated.View>
           </TouchableWithoutFeedback>
         </SafeAreaView>

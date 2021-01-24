@@ -62,8 +62,9 @@ const ResultScene = (props) => {
     const [selectDate, setSelectedDate] = useState(new Date())
     const [modalEditVisible, setModalEditVisible] = useState(false);
     const [editPrediction, setEditPrediction] = useState(0);
-
+    var editPrediction2 = 0
     const [selectedModalId, setSelectedModalId] = useState({ index: 0, item: "panding" });
+    const [value, onChangeText] = React.useState('Useless Placeholder');
 
     useEffect(() => {
         lor(props.upDateOrientation)
@@ -256,8 +257,53 @@ const ResultScene = (props) => {
                     resizeMode: 'contain',
                 }} />
             </TouchableOpacity>
+            {console.log("test ",selectedModalId,"and",index)}
+        </View>
 
-            {/* Model edit */}
+    )
+
+    const renderItem = ({ item, index }) => {
+        //const backgroundColor = item === selectedId ? "#6e3b6e" : "#f9c2ff";
+        return (
+            <Item
+                item={item}
+                index={index}
+                onPress={() => { console.log("index and item", item), setSelectedModalId({ index, item }), setModalEditVisible(true) ,setEditPrediction(item.prediction )}}
+            />
+        )
+    }
+
+
+    const itemList = reportList.map((element, index) => {
+        console.log("element", element)
+        return (<>
+            < View style={styles({ orientation }).containerItemTable
+            }>
+                <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.id}</Text></View>
+                <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.name}</Text></View>
+                <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.created === undefined ? "Pending" : element.created.split("T")[0]}</Text></View>
+                <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.LDResult}</Text></View>
+                <View style={styles({ orientation }).itemTable} >
+                    <Button
+                        title=" ๐ ๐ ๐ "
+                        onPress={async () => {
+                            setImageList([])
+                            await getTestResult(element.id)
+                            setSelectItem(1)
+                            setSelectTab(0)
+                            setSelectedDate(element.created)
+                        }}
+                        color={Color.Sub_Surface}
+                    />
+                </View>
+            </View >
+        </>)
+
+    })
+
+    if (selectItem) {
+        return (<>
+            {/* Model PREDICTIONedit */}
             <Modal
                 animationType="fade"
                 transparent={true}
@@ -291,9 +337,10 @@ const ResultScene = (props) => {
                             style={{ height: wp(3), width: wp(15), borderBottomWidth: 2, borderBottomColor: Color.Gray ,justifyContent:"flex-end",alignItems:"flex-end"}}
                             pickerStyleType={{fontSize: wp(4),color:'yellow'}}
 
-                            mode="dropdown"
-                            onValueChange={(itemValue, itemIndex) =>
-                                setEditPrediction(itemValue)
+                            mode="slide"
+                            onValueChange={(itemValue, itemIndex) => 
+                                //
+                                {setEditPrediction(itemValue)}
                             }>
                             <Picker.Item label="ไม่เขียนอะไรเลย" value={0} />
                             <Picker.Item label="เขียนถูก" value={1} />
@@ -314,51 +361,6 @@ const ResultScene = (props) => {
                     </View>
                 </View>
             </Modal>
-        </View>
-
-    );
-
-    const renderItem = ({ item, index }) => {
-        //const backgroundColor = item === selectedId ? "#6e3b6e" : "#f9c2ff";
-        return (
-            <Item
-                item={item}
-                index={index}
-                onPress={() => { console.log("index and item", item), setSelectedModalId({ index, item }), setModalEditVisible(true) ,setEditPrediction(item.prediction )}}
-            />
-        )
-    };
-
-
-    const itemList = reportList.map((element, index) => {
-        console.log("element", element)
-        return (<>
-            < View style={styles({ orientation }).containerItemTable
-            }>
-                <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.id}</Text></View>
-                <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.name}</Text></View>
-                <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.created === undefined ? "Pending" : element.created.split("T")[0]}</Text></View>
-                <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.LDResult}</Text></View>
-                <View style={styles({ orientation }).itemTable} >
-                    <Button
-                        title=" ๐ ๐ ๐ "
-                        onPress={async () => {
-                            setImageList([])
-                            await getTestResult(element.id)
-                            setSelectItem(1)
-                            setSelectTab(0)
-                            setSelectedDate(element.created)
-                        }}
-                        color={Color.Sub_Surface}
-                    />
-                </View>
-            </View >
-        </>)
-
-    })
-
-    if (selectItem) {
-        return (<>
             <Modal
                 animationType="fade"
                 transparent={true}
@@ -618,7 +620,7 @@ const styles = (props) => StyleSheet.create({
     titleImagePersonal: {
         marginLeft: "3%",
         fontSize: wp("2.5%"),
-        fontFamily: Font.Bold,
+        fontFamily: Font.Bold, 
     },
     backgroundSelectTab: {
         backgroundColor: Color.White,
