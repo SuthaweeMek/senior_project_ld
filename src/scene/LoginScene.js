@@ -72,6 +72,7 @@ const LoginScene = (props) => {
     let responseJson = await res.json();
       if (res.ok) {
         LocalStorage.saveData("token", JSON.stringify(responseJson))
+        props.upDateUserId(responseJson.userId)
         props.upDateScene(0)
       }
       else{
@@ -214,7 +215,8 @@ const styles = (props) => StyleSheet.create({
 const mapStateToProps = state => {
   return {
     orientation: state.orientation,
-    scene: state.scene
+    scene: state.scene,
+    userId: state.userId
   }
 }
 
@@ -226,6 +228,9 @@ const mapDispatchToProps = dispatch => {
       },
       upDateScene: (scene) => {
           dispatch({ type: 'EDIT_SCENE', payload: scene })
+      },
+      upDateUserId: (userId) =>{
+        dispatch({type: 'EDIT_USERID', payload: userId})
       }
   }
 }

@@ -53,24 +53,23 @@ const StartTestScene = (props) => {
     const [surname, setSurname] = useState('สมจริง')
     const [childrenID, setChildrenID] = useState('')
     const [gender, setGender] = useState('m')
-    const [key, setKey] = useState("level_1")
-    const [value, setValue] = useState({key: "level_1", value: "ระดับที่ 1"})
+    const [vocabType, setVocabType] = useState({key: "1", value: "ระดับที่ 1"})
     const [age, setAge] = useState('16')
     const pickerItem = [
         {
-            key: "level_1", value: "ระดับที่ 1" 
+            key: "1", value: "ระดับที่ 1" 
         },
         {
-            key: "level_2", value: "ระดับที่ 2"
+            key: "2", value: "ระดับที่ 2"
         },
         {
-            key: "level_3", value: "ระดับที่ 3"
+            key: "3", value: "ระดับที่ 3"
         },
         {
-            key: "level_4", value: "ระดับที่ 4"
+            key: "4", value: "ระดับที่ 4"
         },
         {
-            key: "level_5", value: "ระดับที่ 5"
+            key: "5", value: "ระดับที่ 5"
         },
       ];
     console.log("what ?",props.orientation == "portrait"?"true":"false")
@@ -85,7 +84,7 @@ const StartTestScene = (props) => {
     }
     const handleKey = (text) => {
         console.log("level = == = ",text)
-        setKey(text)
+        setVocabType(text)
     }
     const handleAge = (text) => {
         setAge(text)
@@ -100,12 +99,8 @@ const StartTestScene = (props) => {
                 body: JSON.stringify({
                     "Round": 0,
                     "LDResult": 0,
-                    "UserID": 3,
-                    "TestSet": 1,
-                    "name": name,
+                    "UserID": props.userId,
                     "childrenID": childrenID,
-                    "age": age,
-                    "gender": gender
                 }),
                 headers: {
                     'Accept': 'application/json',
@@ -140,7 +135,7 @@ const StartTestScene = (props) => {
                     <Text style={styles(props.orientation).fontStartTestInput} >แบบทดสอบ</Text>
                     <View style={styles(props.orientation).Picker}>
                         <Text style={styles(props.orientation).fontStartTestInfo} >ระดับ : </Text>
-                        {props.orientation == "portrait"? <SelectionInput onChangeItem={handleKey} value={value} size={{ hp: hp('5%'), wp: wp('45%') }} items={pickerItem} title="ระดับแบบทดสอบ"/>:<SelectionInput onChangeItem={handleKey} value={value} size={{ hp: hp('6%'), wp: wp('30%') }} items={pickerItem} title="ระดับแบบทดสอบ"/>}
+                        {props.orientation == "portrait"? <SelectionInput onChangeItem={handleKey} value={vocabType} size={{ hp: hp('5%'), wp: wp('45%') }} items={pickerItem} title="ระดับแบบทดสอบ"/>:<SelectionInput onChangeItem={handleKey} value={vocabType} size={{ hp: hp('6%'), wp: wp('30%') }} items={pickerItem} title="ระดับแบบทดสอบ"/>}
                         {props.orientation == "portrait"? null : <ButtonCurve text="เริ่มทำแบบทดสอบ" onPress={onPress} size={{ hp: hp('6%'), wp: wp('25%') }} />}
                     </View>
                     {props.orientation == "portrait"? <ButtonCurve text="เริ่มทำแบบทดสอบ" onPress={onPress} size={{ hp: hp('5%'), wp: wp('50%') }} />:null}
@@ -265,7 +260,9 @@ const mapStateToProps = state => {
     return {
         text: state.global,
         scene: state.scene,
-        orientation: state.orientation
+        orientation: state.orientation,
+        testId: state.testId,
+        userId:state.userId
     }
 }
 

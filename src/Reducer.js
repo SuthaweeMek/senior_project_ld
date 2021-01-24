@@ -2,8 +2,9 @@ import Device from './utils/Device'
 init_state = {
     global: 'init',
     testId: 0,
-    scene: 1,
+    scene: -1,
     orientation : Device.orientation(),
+    userId:0,
 }
 
 export default Reducer = (state = init_state, action) => {
@@ -27,6 +28,11 @@ export default Reducer = (state = init_state, action) => {
             return {
                 ...state,
                 orientation: action.payload
+            }
+        case 'EDIT_USERID':
+            return {
+                    ...state,
+                    userId: action.payload
             }
         default:
             return state

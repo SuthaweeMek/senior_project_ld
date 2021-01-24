@@ -140,7 +140,7 @@ const RegistScene = (props) => {
           body: JSON.stringify({
             userid: username,
             password: password,
-            idnumber: idnumber,
+            childrenID: idnumber,
             name:name,
             surname:surname,
             birthday:formatDate(currentDate),
