@@ -590,11 +590,7 @@ const styles = (props) => StyleSheet.create({
     textIDPersonal: {
         fontSize: wp(4),
         marginVertical: 12,
-<<<<<<< HEAD
         fontFamily:Font.Bold,
-=======
-        fontFamily: Font.Bold
->>>>>>> 56173b5a6de3d3383680d198f2f4295e498fedb6
     },
     containerinfoPersonal: {
         flex: 1.5,
@@ -698,12 +694,8 @@ const styles = (props) => StyleSheet.create({
     },
     textStyle: {
         color: Color.White,
-<<<<<<< HEAD
         fontFamily: Font.Bold,
         fontSize : wp('2%'),
-=======
-        fontWeight:'bold',
->>>>>>> bce1819973cc584971d88671171c7982aa2ab90c
         textAlign: "center"
     },
     modalTitle: {
