@@ -227,7 +227,7 @@ const styles = (props) => StyleSheet.create({
         marginVertical: 12,
         alignSelf: "flex-start",
 
-        fontFamily: "Font-Bold",
+        fontFamily: Font.Bold,
     },
     fontStartTestInput: {
         // color: 'black',
@@ -237,7 +237,7 @@ const styles = (props) => StyleSheet.create({
         marginVertical: 12,
         // alignItems: 'center',
         alignSelf:'flex-start',
-        fontFamily: "Font-Bold",
+        fontFamily: Font.Bold,
         // justifyContent: 'center'
     },
     fontStartTestInfo: {
@@ -247,7 +247,7 @@ const styles = (props) => StyleSheet.create({
         // marginTop: 10,
         marginVertical: 8,
 
-        fontFamily: "Font-Regular",
+        fontFamily: Font.Regular,
         // justifyContent: 'center'
     },
     background: {

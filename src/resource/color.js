@@ -9,8 +9,8 @@ const Color = {
      Sub_Surface : '#ffbf69',
      Cover : '#d9dada',
      Gray : '#808080',
-     Correct :  'rgba(232,89,89,1)',
-     Wrong: 'rgba(104,187,177,1)',
+     Wrong :  'rgba(232,89,89,1)',
+     Correct: 'rgba(104,187,177,1)',
      OpenButton: "#F194FF",
 }
 export default Color

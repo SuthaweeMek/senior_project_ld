@@ -52,7 +52,7 @@ console.log("Device height = ", height, " and width = ", width)
 const GameThirdScene = (props) => {
   //HP Parameters
   const playerHeart = 5
-  const enemyHeart = 5
+  const enemyHeart = 1
   //State
   const [Transition, SetTransition] = useState(1);
   const [fps, setFps] = useState(16);
@@ -309,7 +309,7 @@ const GameThirdScene = (props) => {
     // resizeMode cover stretch
     <View style={styles.container}>
        <Animated.View style={[styles.fadingContainer,{ left:backgroundTransition}]}>  
-        <Image source={imageGameSceneBGC3} resizeMode="stretch" style={[styles.background]} />
+        <Image source={imageGameSceneBG3} resizeMode="stretch" style={[styles.background]} />
       </Animated.View>
       <View style={styles.statusHP} >
         <View style={{ flexDirection: 'row' }}>
@@ -366,7 +366,7 @@ const GameThirdScene = (props) => {
             columns={9}
             rows={6}
             // height={height / 2.76} // set either, none, but not both
-            width={wp('15%')}
+            width={wp('25%')}
             imageStyle={{ marginTop: -1 }}
             animations={{
               idle: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
@@ -439,8 +439,9 @@ const styles = StyleSheet.create({
   field: {
     flex: 1,
     //backgroundColor:"red",
-    top: 7,
-    zIndex: 2,
+    top: hp('1%'),
+    zIndex : 3,
+    elevation: (Platform.OS === 'android') ? 3 : 0,
     flexDirection: 'row',
     alignItems: 'flex-end',
     //justifyContent: 'space-around'
@@ -448,7 +449,8 @@ const styles = StyleSheet.create({
   effect:{
     transform: [{ rotate: '-90deg'},{scale: 1}],
     top : '5%',
-    zIndex : 3
+    zIndex : 3,
+    elevation: (Platform.OS === 'android') ? 3 : 0
   },
   enemy:{
     alignItems:"flex-end",

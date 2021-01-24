@@ -53,7 +53,7 @@ console.log("Device height = ", height, " and width = ", width)
 const GameSecondScene = (props) => {
   //HP Parameters
   const playerHeart = 5
-  const enemyHeart = 9
+  const enemyHeart = 1
   //State
   const [Transition, SetTransition] = useState(1);
   const [fps, setFps] = useState(16);
@@ -439,8 +439,10 @@ const styles = StyleSheet.create({
   field: {
     flex: 1,
     //backgroundColor:"red",
-    top: 7,
-    zIndex: 2,
+    top: hp('1%'),
+    zIndex: 3,
+    elevation: (Platform.OS === 'android') ? 3 : 0,
+
     flexDirection: 'row',
     alignItems: 'flex-end',
     //justifyContent: 'space-around'
@@ -448,7 +450,9 @@ const styles = StyleSheet.create({
   effect:{
     transform: [{ rotate: '-90deg'},{scale: 1}],
     top : '5%',
-    zIndex : 3
+    zIndex : 3,
+    elevation: (Platform.OS === 'android') ? 3 : 0,
+
   },
   enemy:{
     alignItems:"flex-end",
@@ -473,6 +477,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     width: wp('200'),
     // height: height / 4.26,
+    zIndex:1,
     height: hp('23%'),
     // opacity:1,
   },

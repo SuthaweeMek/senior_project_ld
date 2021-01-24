@@ -32,9 +32,11 @@ import Device from '../utils/Device';
 import Color from '../resource/color';
 import Font from '../resource/font';
 import { connect } from 'react-redux';
+import SelectionInput from '../component/picker';
 import { Icon } from 'react-native-elements'
 import LocalStorage from '../utils/LocalStorage'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientationChange as lor, removeOrientationListener as rol } from '../utils/Device'
+import { Picker } from '@react-native-picker/picker';
 
 //dimesions
 width = Device.isPortrait() ? Dimensions.get('screen').height : Dimensions.get('screen').width //1:4.65
@@ -58,7 +60,12 @@ const ResultScene = (props) => {
     const [testId, setTestId] = useState(-1);
     const [testResult, setTestResult] = useState([]);
     const [name, setName] = useState("")
-    const [selectDate, setSelectDate] = useState("")
+    const [selectDate, setSelectDate] = useState(new Date())
+    const [modalEditVisible, setModalEditVisible] = useState(false);
+    const [editPrediction, setEditPrediction] = useState(0);
+
+    const [selectedModalId, setSelectedModalId] = useState({ index: 0, item: "panding" });
+
     useEffect(() => {
         lor(props.upDateOrientation)
         return rol()
@@ -66,7 +73,26 @@ const ResultScene = (props) => {
         , [])
 
     // useEffect(()=>{setReportList},[orientation])
-
+    const mapNumberToLabel = {
+        0: "อะไรเอ๋ย",
+        1: "เขียนถูก",
+        2: "เขียนผิด",
+        3: "กลับด้าน",
+    }
+    const pickerItem = [
+        {
+            key: 0, value: "ไม่ยอมเขียนมา"
+        },
+        {
+            key: 1, value: "เขียนถูก"
+        },
+        {
+            key: 2, value: "เขียนผิด"
+        },
+        {
+            key: 3, value: "เขียนกลับด้าน"
+        },
+    ];
     useEffect(() => {
         const queryTest = async () => {
             fetch(`http://10.0.2.2:8000/test/?page=${selectedId}`, {
@@ -93,7 +119,11 @@ const ResultScene = (props) => {
     }, [selectedId])
 
 
-
+    const handleEditPrediction = (item) => {
+        // setEditPrediction(text)
+        console.log("คุณแก้ไขการทำนายสำเร็จ id=",item.id," และแก้เป็น",editPrediction,"คือ",mapNumberToLabel[editPrediction])
+         Alert.alert("คุณแก้ไขการทำนายสำเร็จ id="+item.id+"แก้เป็น" +editPrediction+ "คือ"+mapNumberToLabel[editPrediction])
+    }
 
     useEffect(() => {
         const queryTest = async () => {
@@ -202,19 +232,89 @@ const ResultScene = (props) => {
                 setModalVisible(true)
             }}
         >
+
+            <View style={{ flexDirection: "row", justifyContent: "space-between", paddingRight: wp('3%') }}>
+                <Text style={styles({ orientation }).textResult}> {index + 1}) : ก  </Text>
+                <TouchableOpacity onPress={onPress}>
+                    <Icon
+                        name={"pencil-square"}
+                        type="font-awesome"
+                        color={Color.Sub_Surface}
+                        size={wp("3%")}
+                        style={{ margin: 5 }}
+                    />
+                </TouchableOpacity>
+            </View>
+            <Text style={styles({ orientation }).textResult}>โมเดลทำนาย : {mapNumberToLabel[item.prediction]}</Text>
+            <Text style={styles({ orientation }).textResult}>ความน่าจะเป็น : 99%</Text>
             <TouchableOpacity onPress={() => {
                 setImageModal(`http://10.0.2.2:8000${item.ImageName}`)
                 setModalVisible(true)
             }}>
-                <Text style={styles({ orientation }).textResult}> {index + 1} </Text>
-                <Text style={styles({ orientation }).textResult}>โมเดลทำนาย : {item.prediction}</Text>
-                <Text style={styles({ orientation }).textResult}>ความน่าจะเป็น : 99%</Text>
                 <Image source={{ uri: `http://10.0.2.2:8000${item.ImageName}` }} style={{
                     width: wp("12%"),
                     height: wp("12%"),
                     resizeMode: 'contain',
                 }} />
             </TouchableOpacity>
+
+            {/* Model edit */}
+            <Modal
+                animationType="fade"
+                transparent={true}
+                visible={modalEditVisible}
+                onRequestClose={() => {
+                    Alert.alert("Modal has been closed.");
+                }}
+            >
+                <View style={styles({ orientation }).centeredView}>
+                    <View style={styles({ orientation }).modalView}>
+                        <TouchableOpacity
+                            style={{ alignSelf: "flex-end" }}
+                            onPress={() => {
+                                setModalEditVisible(!modalEditVisible);
+                            }}
+                        >
+                            <Icon
+                                name={"cancel"}
+                                type="materialIcons"
+                                color={Color.Wrong}
+                                size={wp("3%")}
+                            />
+                        </TouchableOpacity>
+                        <Text style={styles({ orientation }).modalTitle}>แก้ไขข้อมูล</Text>
+                        <View style={{ flexDirection: "row", justifyContent: "space-between", paddingRight: wp('3%') }}>
+                            <Text style={styles({ orientation }).modalText}> {selectedModalId.index + 1}) : ก  </Text>
+                        </View>
+                        <Text style={styles({ orientation }).modalText}>โมเดลทำนาย : 
+                        <Picker
+                            selectedValue={editPrediction}
+                            style={{ height: wp(3), width: wp(15), borderBottomWidth: 2, borderBottomColor: Color.Gray ,justifyContent:"flex-end",alignItems:"flex-end"}}
+                            pickerStyleType={{fontSize: wp(4),color:'yellow'}}
+
+                            mode="dropdown"
+                            onValueChange={(itemValue, itemIndex) =>
+                                setEditPrediction(itemValue)
+                            }>
+                            <Picker.Item label="ไม่เขียนอะไรเลย" value={0} />
+                            <Picker.Item label="เขียนถูก" value={1} />
+                            <Picker.Item label="เขียนผิด" value={2} />
+                            <Picker.Item label="กลับด้าน" value={3} />
+                        </Picker>
+                        </Text>
+                        <Text style={styles({ orientation }).modalText}>ความน่าจะเป็น : 99%</Text>
+                        <TouchableOpacity
+                            style={{ ...styles({ orientation }).openButton, backgroundColor: "#2196F3" }}
+                            onPress={ () => {
+                                 handleEditPrediction(selectedModalId.item)
+                                setModalEditVisible(!modalEditVisible);
+                            }}
+                        >
+                            <Text style={styles({ orientation }).textStyle}>ยืนยันแก้ไข</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
         </View>
 
     );
@@ -225,7 +325,7 @@ const ResultScene = (props) => {
             <Item
                 item={item}
                 index={index}
-                onPress={true}
+                onPress={() => { console.log("index and item", item), setSelectedModalId({ index, item }), setModalEditVisible(true) ,setEditPrediction(item.prediction )}}
             />
         )
     };
@@ -346,8 +446,8 @@ const ResultScene = (props) => {
                         <FlatList
                             data={imageList}
                             renderItem={renderItem}
-                            keyExtractor={(item) => item}
-                            //extraData={selectedId}
+                            keyExtractor={(item) => item.id}
+                            extraData={selectedModalId}
                             horizontal={false}
                             numColumns={4}
                         />
@@ -495,7 +595,7 @@ const styles = (props) => StyleSheet.create({
     textIDPersonal: {
         fontSize: wp(4),
         marginVertical: 12,
-        fontFamily: Font.Bold
+        fontFamily:Font.Bold,
     },
     containerinfoPersonal: {
         flex: 1.5,
@@ -571,7 +671,7 @@ const styles = (props) => StyleSheet.create({
         flex: 1,
         // width: wp('15%'),
         // height:hp('15%'),
-        backgroundColor: '#00000080',
+        backgroundColor: '#00000030',
         justifyContent: "center",
         alignItems: "center",
     },
@@ -580,7 +680,7 @@ const styles = (props) => StyleSheet.create({
         backgroundColor: Color.White,
         borderRadius: 20,
         padding: 35,
-        alignItems: "center",
+        alignItems: "flex-start",
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -594,17 +694,27 @@ const styles = (props) => StyleSheet.create({
         backgroundColor: Color.OpenButton,
         borderRadius: 20,
         padding: 10,
-        elevation: 2
+        elevation: 2,
+        alignSelf:"flex-end"
     },
     textStyle: {
         color: Color.White,
-        fontWeight: 'bold',
+        fontFamily: Font.Bold,
+        fontSize : wp('2%'),
         textAlign: "center"
+    },
+    modalTitle: {
+        marginBottom: 15,
+        textAlign: "center",
+        fontFamily: Font.Bold,
+        fontSize: wp('3%')
     },
     modalText: {
         marginBottom: 15,
-        textAlign: "center"
-    }
+        textAlign: "center",
+        fontFamily: Font.Regular,
+        fontSize: wp('2%')
+    },
 });
 
 const mapStateToProps = state => {

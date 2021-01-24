@@ -146,7 +146,7 @@ const writing = (props) => {
     var image = `data:image/png;base64,` + base64
     const data = new FormData();
     data.append('prediction', 1);
-    data.append('ImageName', image);
+    data.append('ImageName', tmage);
     data.append('label',ary_sound[index-1])
     data.append('TestID',props.testId)
     //Please change file upload URL
