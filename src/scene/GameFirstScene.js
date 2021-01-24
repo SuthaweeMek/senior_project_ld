@@ -384,10 +384,10 @@ const GameFirstScene = (props) => {
         </Modal>
         
       </View>
-
-
-
       <Image source={imageGameSceneFG1} resizeMode="stretch" style={[styles.foreground]} />
+     
+
+
 
       {/* <View style={{ paddingVertical: 30, paddingHorizontal: 30, position: 'absolute' }}>
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
@@ -442,8 +442,9 @@ const styles = StyleSheet.create({
   field: {
     flex: 1,
     //backgroundColor:"red",
-    top: 7,
-    zIndex: 2,
+    elevation: (Platform.OS === 'android') ? 3 : 0,
+    top: hp('1%'),
+    zIndex:3,
     flexDirection: 'row',
     alignItems: 'flex-end',
     // right : '30%'
@@ -452,7 +453,9 @@ const styles = StyleSheet.create({
   effect:{
     transform: [{ rotate: '-90deg'},{scale: 1}],
     top : '5%',
-    zIndex : 3
+    zIndex : 3,
+    elevation: (Platform.OS === 'android') ? 3 : 0,
+
   },
   enemy:{
     alignItems:"flex-end",
@@ -472,11 +475,14 @@ const styles = StyleSheet.create({
   foreground: {
     // justifyContent: 'center',
     // alignItems: 'center',
+    // position: 'absolute',
 
     // resizeMode: "cover",
-    left :0,
+    // float : true,
+    zIndex:-1,
+    // left :0,
     //backgroundColor: 'black',
-    justifyContent: 'flex-end',
+    // justifyContent: 'flex-end',
     width: wp('200'),
     // height: height / 4.26,
     height: hp('23%')
