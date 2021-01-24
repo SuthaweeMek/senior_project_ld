@@ -16,12 +16,16 @@ import {
   Modal,
   Dimensions,
   ImageBackground,
+  TouchableOpacity,
 } from 'react-native';
 import { connect } from 'react-redux'; 
 import { SketchCanvas } from '@terrylinla/react-native-sketch-canvas';
 import Device from '../utils/Device';
-import imageBook from '../resource/image/book.png';
+import imageBook from '../resource/image/booksmall.png';
 import Sound from 'react-native-sound'
+import { Icon } from 'react-native-elements'
+import Color from '../resource/color'
+import { widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientationChange as lor, removeOrientationListener as rol } from '../utils/Device'
 
 //dimesions
 width = Device.isPortrait() ? Dimensions.get('screen').height : Dimensions.get('screen').width //1:4.65
@@ -35,7 +39,9 @@ const writing = (props) => {
   //set ary_sound , vowel , vocab
   ary_sound = props.arrSound
   index = props.arrIndex
-
+  collect = props.collecting
+  filename = props.name
+  console.log("array sound = ",ary_sound)
   //hook
   
 
@@ -49,7 +55,10 @@ const writing = (props) => {
     // loaded successfully
     //console.log('duration in seconds: ' + whoosh.getDuration() + 'number of channels: ' + whoosh.getNumberOfChannels());
     if(ary_sound[index].includes("th_alphabet")){
-      var multiplier = 4;
+      console.log("colect :",collect)
+      
+      collect == true ? multiplier = 1 : multiplier = 4;
+      console.log("multiplier :",multiplier ,"index : ",index)
       if(index == multiplier || index == multiplier*2 || index == multiplier*3 || index == multiplier*4 || index == multiplier*5 
         || index == multiplier*6 || index == multiplier*7 || index == multiplier*8 || index == multiplier*9 || index == multiplier*10
         || index == multiplier*11 ){
@@ -62,13 +71,13 @@ const writing = (props) => {
         
       }
       else{
-        doubly = false
+        multiplier == 1 ? doubly=true : doubly = false
         play()
      }
     }
 
     if(ary_sound[index].includes("th_vowel")){
-      var multiplier = 4;
+      collect == true ? multiplier = 1 : multiplier = 4;
       if(index == multiplier || index == multiplier*2 || index == multiplier*3 || index == multiplier*4 || index == multiplier*5 
         || index == multiplier*6 || index == multiplier*7 || index == multiplier*8 || index == multiplier*9 || index == multiplier*10
         ){
@@ -81,13 +90,13 @@ const writing = (props) => {
         
       }
       else{
-        doubly = false
+        multiplier == 1 ? doubly=true : doubly = false
         play()
      }
     }
 
     if(ary_sound[index].includes("th_vocab")){
-      var multiplier = 4;
+      collect == true ? multiplier = 1 : multiplier = 2;
       if(index == multiplier || index == multiplier*2 || index == multiplier*3 || index == multiplier*4 || index == multiplier*5 
         || index == multiplier*6 || index == multiplier*7 || index == multiplier*8 || index == multiplier*9 || index == multiplier*10
         ){
@@ -100,7 +109,7 @@ const writing = (props) => {
         
       }
       else{
-        doubly = false
+        multiplier == 1 ? doubly=true : doubly = false
         play()
      }
     }
@@ -138,8 +147,8 @@ const writing = (props) => {
     const data = new FormData();
     data.append('prediction', 1);
     data.append('ImageName', image);
-    data.append('label',ary_sound[index])
-    data.append('TestID',props.testId)
+    data.append('label',ary_sound[index-1])
+    data.append('TestID',1)
     //Please change file upload URL
     let res = await fetch(
       'http://10.0.2.2:8000/classifications/',
@@ -153,8 +162,7 @@ const writing = (props) => {
       }
     );
     let responseJson = await res.json();
-    console.log(responseJson)
-    if (res.status == 201) {
+    if (res.ok) {
       console.log('Upload Successful');
     }
     else {
@@ -164,7 +172,7 @@ const writing = (props) => {
   }
   const Save = () => {
     console.log("YES");
-    canvasRef.current.save('jpg', false, 'RNSketchCanvas', ary_sound[index], true, false, false)
+    canvasRef.current.save('jpg', false, 'RNSketchCanvas', ary_sound[index]+"_"+filename, true, false, false)
     console.log("check")
     canvasRef.current.getBase64("jpg", false, false, false, false, CheckCallback)
     Clear()   
@@ -191,89 +199,44 @@ const writing = (props) => {
   }
 
 
-
-
-  let uploadImage = async () => {
-    //Check if any file is selected or not
-    if (singleFile != null) {
-      //If file selected then create FormData
-      const fileToUpload = singleFile;
-      const data = new FormData();
-      data.append('name', 'Image Upload');
-      data.append('file_attachment', fileToUpload);
-      //Please change file upload URL
-      let res = await fetch(
-        'http://localhost/upload.php',
-        {
-          method: 'post',
-          body: data,
-          headers: {
-            'Content-Type': 'multipart/form-data; ',
-          },
-        }
-      );
-      let responseJson = await res.json();
-      if (responseJson.status == 1) {
-        alert('Upload Successful');
-      }
-    } else {
-      //if no file selected the show alert
-      alert('Please Select File first');
-    }
-  };
-
-  let selectFile = async () => {
-    //Opening Document Picker to select one file
-    try {
-      const res = await DocumentPicker.pick({
-        //Provide which type of file you want user to pick
-        type: [DocumentPicker.types.allFiles],
-        //There can me more options as well
-        // DocumentPicker.types.allFiles
-        // DocumentPicker.types.images
-        // DocumentPicker.types.plainText
-        // DocumentPicker.types.audio
-        // DocumentPicker.types.pdf
-      });
-      //Printing the log realted to the file
-      console.log('res : ' + JSON.stringify(res));
-      //Setting the state to show single file attributes
-      setSingleFile(res);
-    } catch (err) {
-      setSingleFile(null);
-      //Handling any exception (If any)
-      if (DocumentPicker.isCancel(err)) {
-        //If user canceled the document selection
-        alert('Canceled from single doc picker');
-      } else {
-        //For Unknown Error
-        alert('Unknown Error: ' + JSON.stringify(err));
-        throw err;
-      }
-    }
-  };
-  
-
   return (
     <View style={styles.container}>
         <View style={styles.centeredView}>
           <ImageBackground source={imageBook} style={styles.image}>
             <View style={{ flexDirection: 'row', justifyContent: "flex-start",alignContent:"flex-start" }}>
-              <Button
+              <TouchableOpacity onPress={play}>
+                <Icon
+                name={"volume-up"}
+                type = "font-awesome5"
+                color= {Color.Gray} 
+                size={hp("5%")}
+                style={{margin:5}}
+                />         
+              </TouchableOpacity>
+              <TouchableOpacity onPress={Clear}>
+                <Icon
+                name={"eraser"}
+                type = "fontisto"
+                color= {Color.Gray} 
+                size={hp("4%")}
+                style={{margin:5}}
+                />         
+              </TouchableOpacity>
+              {/* <Button
                 onPress={play}
-                title="sound"
+                title="play"
                 color="#841584"
                 accessibilityLabel="Learn more about this purple button"
-              />  
-              <Button
+              />   */}
+              {/* <Button
               onPress={Clear}
               title="clear"
               color="#191584"
               accessibilityLabel="Learn more about this purple button"
-            />
+            /> */}
             </View>
             <SketchCanvas
-              style={{ flex: 1, justifyContent: "center", flexDirection: 'row' }}
+              style={{  flex:1,justifyContent: "center", flexDirection: 'row' }}
               strokeColor={'black'}
               strokeWidth={3}
               ref={canvasRef}
@@ -299,29 +262,32 @@ const writing = (props) => {
             />
           </ImageBackground>
           <View style={{ flexDirection: 'row', justifyContent: "flex-end" }}>
-            <Button onPress={
+            {/* <Button onPress={
               props.closeModal
             } title="Close"
               color="#841123"
-            />
-            <Button
+            /> */}
+            {/* <Button
               onPress={Undo}
               title="Undo"
               color="#841584"
               accessibilityLabel="Learn more about this purple button"
-            />
-            <Button
-              onPress={Save}
-              title="Save"
-              color="#631584"
-              accessibilityLabel="Learn more about this purple button"
-            />
-            <Button
+            /> */} 
+            <View style={{width:wp('20%'),padding:15}}>
+              <Button
+                onPress={Save}
+                title="ส่งคำตอบ"
+                // color={Color.Yellow}  
+                accessibilityLabel="Learn more about this purple button"
+              />
+            </View>
+
+            {/* <Button
               onPress={Upload}
               title="Upload"
               color="#639584"
               accessibilityLabel="Learn more about this purple button"
-            />
+            /> */}
           </View>
           
         </View>
@@ -365,11 +331,10 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     flexDirection: 'column',
-    resizeMode: 'center',
-    
+    resizeMode: 'center',    
     //backgroundColor:"blue",
     //alignItems: "center",
-    marginHorizontal : width/3,
+    marginHorizontal : wp('33.33'),
     margin: 50,
     padding : 30,
     // paddingHorizontal :50,

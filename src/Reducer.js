@@ -2,7 +2,11 @@ import Device from './utils/Device'
 init_state = {
     global: 'init',
     testId: 0,
+<<<<<<< HEAD
     scene: 0,
+=======
+    scene: 1,
+>>>>>>> 56173b5a6de3d3383680d198f2f4295e498fedb6
     orientation : Device.orientation(),
     userrole : 'teacher',
 }

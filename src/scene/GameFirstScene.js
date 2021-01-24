@@ -24,6 +24,7 @@ import Arrays from '../utils/Array'
 import Writing from '../component/writing'
 import Color from '../resource/color';
 import Font from '../resource/font';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp,listenOrientationChange as lor,removeOrientationListener as rol} from '../utils/Device'
 //alphabet
 var ary_th_alphabet = Arrays.CreatePlattern("th_alphabet_",44)
 //image
@@ -44,13 +45,13 @@ width = Device.isPortrait() ? Dimensions.get('screen').height : Dimensions.get('
 height = Device.isPortrait() ? Dimensions.get('screen').width : Dimensions.get('screen').height //1:4.65
 
 console.log("is tablet ?",Device.isTablet())
-console.log("Device height = ", height, " and width = ", width)
+// console.log("Device height = ", height, " and width = ", width)
 
 //const spriteSize = height
 const GameFirstScene = (props) => {
   //HP Parameters
   const playerHeart = 5
-  const enemyHeart = 2
+  const enemyHeart = 1
   //State
   const [Transition, SetTransition] = useState(1);
   const [fps, setFps] = useState(16);
@@ -65,13 +66,17 @@ const GameFirstScene = (props) => {
   const effectSpeed = useRef(new Animated.Value(0)).current;
   const enemyFade = useRef(new Animated.Value(1)).current; 
   const backgroundTransition = useRef(new Animated.Value(0)).current;
-  //TH_alphabet
-  index ==0 ? Arrays.Shuffle(ary_th_alphabet) : null
-  index ==0 ? ary_th_alphabet.push("th_alphabet_45") : null
+  
 
   useEffect(() => {
     playPlayer("idle")
     playEnemy("idle")
+
+    //TH_alphabet
+    // index ==0 ? Arrays.Shuffle(ary_th_alphabet) : null
+    // ary_th_alphabet.includes("th_alphabet_end") ? null : ary_th_alphabet.push("th_alphabet_end")
+    Arrays.Shuffle(ary_th_alphabet)
+    ary_th_alphabet.push("th_alphabet_end")
     Orientation.lockToLandscape();
   }, [])
 
@@ -159,7 +164,7 @@ const GameFirstScene = (props) => {
     Animated.timing(
       backgroundTransition,
       {
-        toValue: -width,
+        toValue: -wp('100%'),
         duration: 5000,
         useNativeDriver:false
       }
@@ -167,9 +172,11 @@ const GameFirstScene = (props) => {
     ).start();
     //setLoop(true)
     playPlayer('walk')
+    console.log("END SCENE 1")
     setTimeout(() => props.upDateScene(2),
     5000
     )
+    
     // const interval = setInterval(() => {
     //   setBackgroundTransition({ left: -speed })
 
@@ -216,7 +223,7 @@ const GameFirstScene = (props) => {
       }
       if (loop == 3) {
         Animated.timing(effectSpeed,{
-          toValue:width,
+          toValue:wp('100%'),
           duration:2000,
           useNativeDriver:false
         }).start()
@@ -264,6 +271,7 @@ const GameFirstScene = (props) => {
   const SetArrayIndex = () =>{
     console.log("index : ",index)
     setIndex(index+1)
+
   }
 
   const FadeInView = (props) => {
@@ -274,7 +282,7 @@ const GameFirstScene = (props) => {
       Animated.timing(
         fadeAnim,
         {
-          toValue: width,
+          toValue: wp('100%'),
           duration: 2000,
           useNativeDriver:false
         }
@@ -316,13 +324,14 @@ const GameFirstScene = (props) => {
       </View>
 
       <View style={styles.field}>
-        <View style={{left:"50%"}}>
+        <View style={{left:"30%"}}>
           <SpriteSheet
             ref={ref => (player = ref)}
             source={spritePlayer}
             columns={9}
             rows={6}
-            height={height / 2.76} // set either, none, but not both
+            // height={height / 2.76} // set either, none, but not both
+            width = {wp('15%')}
             //ywidth={281}
             imageStyle={{ marginTop: -1 }}
             animations={{
@@ -338,9 +347,9 @@ const GameFirstScene = (props) => {
               source={spriteEffect1}
               columns={9}
               rows={6}
-              height={height / 2.76} // set either, none, but not both
-              //width={100}
-              imageStyle={{ marginTop: -1 }}
+              // height={height / 2.76} // set either, none, but not both
+              width = {wp('15%')}
+              imageStyle={{ marginTop: -1,}}
               animations={{
                 red : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17,],
                 redstart: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,],
@@ -359,8 +368,8 @@ const GameFirstScene = (props) => {
             source={spriteEnemy}
             columns={9}
             rows={6}
-            height={height / 2.76} // set either, none, but not both
-            //width={100}
+            // height={height / 2.76} // set either, none, but not both
+            width={wp('15%')}
             imageStyle={{ marginTop: -1 }}
             animations={{
               idle: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
@@ -437,6 +446,7 @@ const styles = StyleSheet.create({
     zIndex: 2,
     flexDirection: 'row',
     alignItems: 'flex-end',
+    // right : '30%'
     //justifyContent: 'space-around'
   },
   effect:{
@@ -447,7 +457,7 @@ const styles = StyleSheet.create({
   enemy:{
     alignItems:"flex-end",
     flex:1,
-    right:"50%"
+    right:"30%"
   },
   background: {
     // justifyContent: 'center',
@@ -456,8 +466,8 @@ const styles = StyleSheet.create({
     //resizeMode: "cover",
     position: "absolute",
     left: 0,
-    width: width*2,
-    height: height,
+    width: wp('200%'),
+    height: hp('100%'),
   },
   foreground: {
     // justifyContent: 'center',
@@ -467,12 +477,15 @@ const styles = StyleSheet.create({
     left :0,
     //backgroundColor: 'black',
     justifyContent: 'flex-end',
-    width: width * 2,
-    height: height / 4.26,
+    width: wp('200'),
+    // height: height / 4.26,
+    height: hp('23%')
   },
   imageCircle: {
-    width: height / 5,
-    height: height / 5,
+    // width: height / 5,
+    // height: height / 5,
+    width : hp('20%'),
+    height : hp('20%'),
     margin: 10,
     borderRadius: 50
   },
