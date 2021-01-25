@@ -10,7 +10,7 @@ const Color = {
      Cover : '#d9dada',
      Gray : '#808080',
      Wrong :  'rgba(232,89,89,1)',
-     Correct: 'rgba(104,187,177,1)',
+     Correct: '#0cc078',
      OpenButton: "#F194FF",
 }
 export default Color
