@@ -47,7 +47,7 @@ const negativeModal = (props) => {
             <View style={styles({ orientation }).containerInfomation}>
               <Icon
                   //reverse
-                  name={"checkcircleo"}
+                  name={"closecircleo"}
                   type='antdesign'
                   color={Color.Wrong}
                   size={hp('12%')}
