@@ -9,6 +9,8 @@ import { connect } from 'react-redux';
 const inputbox = (props) => {
   const orientation = props.orientation
   const size = props.size
+  const maxLength = props.maxLength
+
   const [clickInput,setClickInput] = useState({borderColor: Color.Cover,borderBottomWidth: 2})
   const [text,setText] = useState(props.text)
   const moveAnim = useRef(new Animated.Value(0)).current  // Initial value for top : 0
@@ -54,6 +56,7 @@ const inputbox = (props) => {
           pointerEvents="none"
           secureTextEntry={props.password? true:false}
           value={props.text}
+          maxLength={maxLength}
           onFocus = {()=> {setClickInput({borderColor: Color.Background,borderBottomWidth: 4}) ,placeholderAnimation(clicked=true),text =="" ? setTextholdercolor(Color.Black):null}}
           onBlur = {()=>{setClickInput({borderColor: '#d9dada',borderBottomWidth: 2}) , placeholderAnimation(clicked=false), text =="" ? setTextholdercolor(Color.Cover):setTextholdercolor(Color.Black)}}
         />   

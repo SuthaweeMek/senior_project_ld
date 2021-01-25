@@ -63,30 +63,9 @@ const ResultScene = (props) => {
     const [selectDate, setSelectDate] = useState("")
     const [modalEditVisible, setModalEditVisible] = useState(false);
     const [editPrediction, setEditPrediction] = useState(0);
-
+    var editPrediction2 = 0
     const [selectedModalId, setSelectedModalId] = useState({ index: 0, item: "panding" });
-
-    const queryTest = async () => {
-        fetch(`http://10.0.2.2:8000/test/?page=${selectedId}`, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + await LocalStorage.readData("token")
-            },
-        }).then((response) => {
-            if (response.ok) {
-                return response.json()
-            }
-            else throw new Error(response.status);
-        }
-        ).then((responseJson) => {
-            setResultNumber(responseJson.count)
-            setReportList(responseJson.articles)
-        }).catch((error) => {
-            console.log('error: ' + error);
-        });
-    }
+    const [value, onChangeText] = React.useState('Useless Placeholder');
 
     const queryTestSearch = async () => {
         if (search == "") {
@@ -184,41 +163,41 @@ const ResultScene = (props) => {
         },
     ];
     useEffect(() => {
-        
-        queryTest()
+
+        queryTestSearch()
     }, [selectedId])
 
 
     const handleEditPrediction = async (item) => {
         console.log(editPrediction)
         let res = await fetch('http://10.0.2.2:8000/classifications/edit/prediction/', {
-          method: 'POST',
-          headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + await LocalStorage.readData("token")
-          },
-          body: JSON.stringify({
-            id: item.id,
-            prediction: editPrediction,
-          })
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + await LocalStorage.readData("token")
+            },
+            body: JSON.stringify({
+                id: item.id,
+                prediction: editPrediction,
+            })
         })
-          let responseJson = await res.json();
-          if (res.ok) {
-              
+        let responseJson = await res.json();
+        if (res.ok) {
+
             alert("Edit Success")
             queryImage()
             getTestResult(testId)
-            console.log("checkedit",responseJson)
-          }
-          else{
+            console.log("checkedit", responseJson)
+        }
+        else {
             alert("Edit Failed")
-            console.log('error: ' , responseJson);
-          }
+            console.log('error: ', responseJson);
+        }
     }
 
     useEffect(() => {
-       
+
         queryTestSearch()
     }, [search])
 
@@ -247,12 +226,12 @@ const ResultScene = (props) => {
 
     }
 
-    const Item = ({ item, index, onPress }) => (
-        // <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
-        //   <Text style={styles.title}>{item}</Text>
-        // </TouchableOpacity>
-
-        <View
+    const Item = ({ item, index, onPress }) =>
+    // <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
+    //   <Text style={styles.title}>{item}</Text>
+    // </TouchableOpacity>
+    {
+        return (<View
             style={styles({ orientation }).imageResult}
             onPress={() => {
                 setImageModal(`http://10.0.2.2:8000${item.ImageName}`)
@@ -261,7 +240,7 @@ const ResultScene = (props) => {
         >
 
             <View style={{ flexDirection: "row", justifyContent: "space-between", paddingRight: wp('3%') }}>
-                <Text style={styles({ orientation }).textResult}> {index + 1}) : ก  </Text>
+                <Text style={styles({ orientation }).textResult}> {index + 1}) : {item.labelimage}  </Text>
                 <TouchableOpacity onPress={onPress}>
                     <Icon
                         name={"pencil-square"}
@@ -273,7 +252,7 @@ const ResultScene = (props) => {
                 </TouchableOpacity>
             </View>
             <Text style={styles({ orientation }).textResult}>โมเดลทำนาย : {mapNumberToLabel[item.prediction]}</Text>
-            <Text style={styles({ orientation }).textResult}>ความน่าจะเป็น : 99%</Text>
+            <Text style={styles({ orientation }).textResult}>ความน่าจะเป็น : {item.prediction==1?item.predictionprob+"%":"-"}</Text>
             <TouchableOpacity onPress={() => {
                 setImageModal(`http://10.0.2.2:8000${item.ImageName}`)
                 setModalVisible(true)
@@ -284,8 +263,55 @@ const ResultScene = (props) => {
                     resizeMode: 'contain',
                 }} />
             </TouchableOpacity>
+            {console.log("test ", selectedModalId, "and", index)}
+        </View>
+        )
+    }
 
-            {/* Model edit */}
+
+    const renderItem = ({ item, index }) => {
+        //const backgroundColor = item === selectedId ? "#6e3b6e" : "#f9c2ff";
+        return (
+            <Item
+                item={item}
+                index={index}
+                onPress={() => { console.log("index and item", item), setSelectedModalId({ index, item }), setModalEditVisible(true), setEditPrediction(item.prediction) }}
+            />
+        )
+    }
+
+
+    const itemList = reportList.map((element, index) => {
+        return (<>
+            {element.childrenID ?
+                < View style={styles({ orientation }).containerItemTable
+                }>
+                    <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.childrenID.childrenID + " (" + element.Round +")"}</Text></View>
+                    <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.childrenID.name + " " + element.childrenID.surname}</Text></View>
+                    <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.created === undefined ? "Pending" : element.created.split("T")[0]}</Text></View>
+                    <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.LDResult}</Text></View>
+                    <View style={styles({ orientation }).itemTable} >
+                        <Button
+                            title=" ๐ ๐ ๐ "
+                            onPress={async () => {
+                                setImageList([])
+                                await getTestResult(element.id)
+                                setSelectItem(1)
+                                setSelectTab(0)
+                                setSelectDate(element.created.split("T")[0])
+                                setName(element.childrenID.name + " " + element.childrenID.surname)
+                            }}
+                            color={Color.Sub_Surface}
+                        />
+                    </View>
+                </View > : null
+            }</>)
+
+    })
+
+    if (selectItem) {
+        return (<>
+            {/* Model PREDICTIONedit */}
             <Modal
                 animationType="fade"
                 transparent={true}
@@ -313,27 +339,28 @@ const ResultScene = (props) => {
                         <View style={{ flexDirection: "row", justifyContent: "space-between", paddingRight: wp('3%') }}>
                             <Text style={styles({ orientation }).modalText}> {selectedModalId.index + 1}) : ก  </Text>
                         </View>
-                        <Text style={styles({ orientation }).modalText}>โมเดลทำนาย : 
+                        <Text style={styles({ orientation }).modalText}>โมเดลทำนาย :
                         <Picker
-                            selectedValue={editPrediction}
-                            style={{ height: wp(3), width: wp(15), borderBottomWidth: 2, borderBottomColor: Color.Gray ,justifyContent:"flex-end",alignItems:"flex-end"}}
-                            pickerStyleType={{fontSize: wp(4),color:'yellow'}}
+                                selectedValue={editPrediction}
+                                style={{ height: wp(3), width: wp(15), borderBottomWidth: 2, borderBottomColor: Color.Gray, justifyContent: "flex-end", alignItems: "flex-end" }}
+                                pickerStyleType={{ fontSize: wp(4), color: 'yellow' }}
 
-                            mode="dropdown"
-                            onValueChange={(itemValue, itemIndex) =>
-                                setEditPrediction(itemValue)
-                            }>
-                            <Picker.Item label="ไม่เขียนอะไรเลย" value={0} />
-                            <Picker.Item label="เขียนถูก" value={1} />
-                            <Picker.Item label="เขียนผิด" value={2} />
-                            <Picker.Item label="กลับด้าน" value={3} />
-                        </Picker>
+                                mode="slide"
+                                onValueChange={(itemValue, itemIndex) =>
+                                //
+                                { setEditPrediction(itemValue) }
+                                }>
+                                <Picker.Item label="ไม่เขียนอะไรเลย" value={0} />
+                                <Picker.Item label="เขียนถูก" value={1} />
+                                <Picker.Item label="เขียนผิด" value={2} />
+                                <Picker.Item label="กลับด้าน" value={3} />
+                            </Picker>
                         </Text>
                         <Text style={styles({ orientation }).modalText}>ความน่าจะเป็น : 99%</Text>
                         <TouchableOpacity
                             style={{ ...styles({ orientation }).openButton, backgroundColor: "#2196F3" }}
-                            onPress={ () => {
-                                 handleEditPrediction(selectedModalId.item)
+                            onPress={() => {
+                                handleEditPrediction(selectedModalId.item)
                                 setModalEditVisible(!modalEditVisible);
                             }}
                         >
@@ -342,52 +369,6 @@ const ResultScene = (props) => {
                     </View>
                 </View>
             </Modal>
-        </View>
-
-    );
-
-    const renderItem = ({ item, index }) => {
-        //const backgroundColor = item === selectedId ? "#6e3b6e" : "#f9c2ff";
-        return (
-            <Item
-                item={item}
-                index={index}
-                onPress={() => { console.log("index and item", item), setSelectedModalId({ index, item }), setModalEditVisible(true) ,setEditPrediction(item.prediction )}}
-            />
-        )
-    };
-
-
-    const itemList = reportList.map((element, index) => {
-        return (<>
-            {element.childrenID ?
-                < View style={styles({ orientation }).containerItemTable
-                }>
-                    <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.id}</Text></View>
-                    <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.childrenID.name + " " + element.childrenID.surname}</Text></View>
-                    <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.created === undefined ? "Pending" : element.created.split("T")[0]}</Text></View>
-                    <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.LDResult}</Text></View>
-                    <View style={styles({ orientation }).itemTable} >
-                        <Button
-                            title=" ๐ ๐ ๐ "
-                            onPress={async () => {
-                                setImageList([])
-                                await getTestResult(element.id)
-                                setSelectItem(1)
-                                setSelectTab(0)
-                                setSelectDate(element.created.split("T")[0])
-                                setName(element.childrenID.name + " " + element.childrenID.surname)
-                            }}
-                            color={Color.Sub_Surface}
-                        />
-                    </View>
-                </View > : null
-            }</>)
-
-    })
-
-    if (selectItem) {
-        return (<>
             <Modal
                 animationType="fade"
                 transparent={true}
@@ -622,7 +603,7 @@ const styles = (props) => StyleSheet.create({
     textIDPersonal: {
         fontSize: wp(4),
         marginVertical: 12,
-        fontFamily:Font.Bold,
+        fontFamily: Font.Bold,
     },
     containerinfoPersonal: {
         flex: 1.5,
@@ -722,12 +703,12 @@ const styles = (props) => StyleSheet.create({
         borderRadius: 20,
         padding: 10,
         elevation: 2,
-        alignSelf:"flex-end"
+        alignSelf: "flex-end"
     },
     textStyle: {
         color: Color.White,
         fontFamily: Font.Bold,
-        fontSize : wp('2%'),
+        fontSize: wp('2%'),
         textAlign: "center"
     },
     modalTitle: {

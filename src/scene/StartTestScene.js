@@ -51,6 +51,7 @@ const StartTestScene = (props) => {
     const [gender, setGender] = useState('m')
     const [vocabType, setVocabType] = useState({ key: "1", value: "ระดับที่ 1" })
     const [age, setAge] = useState('')
+    const [isChildren,setIsChildren] = useState(false)
     const pickerItem = [
         {
             key: "1", value: "ระดับที่ 1"
@@ -73,7 +74,7 @@ const StartTestScene = (props) => {
     console.log(childrenID)
     console.log(gender)
     const queryChildren = async () => {
-        if (childrenID.length == 6) {
+        if (childrenID.length == 10) {
             let res = await fetch(
                 `http://10.0.2.2:8000/users/children/?childrenID=${childrenID}`,
                 {
@@ -90,9 +91,19 @@ const StartTestScene = (props) => {
                 setName(responseJson.children[0].name)
                 setSurname(responseJson.children[0].surname)
                 setAge(responseJson.age)
+                setIsChildren(true)
             }
             else {
                 alert("Cant find children")
+                setIsChildren(false)
+            }
+        }
+        else{
+            if(isChildren === true){
+                setName("")
+                setSurname("")
+                setAge("")
+                setIsChildren(false)
             }
         }
     }
@@ -117,6 +128,7 @@ const StartTestScene = (props) => {
             setName(responseJson.children[0].name)
             setSurname(responseJson.children[0].surname)
             setAge(responseJson.age)
+            setIsChildren(true)
         }
         else {
             alert("Cant find children")
@@ -157,6 +169,7 @@ const StartTestScene = (props) => {
     }
 
     const onPress = async () => {
+        if(isChildren){
         let res = await fetch(
             'http://10.0.2.2:8000/test/',
             {
@@ -181,6 +194,10 @@ const StartTestScene = (props) => {
             props.upDateTestId(responseJson.id)
             props.upDateScene(1)
         }
+    }
+    else{
+        alert("ยังไม่ได้เลือกผู้ทำแบบทดสอบครับ")
+    }
     }
     return (
         <View style={styles(props.orientation).container}>

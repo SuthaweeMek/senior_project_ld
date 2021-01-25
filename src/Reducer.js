@@ -5,7 +5,6 @@ init_state = {
     scene: -1,
     orientation: Device.orientation(),
     userId: 0,
-    scene: -1,
     userrole: 'teacher',
     firstname: 'Pending'
 }

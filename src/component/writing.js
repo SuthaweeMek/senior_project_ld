@@ -147,10 +147,12 @@ const writing = (props) => {
   const CheckCallback = async (success, base64) => {
     var image = `data:image/png;base64,` + base64
     const data = new FormData();
-    data.append('prediction', 1);
+    data.append('prediction', 0);
     data.append('ImageName', image);
     data.append('label',ary_sound[index-1])
     data.append('TestID',props.testId)
+    data.append('labelimage',"no")
+    data.append('predictionprob',0);  
     //Please change file upload URL
     let res = await fetch(
       'http://10.0.2.2:8000/classifications/',
