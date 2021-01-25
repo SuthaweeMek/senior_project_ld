@@ -45,8 +45,9 @@ import Font from '../resource/font';
 import { Icon } from 'react-native-elements'
 import imageRegistTypeDocter from '../resource/image/registTypeDocter.png'
 import imageRegistTypeStudent from '../resource/image/registTypeStudent.png'
+import PositiveModal from '../component/positiveModal'
 
-// //dimesions
+// // dimesions
 // width = Device.isPortrait() ? Dimensions.get('window').height : Dimensions.get('window').width //1:4.65
 // height = Device.isPortrait() ? Dimensions.get('window').width : Dimensions.get('window').height //1:4.65  
 
@@ -63,6 +64,8 @@ const RegistScene = (props) => {
   const [registTypeSelect, setRegistTypeSelect] = useState("student")
   const [currentDate,setCurrentDate] = useState(null)
   const [stepColor,setStepcolor] = useState([{backgroundColor:Color.Gray},{backgroundColor:Color.Gray}])
+  const [positiveModal,setPositiveModal] = useState(true)
+
 
   const moveAnim = useRef(new Animated.Value(-25)).current  // Initial value for top : 0
   const fadeAnim = useRef(new Animated.Value(0)).current // Initial value for fontSize: 28
@@ -202,6 +205,9 @@ const RegistScene = (props) => {
   const handleCurrentStudy = (text) => {
     setCurrentStudy(text)
   }
+  const handleModalPositive = (bool) =>{
+    setPositiveModal(bool)
+  }
 
   useEffect(() => {
     console.log(stateregist)
@@ -244,6 +250,8 @@ const RegistScene = (props) => {
 
     <NativeRouter>
       <StatusBar translucent={false} barStyle={"light-content"} backgroundColor={Color.Background} />
+      <PositiveModal modalVisible={positiveModal} onChangeVisible={handleModalPositive} title={"สวัสดีครับ"} text={"อันนี้เป็นการทดสอบ Modal ใน RegistScene บรรทัดที่ 252 นะครับ อันนี้เป็นการทดสอบ Modal ใน RegistScene บรรทัดที่ 252 นะครับ อันนี้เป็นการทดสอบ Modal ใน RegistScene บรรทัดที่ 252 นะครับ"}/>
+
       {/* <ImageBackground source={backgroundLogin} style={styles(props.orientation).background} resizeMode={"stretch"}> */}
       <KeyboardAvoidingView
         // behavior={props.orientation=="landscape"? Platform.OS === "ios" ? "padding" : "height": Platform.OS === "ios" ? "padding" : "height"}
@@ -390,12 +398,13 @@ const RegistScene = (props) => {
 
               <View style={{ flex: 1 }} />
               </ScrollView>
-
+                      
             </Animated.View>
           </TouchableWithoutFeedback>
         </SafeAreaView>
       </KeyboardAvoidingView>
       {/* </ImageBackground> */}
+
     </NativeRouter>
 
 
