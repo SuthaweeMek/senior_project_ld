@@ -35,6 +35,7 @@ import ButtonCurveLogin from '../component/buttonCurve.js';
 import InputBoxLogin from '../component/inputboxLogin';
 import LocalStorage from '../utils/LocalStorage'
 import AsyncStorage from '@react-native-community/async-storage'
+import NegativeModal from '../component/negativeModal'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientationChange as lor, removeOrientationListener as rol } from '../utils/Device'
 import Device from '../utils/Device'
 import { connect } from 'react-redux';
@@ -49,6 +50,9 @@ const LoginScene = (props) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [orientation, setOrientation] = useState(Device.isPortrait() ? "portrait" : "landscape")
+  const [negativeModal, setNegativeModal] = useState(false)
+  const [errorMessage, setErrorMessage] = useState("")
+  const [titleMessage, setTitleMessage] = useState("")
   const moveAnim = useRef(new Animated.Value(-25)).current  // Initial value for top : 0
   const fadeAnim = useRef(new Animated.Value(0)).current // Initial value for fontSize: 28
   // console.log("ore",orientation,"style : ",orientation=="portrait" ? "portrait":"landscape"," hp wp",hp(100),"and",wp(100))
@@ -78,7 +82,19 @@ const LoginScene = (props) => {
       props.upDateScene(0)
     }
     else {
-      alert("Login Failed")
+      if (responseJson.userid !== undefined) {
+        setTitleMessage("Login Failed")
+        setErrorMessage("กรุณากรอกช่อง Username")
+      }
+      else if (responseJson.password !== undefined) {
+        setTitleMessage("Login Failed")
+        setErrorMessage("กรุณากรอกช่อง Password")
+      }
+      else if (responseJson.detail !== undefined) {
+        setTitleMessage("Login Failed")
+        setErrorMessage("ลองตรวจสอบ Username และ Password นะครับ")
+      }
+      setNegativeModal(true)
       console.log('error: ', responseJson);
     }
   }
@@ -89,6 +105,9 @@ const LoginScene = (props) => {
 
   const handlePassword = (text) => {
     setPassword(text)
+  }
+  const handleModalNegative = (bool) => {
+    setNegativeModal(bool)
   }
 
   useEffect(() => {
@@ -124,6 +143,8 @@ const LoginScene = (props) => {
         behavior={Platform.OS === "ios" ? "padding" : null}
         style={styles(props.orientation).container}
       >
+        <NegativeModal modalVisible={negativeModal} onChangeVisible={handleModalNegative} title={titleMessage} text={errorMessage} />
+
         <SafeAreaView style={styles(props.orientation).container}>
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <Animated.View style={[styles(props.orientation).inner, { top: moveAnim, opacity: fadeAnim }]}>
@@ -219,7 +240,7 @@ const mapStateToProps = state => {
     orientation: state.orientation,
     scene: state.scene,
     userId: state.userId,
-    firstname:state.firstname
+    firstname: state.firstname
   }
 }
 

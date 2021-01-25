@@ -33,7 +33,7 @@ import Device from '../utils/Device';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientationChange as lor, removeOrientationListener as rol } from '../utils/Device'
 import Color from '../resource/color';
 import Font from '../resource/font';
-
+import NegativeModal from '../component/negativeModal'
 import LocalStorage from '../utils/LocalStorage'
 
 
@@ -51,7 +51,10 @@ const StartTestScene = (props) => {
     const [gender, setGender] = useState('m')
     const [vocabType, setVocabType] = useState({ key: "1", value: "ระดับที่ 1" })
     const [age, setAge] = useState('')
-    const [isChildren,setIsChildren] = useState(false)
+    const [isChildren, setIsChildren] = useState(false)
+    const [negativeModal, setNegativeModal] = useState(false)
+    const [errorMessage, setErrorMessage] = useState("")
+    const [titleMessage, setTitleMessage] = useState("")
     const pickerItem = [
         {
             key: "1", value: "ระดับที่ 1"
@@ -94,12 +97,14 @@ const StartTestScene = (props) => {
                 setIsChildren(true)
             }
             else {
-                alert("Cant find children")
+                setErrorMessage("ลองลบแล้วแก้ไขดูนะครับ")
+                setTitleMessage("Can't find this ChildrenID")
+                setNegativeModal(true)
                 setIsChildren(false)
             }
         }
-        else{
-            if(isChildren === true){
+        else {
+            if (isChildren === true) {
                 setName("")
                 setSurname("")
                 setAge("")
@@ -168,40 +173,49 @@ const StartTestScene = (props) => {
         mapLeveltoValue(text)
     }
 
+    const handleModalNegative = (bool) => {
+        setNegativeModal(bool)
+    }
+
     const onPress = async () => {
-        if(isChildren){
-        let res = await fetch(
-            'http://10.0.2.2:8000/test/',
-            {
-                method: 'post',
-                body: JSON.stringify({
-                    "Round": 0,
-                    "LDResult": 0,
-                    "UserID": props.userId,
-                    "childrenID": childrenID,
-                    "vocabtype": vocabType.key
-                }),
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + await LocalStorage.readData("token")
-                },
+        if (isChildren) {
+            let res = await fetch(
+                'http://10.0.2.2:8000/test/',
+                {
+                    method: 'post',
+                    body: JSON.stringify({
+                        "Round": 0,
+                        "LDResult": 0,
+                        "UserID": props.userId,
+                        "childrenID": childrenID,
+                        "vocabtype": vocabType.key
+                    }),
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + await LocalStorage.readData("token")
+                    },
+                }
+            );
+            let responseJson = await res.json();
+            console.log(responseJson)
+            if (res.status == 200) {
+                props.upDateTestId(responseJson.id)
+                props.upDateScene(1)
             }
-        );
-        let responseJson = await res.json();
-        console.log(responseJson)
-        if (res.status == 200) {
-            props.upDateTestId(responseJson.id)
-            props.upDateScene(1)
         }
-    }
-    else{
-        alert("ยังไม่ได้เลือกผู้ทำแบบทดสอบครับ")
-    }
+        else {
+            setErrorMessage("ยังไม่ได้พิมรหัสผู้เข้าทำแบบทดสอบนะครับ")
+            setTitleMessage("Can't find this ChildrenID")
+            setNegativeModal(true)
+        }
     }
     return (
         <View style={styles(props.orientation).container}>
+
             <View style={styles(props.orientation).containerStartTest} >
+                <NegativeModal modalVisible={negativeModal} onChangeVisible={handleModalNegative} title={titleMessage} text={errorMessage} />
+
                 <Text style={styles(props.orientation).fontStartTest} >ข้อมูลผู้ทำแบบทดสอบ</Text>
                 {/* <Text style={styles(props.orientation).fontStartTestInput} >รหัสประจำตัวเด็ก</Text> */}
                 {props.userrole == "student" ? <Text style={styles(props.orientation).fontStartTestInfo} >{"รหัสประจำตัวเด็ก : " + childrenID} </Text>

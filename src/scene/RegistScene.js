@@ -46,7 +46,7 @@ import { Icon } from 'react-native-elements'
 import imageRegistTypeDocter from '../resource/image/registTypeDocter.png'
 import imageRegistTypeStudent from '../resource/image/registTypeStudent.png'
 import PositiveModal from '../component/positiveModal'
-
+import NegativeModal from '../component/negativeModal'
 // // dimesions
 // width = Device.isPortrait() ? Dimensions.get('window').height : Dimensions.get('window').width //1:4.65
 // height = Device.isPortrait() ? Dimensions.get('window').width : Dimensions.get('window').height //1:4.65  
@@ -64,9 +64,9 @@ const RegistScene = (props) => {
   const [registTypeSelect, setRegistTypeSelect] = useState("student")
   const [currentDate,setCurrentDate] = useState(null)
   const [stepColor,setStepcolor] = useState([{backgroundColor:Color.Gray},{backgroundColor:Color.Gray}])
-  const [positiveModal,setPositiveModal] = useState(true)
-
-
+  const [positiveModal,setPositiveModal] = useState(false)
+  const [negativeModal,setNegativeModal] = useState(false)
+  const [errorMessage,setErrorMessage] = useState("")
   const moveAnim = useRef(new Animated.Value(-25)).current  // Initial value for top : 0
   const fadeAnim = useRef(new Animated.Value(0)).current // Initial value for fontSize: 28
   // console.log("ore",orientation,"style : ",orientation=="portrait" ? "portrait":"landscape"," hp wp",hp(100),"and",wp(100))
@@ -107,14 +107,20 @@ const RegistScene = (props) => {
       case 2:
         if (username == "") {
           console.log("username is empty")
+          setErrorMessage("username is empty")
+          setNegativeModal(true)
           break
         }
         if (password == "" || password2 == "") {
           console.log("password is empty")
+          setErrorMessage("Password is Empty")
+          setNegativeModal(true)
           break
         }
         if (password != password2) {
           console.log("Passwords are not the same")
+          setErrorMessage("Password are not same")
+          setNegativeModal(true)
           break
         }
         setStateregist(3)
@@ -122,26 +128,38 @@ const RegistScene = (props) => {
       case 3:
         if (idnumber == "") {
           console.log("idnumber is empty")
+          setErrorMessage("ChildrenID is Empty")
+          setNegativeModal(true)
           break
         }
         if (idnumber == "") {
           console.log("idnumber is empty")
+          setErrorMessage("ChildrenID is Empty")
+          setNegativeModal(true)
           break
         }
         if (!checkRegexID(idnumber)){
           console.log("ID IS WRONG FORMAT")
+          setErrorMessage("ChildrenID Wrong Format")
+          setNegativeModal(true)
           break
         }
         if (name == "") {
           console.log("name is empty")
+          setErrorMessage("Name is Empty")
+          setNegativeModal(true)
           break
         }
         if (surname == "") {
           console.log("surname is empty")
+          setErrorMessage("Surname is Empty")
+          setNegativeModal(true)
           break
         }
         if (currentDate == null) {
           console.log("currentDate is empty")
+          setErrorMessage("CurrentDate is Empty")
+          setNegativeModal(true)
           break
         }
         
@@ -163,12 +181,19 @@ const RegistScene = (props) => {
           })
         })
           let responseJson = await res.json();
-          if (res.ok) {
-            alert("Register Success")
-            props.upDateScene(-1)
+          if (res.ok) { 
+
+            setPositiveModal(true)
           }
           else{
-            alert("Register Failed")
+            if(responseJson.childrenID !== undefined){    
+              setErrorMessage("ChildrenID นี้มีแล้วครับ")
+              setNegativeModal(true)
+            }
+            else if(responseJson.userid !== undefined){
+              setErrorMessage("UserID นี้มีแล้วครับ")
+              setNegativeModal(true)
+            }
             console.log('error: ' , responseJson);
           }
         break
@@ -207,7 +232,12 @@ const RegistScene = (props) => {
   }
   const handleModalPositive = (bool) =>{
     setPositiveModal(bool)
+    props.upDateScene(-1)
   }
+  const handleModalNegative = (bool) =>{
+    setNegativeModal(bool)
+  }
+
 
   useEffect(() => {
     console.log(stateregist)
@@ -250,7 +280,8 @@ const RegistScene = (props) => {
 
     <NativeRouter>
       <StatusBar translucent={false} barStyle={"light-content"} backgroundColor={Color.Background} />
-      <PositiveModal modalVisible={positiveModal} onChangeVisible={handleModalPositive} title={"สวัสดีครับ"} text={"อันนี้เป็นการทดสอบ Modal ใน RegistScene บรรทัดที่ 252 นะครับ อันนี้เป็นการทดสอบ Modal ใน RegistScene บรรทัดที่ 252 นะครับ อันนี้เป็นการทดสอบ Modal ใน RegistScene บรรทัดที่ 252 นะครับ"}/>
+      <PositiveModal modalVisible={positiveModal} onChangeVisible={handleModalPositive} title={"Register Success"} text={"สมัครสมาชิกสำเร็จ กดตกลงเพื่อไปหน้า Login"}/>
+      <NegativeModal modalVisible={negativeModal} onChangeVisible={handleModalNegative} title={"Register Failed"} text={errorMessage}/>
 
       {/* <ImageBackground source={backgroundLogin} style={styles(props.orientation).background} resizeMode={"stretch"}> */}
       <KeyboardAvoidingView

@@ -44,7 +44,7 @@ const HomeScene = (props) => {
     , [])
   const [onClick, setOnclick] = useState("test_scene")
   // console.log("test", Color.White)
-
+  
   props.upDateText("testtext")
 
   const newStyle = (fromscene) => {
@@ -85,7 +85,7 @@ const HomeScene = (props) => {
       <SafeAreaView style={{ flex: 1 }}>
 
         <View style={styles(props.orientation).container}>
-
+          
           {/* <ImageBackground source={backgroundMenu} style={styles.backgroundMenu}> */}
           <View style={styles(props.orientation).containerMenu}>
 
