@@ -297,7 +297,7 @@ const RegistScene = (props) => {
               <View style={[styles(props.orientation).containerFill]}>
                 <View style={{ flexDirection: "row", width: wp(90) }}>
                   {/* <View style={{flexDirection:"column",width:wp(50)}}> */}
-                      <TouchableOpacity onPress={() =>  {stateregist == 1 ? console.log("go to login scene") :setStateregist(stateregist-1)}}>
+                      <TouchableOpacity onPress={() =>  {stateregist == 1 ? props.upDateScene(-1) :setStateregist(stateregist-1)}}>
                       <Icon
                                 //reverse
                                 name={"chevron-back"}

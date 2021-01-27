@@ -385,7 +385,7 @@ const GameSecondScene = (props) => {
 
       <Image source={imageGameSceneFG2} resizeMode="stretch" style={[styles.foreground]} />
 
-      <View style={{ paddingVertical: 30, paddingHorizontal: 30, position: 'absolute' }}>
+      {/* <View style={{ paddingVertical: 30, paddingHorizontal: 30, position: 'absolute' }}>
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
           <Button onPress={() => playPlayer('idle')} title="Player" />
           <Button onPress={() => playEnemy('idle')} title="Enemy" />
@@ -413,7 +413,7 @@ const GameSecondScene = (props) => {
             onValueChange={val => setResetAfterFinish(val)}
           />
         </View>
-      </View>
+      </View> */}
 
     </View>
     </>
