@@ -107,6 +107,7 @@ const LoginScene = (props) => {
     ]).start()
     return () => {
       rol()
+      Orientation.unlockAllOrientations();
     }
   },[])
   
