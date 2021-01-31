@@ -13,6 +13,12 @@ exports.isPortrait = () =>{
     //console.log("dim ",dim.height >= dim.width)
     return dim.height >= dim.width
 };
+exports.fontSizer = (size) => {
+  return size / PixelRatio.getFontScale()
+};
+exports.layoutSizer = (size)=>{
+  return PixelRatio.getPixelSizeForLayoutSize(size)
+}
 
 exports.isLandscape = () =>{
     const dim  = Dimensions.get('window');
@@ -89,6 +95,10 @@ exports.listenOrientationChange = (setStateHook = null) => {
 exports.removeOrientationListener = () => {
     Dimensions.removeEventListener('change', () => {});
   };
+
+//Guideline sizes are based on standard ~5" screen mobile device
+// const scale = SCREEN_WIDTH / 350;
+
 
 //   const mapStateToProps = state => {
 //     return {

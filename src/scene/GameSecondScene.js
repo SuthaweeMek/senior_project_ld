@@ -69,7 +69,8 @@ const GameSecondScene = (props) => {
   const enemyFade = useRef(new Animated.Value(1)).current; 
   const backgroundTransition = useRef(new Animated.Value(0)).current;
   
-  
+  var orientation = props.orientation
+
   useEffect(() => {
     playPlayer("idle")
     playEnemy("idle")
@@ -78,7 +79,6 @@ const GameSecondScene = (props) => {
     // index ==0 ? ary_th_vowel.push("th_vowel_end") : null
     Arrays.Shuffle(ary_th_vowel)
     ary_th_vowel.push("th_vowel_end")
-    Orientation.lockToLandscape();
   }, [])
 
   useEffect(() => {
@@ -113,9 +113,6 @@ const GameSecondScene = (props) => {
         }
         return () => clearInterval(interval)
       }, time);
-    }
-    return () => {
-      Orientation.unlockAllOrientations();
     }
   }, [enemyHeartEmpty])
 
@@ -305,22 +302,22 @@ const GameSecondScene = (props) => {
     // <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
     // resizeMode cover stretch
     <>
-    <View style={styles.container}>
-      <Animated.View style={[styles.fadingContainer,{ left:backgroundTransition}]}>  
-        <Image source={imageGameSceneBG2} resizeMode="stretch" style={[styles.background]} />
+    <View style={styles(orientation).container}>
+      <Animated.View style={[styles(orientation).fadingContainer,{ left:backgroundTransition}]}>  
+        <Image source={imageGameSceneBG2} resizeMode="stretch" style={[styles(orientation).background]} />
       </Animated.View>
-      <View style={styles.statusHP} >
+      <View style={styles(orientation).statusHP} >
         <View style={{ flexDirection: 'row' }}>
-          <Image source={imagePlayer} style={styles.imageCircle} />
+          <Image source={imagePlayer} style={styles(orientation).imageCircle} />
           <StatusHP heart={playerHeart} heartEmpty={playerHeartEmpty} side={"left"} />
         </View>
         <View style={{ flexDirection: 'row' }}>
           <StatusHP heart={enemyHeart} heartEmpty={enemyHeartEmpty} side={"right"} />
-          <Image source={imageEnemy} style={styles.imageCircle} />
+          <Image source={imageEnemy} style={styles(orientation).imageCircle} />
         </View>
       </View>
 
-      <View style={styles.field}>
+      <View style={styles(orientation).field}>
         <View style={{left:"30%"}}>
           <SpriteSheet
             ref={ref => (player = ref)}
@@ -337,7 +334,7 @@ const GameSecondScene = (props) => {
             }}
           />
         </View>
-        <Animated.View style={[styles.effect,{left:effectSpeed ,opacity:effectFade}]}>
+        <Animated.View style={[styles(orientation).effect,{left:effectSpeed ,opacity:effectFade}]}>
             <SpriteSheet
               ref={ref => (effect = ref)}
               source={spriteEffect1}
@@ -358,7 +355,7 @@ const GameSecondScene = (props) => {
               }}
             />
             </Animated.View>
-        <Animated.View style={[styles.enemy,{opacity:enemyFade}]}>
+        <Animated.View style={[styles(orientation).enemy,{opacity:enemyFade}]}>
           <SpriteSheet
             ref={ref => (enemy = ref)}
             source={spriteEnemy}
@@ -383,7 +380,7 @@ const GameSecondScene = (props) => {
 
 
 
-      <Image source={imageGameSceneFG2} resizeMode="stretch" style={[styles.foreground]} />
+      <Image source={imageGameSceneFG2} resizeMode="stretch" style={[styles(orientation).foreground]} />
 
       {/* <View style={{ paddingVertical: 30, paddingHorizontal: 30, position: 'absolute' }}>
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
@@ -421,7 +418,7 @@ const GameSecondScene = (props) => {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = (orientation) => StyleSheet.create({
   container: {
     flex: 1,
     //backgroundColor: "green",
@@ -493,19 +490,23 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-      scene: state.scene
+      scene: state.scene,
+      orientation : state.orientation
   }
 }
 
 
 const mapDispatchToProps = dispatch => {
   return {
+    
       upDateScene: (scene) => {
         dispatch({type: 'EDIT_SCENE', payload: scene})
-    }
-
+    },
+    upDateOrientation: (orientation) => {
+      dispatch({type: 'EDIT_ORIENTATION', payload: orientation})
+  }
 
   }
-}
+} 
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameSecondScene);

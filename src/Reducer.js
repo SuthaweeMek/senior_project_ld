@@ -2,11 +2,12 @@ import Device from './utils/Device'
 init_state = {
     global: 'init',
     testId: 0,
-    scene: -1,
+    scene: 0,
     orientation: Device.orientation(),
     userId: 0,
     userrole: 'teacher',
-    firstname: 'Pending'
+    firstname: 'Pending',
+    menuDrawer : false
 }
 
 export default Reducer = (state = init_state, action) => {
@@ -45,6 +46,11 @@ export default Reducer = (state = init_state, action) => {
             return {
                 ...state,
                 firstname: action.payload
+            }
+        case 'EDIT_DRAWER':
+            return {
+                ...state,
+                menuDrawer: action.payload
             }
         default:
             return state

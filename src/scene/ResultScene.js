@@ -35,8 +35,10 @@ import { connect } from 'react-redux';
 import SelectionInput from '../component/picker';
 import { Icon } from 'react-native-elements'
 import LocalStorage from '../utils/LocalStorage'
+import DeviceInfo from 'react-native-device-info';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientationChange as lor, removeOrientationListener as rol } from '../utils/Device'
 import { Picker } from '@react-native-picker/picker';
+import { FontSize, LayoutSize } from '../resource/dimension'
 
 //dimesions
 width = Device.isPortrait() ? Dimensions.get('screen').height : Dimensions.get('screen').width //1:4.65
@@ -46,6 +48,7 @@ const DATA = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13
 const DATA2 = ["1", "2", "3", "4"]
 const ResultScene = (props) => {
     var orientation = props.orientation
+    const paginationSplit = DeviceInfo.isTablet() == true ? 5:4
 
     const [search, setSearch] = useState("");
     const [reportList, setReportList] = useState([1, 2, 3, 4, 5]);
@@ -63,9 +66,7 @@ const ResultScene = (props) => {
     const [selectDate, setSelectDate] = useState("")
     const [modalEditVisible, setModalEditVisible] = useState(false);
     const [editPrediction, setEditPrediction] = useState(0);
-    var editPrediction2 = 0
     const [selectedModalId, setSelectedModalId] = useState({ index: 0, item: "panding" });
-    const [value, onChangeText] = React.useState('Useless Placeholder');
 
     const queryTestSearch = async () => {
         if (search == "") {
@@ -143,25 +144,11 @@ const ResultScene = (props) => {
 
     // useEffect(()=>{setReportList},[orientation])
     const mapNumberToLabel = {
-        0: "อะไรเอ๋ย",
+        0: "รอคุณหมอ",
         1: "เขียนถูก",
         2: "เขียนผิด",
         3: "กลับด้าน",
     }
-    const pickerItem = [
-        {
-            key: 0, value: "ไม่ยอมเขียนมา"
-        },
-        {
-            key: 1, value: "เขียนถูก"
-        },
-        {
-            key: 2, value: "เขียนผิด"
-        },
-        {
-            key: 3, value: "เขียนกลับด้าน"
-        },
-    ];
     useEffect(() => {
 
         queryTestSearch()
@@ -252,7 +239,7 @@ const ResultScene = (props) => {
                 </TouchableOpacity>
             </View>
             <Text style={styles({ orientation }).textResult}>โมเดลทำนาย : {mapNumberToLabel[item.prediction]}</Text>
-            <Text style={styles({ orientation }).textResult}>ความน่าจะเป็น : {item.prediction==1?item.predictionprob+"%":"-"}</Text>
+            <Text style={styles({ orientation }).textResult}>ความน่าจะเป็น : {item.prediction == 1 ? item.predictionprob + "%" : "-"}</Text>
             <TouchableOpacity onPress={() => {
                 setImageModal(`http://10.0.2.2:8000${item.ImageName}`)
                 setModalVisible(true)
@@ -286,24 +273,68 @@ const ResultScene = (props) => {
             {element.childrenID ?
                 < View style={styles({ orientation }).containerItemTable
                 }>
-                    <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.childrenID.childrenID + " (" + element.Round +")"}</Text></View>
-                    <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.childrenID.name + " " + element.childrenID.surname}</Text></View>
-                    <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.created === undefined ? "Pending" : element.created.split("T")[0]}</Text></View>
-                    <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.LDResult}</Text></View>
-                    <View style={styles({ orientation }).itemTable} >
-                        <Button
-                            title=" ๐ ๐ ๐ "
-                            onPress={async () => {
-                                setImageList([])
-                                await getTestResult(element.id)
-                                setSelectItem(1)
-                                setSelectTab(0)
-                                setSelectDate(element.created.split("T")[0])
-                                setName(element.childrenID.name + " " + element.childrenID.surname)
-                            }}
-                            color={Color.Sub_Surface}
-                        />
-                    </View>
+                    {DeviceInfo.isTablet() == true ?
+                        <>
+                            <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.childrenID.childrenID}</Text></View>
+                            <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.Round}</Text></View>
+                            <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.childrenID.name + " " + element.childrenID.surname}</Text></View>
+                            <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.created === undefined ? "Pending" : element.created.split("T")[0]}</Text></View>
+                            <View style={styles({ orientation }).itemTable} >
+                                <TouchableOpacity
+                                    onPress={async () => {
+                                        setImageList([])
+                                        await getTestResult(element.id)
+                                        setSelectItem(1)
+                                        setSelectTab(0)
+                                        setSelectDate(element.created.split("T")[0])
+                                        setName(element.childrenID.name + " " + element.childrenID.surname)
+                                    }}
+                                    color={Color.Sub_Surface}
+                                >
+                                    {/* <Text style={styles({ orientation }).textItemTable}>
+                                        ๐ ๐ ๐
+                                    </Text> */}
+                                    <Icon
+                                        name={"more-horizontal"}
+                                        type="feather"
+                                        color={Color.Sub_Surface}
+                                        size={48}
+                                    />
+                                </TouchableOpacity>
+                            </View>
+                        </>
+                        :
+                        <>
+                            <View style={styles({ orientation }).itemTableName}>
+                                <View style={{ flexDirection: "column" }}>
+                                    <Text style={[styles({ orientation }).textItemTable, { color: Color.Cover }]}>{element.childrenID.childrenID} ({element.Round})</Text>
+                                    <Text style={styles({ orientation }).textItemTable}>{element.childrenID.name + " " + element.childrenID.surname}</Text>
+                                </View>
+                            </View>
+                            <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.created === undefined ? "Pending" : element.created.split("T")[0]}</Text></View>
+                            <View style={styles({ orientation }).itemTable} >
+                                <TouchableOpacity
+                                    onPress={async () => {
+                                        setImageList([])
+                                        await getTestResult(element.id)
+                                        setSelectItem(1)
+                                        setSelectTab(0)
+                                        setSelectDate(element.created.split("T")[0])
+                                        setName(element.childrenID.name + " " + element.childrenID.surname)
+                                    }}
+                                    color={Color.Sub_Surface}
+                                >
+                                    <Icon
+                                        name={"more-horizontal"}
+                                        type="feather"
+                                        color={Color.Sub_Surface}
+                                        size={48}
+                                    />
+                                </TouchableOpacity>
+                            </View>
+                        </>
+                    }
+
                 </View > : null
             }</>)
 
@@ -471,7 +502,24 @@ const ResultScene = (props) => {
             <>
                 <View style={styles({ orientation }).container}>
                     <View style={styles({ orientation }).containerResult}>
-                        <Text style={styles({ orientation }).headerText}>ผลลัพธ์</Text>
+                        {/* <Text style={styles({ orientation }).headerText}>ผลลัพธ์</Text> */}
+                        {props.orientation == 'portrait' ?
+                            <View style={styles({ orientation }).appBars} >
+                                <TouchableOpacity onPress={() => { props.upDateMenuDrawer(true), console.log("moo", props.menuDrawer) }}>
+                                    <Icon
+                                        //reverse
+                                        name={"bars"}
+                                        type='font-awesome'
+                                        color={Color.Black}
+                                        size={24}
+                                        style={{ alignSelf: "flex-start", marginRight: 32 }}
+                                    />
+                                </TouchableOpacity>
+                                <Text style={[styles({ orientation }).headerText, {}]} >ผลลัพธ์ </Text>
+                            </View>
+                            :
+                            <Text style={styles({ orientation }).headerText} >ผลลัพธ์</Text>
+                        }
                         <TextInput
                             style={styles({ orientation }).searchBox}
                             onChangeText={text => setSearch(text)}
@@ -481,26 +529,43 @@ const ResultScene = (props) => {
 
                         <View style={styles({ orientation }).table}>
                             <View style={styles({ orientation }).containerTitleTable}>
-                                <Text style={styles({ orientation }).textTitleTable}>เลขที่</Text>
-                                <Text style={styles({ orientation }).textTitleTable}>ชื่อ-สกุล</Text>
-                                <Text style={styles({ orientation }).textTitleTable}>วันที่</Text>
-                                <Text style={styles({ orientation }).textTitleTable}>ความน่าจะเป็น</Text>
-                                <Text></Text>
+                                {DeviceInfo.isTablet() == true ?
+                                    <>
+                                        <Text style={styles({ orientation }).textTitleTable}>เลขที่</Text>
+                                        <Text></Text>
+                                        <Text style={styles({ orientation }).textTitleTable}>รอบที่</Text>
+                                        <Text></Text>
+                                        <Text style={styles({ orientation }).textTitleTable}>ชื่อ-สกุล</Text>
+                                        <Text></Text>
+                                        <Text style={styles({ orientation }).textTitleTable}>วันที่</Text>
+                                        <Text></Text>
+                                        <Text></Text>
+                                        <Text></Text>
+                                    </>
+                                    :
+                                    <>
+                                        <Text style={styles({ orientation }).textTitleTable}>ชื่อ-สกุล</Text>
+                                        <Text style={styles({ orientation }).textTitleTable}></Text>
+                                        <Text style={styles({ orientation }).textTitleTable}>วันที่</Text>
+                                        <Text style={styles({ orientation }).textTitleTable}></Text>
+                                        <Text></Text>
+                                    </>
+                                }
                             </View>
                             {itemList}
 
-
+                            <View style={styles({ orientation }).containerPagination}>
+                                {paging > 0 ? <TouchableOpacity onPress={() => { setPaging(paging - 1) }} style={styles({ orientation }).buttonPagination} >
+                                    <Text style={styles({ orientation }).textButtonPagination}>ก่อน</Text>
+                                </TouchableOpacity> : null}
+                                <Pagination paging={paging} number={resultNumber} split={paginationSplit} selectedId={selectedId} setSelectedId={setSelectedId} />
+                                {/* วิธีคิด pagging คือต้องเอา number/split -1*/}
+                                {paging < resultNumber / paginationSplit - 1 ? <TouchableOpacity onPress={() => { setPaging(paging + 1) }} style={styles({ orientation }).buttonPagination} >
+                                    <Text style={styles({ orientation }).textButtonPagination}>หลัง</Text>
+                                </TouchableOpacity> : null}
+                            </View>
                         </View>
-                        <View style={styles({ orientation }).containerPagination}>
-                            {paging > 0 ? <TouchableOpacity onPress={() => { setPaging(paging - 1) }} style={styles({ orientation }).buttonPagination} >
-                                <Text style={styles({ orientation }).textButtonPagination}>ก่อน</Text>
-                            </TouchableOpacity> : null}
-                            <Pagination paging={paging} number={resultNumber} split={5} selectedId={selectedId} setSelectedId={setSelectedId} />
-                            {/* วิธีคิด pagging คือต้องเอา number/split -1*/}
-                            {paging < resultNumber / 5 - 1 ? <TouchableOpacity onPress={() => { setPaging(paging + 1) }} style={styles({ orientation }).buttonPagination} >
-                                <Text style={styles({ orientation }).textButtonPagination}>หลัง</Text>
-                            </TouchableOpacity> : null}
-                        </View>
+                        
                     </View>
                 </View>
 
@@ -517,35 +582,52 @@ const styles = (props) => StyleSheet.create({
     },
     containerResult: {
         flex: 1,
-        // flexDirection: 'column',
+        //width: width / 1.8,
+        flexDirection: 'column',
+        //margin: height - (height * 0.9),
         marginVertical: hp("3%"),
-        marginRight: hp("3%"),
+        marginRight: props.orientation == "portrait" ? null : hp("3%"),
         paddingHorizontal: wp("4%"),
         paddingTop: hp("8%"),
         backgroundColor: Color.White,
-        borderRadius: hp("3.5%"),
+        // borderTopRightRadius:50,
+        // borderBottomRightRadius:50,
+        borderRadius: LayoutSize.ContainerRadius,
+        //justifyContent: 'center', 
+        //alignItems: 'center'
+        //flex: 1 1 auto, 
+        //marginTop: 22
     },
     headerText: {
-        fontSize: wp("4%"),
+        color: Color.Black,
+        fontSize: props.orientation == "portrait" ? Device.fontSizer(FontSize.H6) : Device.fontSizer(FontSize.H6),
+        // marginTop: 40,
+        // marginBottom: 30,
         marginVertical: 12,
-        fontFamily: Font.Bold
+        alignSelf: "flex-start",
+
+        fontFamily: Font.Bold,
+    },
+    appBars: {
+        flexDirection: 'row',
+        alignItems: "center",
     },
     searchBox: {
-        height: wp('5%'),
-        width: wp('25%'),
+        height: LayoutSize.InputHeight,
+        width: DeviceInfo.isTablet()==true? '40%':'100%',
         borderColor: Color.Sub_Surface,
         borderWidth: 2,
         alignSelf: 'flex-end',
         // marginRight: "5%",
-        paddingHorizontal: wp('3%'),
-        fontSize: wp('2%'),
+        paddingHorizontal: LayoutSize.InputPaddingLeft,
+        fontSize: Device.fontSizer(FontSize.Subtitle1),
         fontFamily: Font.Regular,
-        borderRadius: 50
+        borderRadius: LayoutSize.InputCurveRadius,
     },
     table: {
-        flex: 2,
+        flex: 1,
         margin: "5%",
-        backgroundColor: 'white'
+        // backgroundColor: 'red'
     },
     containerTitleTable: {
         margin: "1%",
@@ -553,36 +635,51 @@ const styles = (props) => StyleSheet.create({
         justifyContent: "space-around",
     },
     textTitleTable: {
-        color: Color.Gray,
-        fontSize: wp("1.25%"),
+        color: Color.Black,
+        fontSize: Device.fontSizer(FontSize.Body2),
+        fontWeight: "bold",
+
     },
     containerItemTable: {
         alignSelf: 'stretch',
         flexDirection: 'row',
-        marginTop: "2%",
-        paddingBottom: "1%",
-        borderBottomColor: Color.Black,
+        // flex:1,
+        height: 52,
+        alignItems: 'center',
+        // marginTop: "2%",
+        // paddingBottom: "1%",
+        borderBottomColor: Color.Gray,
         borderBottomWidth: 1,
     },
-    itemTable: {
-        flex: 1,
+    itemTableName: {
+        flex: 4,
         alignSelf: 'stretch',
-        alignItems: 'center'
+        alignItems: 'flex-start',
+        justifyContent: "flex-end",
+    },
+    itemTable: {
+        flex: DeviceInfo.isTablet() ? 1 : 2,
+        alignSelf: 'stretch',
+        alignItems: 'center',
+        justifyContent: "center",
     },
     textItemTable: {
         color: Color.Black,
-        fontSize: wp("1.25%"),
+        fontSize: Device.fontSizer(FontSize.Body2)
     },
     containerPagination: {
-        flex: 1,
-        alignItems: "center",
-        flexDirection: "row",
-        justifyContent: "center"
+        // margin : 16,
+        marginVertical : 16,
+        // flexDirection: DeviceInfo.isTablet()==true ? "row":"column",
+        flexDirection : "row",
+        justifyContent: "center",
+        // backgroundColor:"blue",
+        // alignSelf:"flex-start",
     },
     buttonPagination: {
         backgroundColor: Color.Sub_Surface,
-        padding: 8,
-        borderRadius: wp(1),
+        // padding: 8,
+        borderRadius: LayoutSize.PaginationBorderRadius,
         alignItems: "center",
         justifyContent: "center",
         shadowColor: "#000",
@@ -596,7 +693,8 @@ const styles = (props) => StyleSheet.create({
         elevation: 5,
     },
     textButtonPagination: {
-        fontSize: wp(2),
+        fontSize: Device.fontSizer(FontSize.H6),
+        paddingHorizontal:12,
         fontFamily: Font.Bold,
     },
 
@@ -727,7 +825,9 @@ const styles = (props) => StyleSheet.create({
 
 const mapStateToProps = state => {
     return {
-        orientation: state.orientation
+        orientation: state.orientation,
+        menuDrawer: state.menuDrawer,
+
     }
 }
 
@@ -736,6 +836,9 @@ const mapDispatchToProps = dispatch => {
     return {
         upDateOrientation: (orientation) => {
             dispatch({ type: 'EDIT_ORIENTATION', payload: orientation })
+        },
+        upDateMenuDrawer: (menuDrawer) => {
+            dispatch({ type: 'EDIT_DRAWER', payload: menuDrawer })
         }
 
     }

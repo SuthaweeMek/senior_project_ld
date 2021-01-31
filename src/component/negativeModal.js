@@ -13,6 +13,8 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientatio
 import Color from '../resource/color';
 import Font from '../resource/font';
 import { Icon } from 'react-native-elements'
+import {FontSize, LayoutSize} from '../resource/dimension'
+import Device from '../utils/Device';
 
 const negativeModal = (props) => {
   // const [modalVisible, setModalVisible] = useState(false);
@@ -82,9 +84,9 @@ const styles = ({ orientation }) => StyleSheet.create({
     alignItems: "center",
   },
   modalView: {
-    flex: 0.7,
+    flex: 0.5,
     margin: 20,
-    borderRadius: 20,
+    borderRadius: LayoutSize.ModalRadius,
     //margin: 35,
     // justifyContent: "center",
     // alignItems: "center",
@@ -100,34 +102,35 @@ const styles = ({ orientation }) => StyleSheet.create({
   },
   openButton: {
     backgroundColor: Color.White,
-    borderRadius: wp('50%'),
-    padding: 10,
+    height: LayoutSize.ButtonHeight,
+    minWidth : LayoutSize.ButtonMinWidth,
+    padding: LayoutSize.ButtonPaddingHorizontal,
     elevation: 2,
     borderWidth:2,
-    width:'60%',
+    justifyContent:"center",
+    borderRadius:LayoutSize.ButtonRadius,
     borderColor:Color.Wrong,
   },
   textStyle: {
     color: Color.Wrong,
-    // fontWeight: "bold",
     fontFamily:Font.Bold,
     textAlign: "center",
-    fontSize:hp('3%'),
+    fontSize:Device.fontSizer(FontSize.BUTTON),
 
   },
   modalTitle: {
     marginBottom: 15,
     textAlign: "center",
     fontFamily:Font.Bold,
-    fontSize:hp('4%'),
+    fontSize:Device.fontSizer(FontSize.H6),
   },
   modalText: {
     marginBottom: 15,
     textAlign: "center",
-    fontFamily:Font.Bold,
-    fontSize:hp('2%'),
+    fontFamily:Font.Regular,
+    fontSize:Device.fontSizer(FontSize.Body1),
     paddingHorizontal:12,
-    color:Color.Gray
+    color:Color.Cover
   },
   containerTitle: {
     flex: 3,

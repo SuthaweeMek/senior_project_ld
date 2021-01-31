@@ -5,9 +5,7 @@
  * @format
  * @flow strict-local
  */
-
 import React, { useEffect } from 'react';
-
 import Router2Component from './router2'
 import CollectingScene from './scene/CollectingScene'
 

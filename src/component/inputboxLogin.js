@@ -2,6 +2,7 @@ import React, { Component,useState,useRef,useEffect } from 'react';
 import { TextInput,Dimensions,StyleSheet, View,Text,TouchableOpacity,Animated} from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from '../utils/Device';
 import Device from '../utils/Device';
+import {FontSize, LayoutSize} from '../resource/dimension'
 import { Icon } from 'react-native-elements'
 import Color from '../resource/color'
 import { connect } from 'react-redux';
@@ -11,11 +12,11 @@ const inputbox = (props) => {
   const size = props.size
   const maxLength = props.maxLength
 
-  const [clickInput,setClickInput] = useState({borderColor: Color.Cover,borderBottomWidth: 2})
+  const [clickInput,setClickInput] = useState({borderColor: Color.Cover,borderBottomWidth: 1})
   const [text,setText] = useState(props.text)
   const moveAnim = useRef(new Animated.Value(0)).current  // Initial value for top : 0
-  const sizeAnim = useRef(new Animated.Value(wp('2.7%'))).current // Initial value for fontSize: 28]
-  const [textHolderColor,setTextholdercolor] = useState(Color.Cover)
+  const sizeAnim = useRef(new Animated.Value(Device.fontSizer(FontSize.Subtitle1))).current // Initial value for fontSize: 28]
+  const [holderColor,setHolderColor] = useState(Color.Cover)
 
   useEffect(()=>{
     placeholderAnimation()
@@ -24,12 +25,12 @@ const inputbox = (props) => {
     const placeholderAnimation = (clicked) => {
       Animated.parallel([
       Animated.timing(moveAnim, {
-          toValue: clicked ? -(hp('2.5%')):text =="" ? 0 : -(hp('2.5%')),
+          toValue: clicked ? -(20):text =="" ? 0 : -(20),
           duration: 300,
           useNativeDriver :false
       }),
       Animated.timing(sizeAnim, {
-          toValue: clicked ? wp('2%') :text =="" ? wp('2.7%') : wp('2%'),
+          toValue: clicked ?  Device.fontSizer(FontSize.Caption) :text =="" ? Device.fontSizer(FontSize.Subtitle1) : Device.fontSizer(FontSize.Caption),
           duration: 300,
           useNativeDriver :false
       })
@@ -44,12 +45,12 @@ const inputbox = (props) => {
       name={props.icon}
       type='font-awesome-5'
       color= {clickInput.borderColor} 
-      size={hp('4%')}
+      size={24}
       style={styles({orientation,size}).inputIcon} 
     />
     <View style={styles({orientation,size}).container2}>
 
-      <Animated.Text style={[styles({orientation,size}).textHolder,{fontSize:sizeAnim,top:moveAnim,color:textHolderColor}]} >{props.placeholder}</Animated.Text>
+      <Animated.Text style={[styles({orientation,size}).textHolder,{fontSize:sizeAnim,top:moveAnim,color:holderColor}]} >{props.placeholder}</Animated.Text>
         <TextInput
           style={[styles({orientation,size}).textinput]}
           onChangeText={text => {props.onChangeText(text) ,setText(text)}}
@@ -57,8 +58,15 @@ const inputbox = (props) => {
           secureTextEntry={props.password? true:false}
           value={props.text}
           maxLength={maxLength}
-          onFocus = {()=> {setClickInput({borderColor: Color.Background,borderBottomWidth: 4}) ,placeholderAnimation(clicked=true),text =="" ? setTextholdercolor(Color.Black):null}}
-          onBlur = {()=>{setClickInput({borderColor: '#d9dada',borderBottomWidth: 2}) , placeholderAnimation(clicked=false), text =="" ? setTextholdercolor(Color.Cover):setTextholdercolor(Color.Black)}}
+          onFocus = {()=> {
+            placeholderAnimation(clicked=true),text =="" ? setClickInput({borderColor: Color.Background,borderBottomWidth: 1}):null ,
+            placeholderAnimation(clicked=true),text =="" ? setHolderColor(Color.Background):null}
+          }
+          onBlur = {()=>{
+            // setClickInput({borderColor: Color.Background,borderBottomWidth: 2}) ,
+            placeholderAnimation(clicked=true),text =="" ? setClickInput({borderColor: Color.Cover,borderBottomWidth: 1}):setClickInput({borderColor: Color.Background,borderBottomWidth: 1}) ,
+            placeholderAnimation(clicked=false), text =="" ? setHolderColor(Color.Cover):setHolderColor(Color.Background)}
+          }
         />   
     </View>
       
@@ -69,43 +77,47 @@ const inputbox = (props) => {
 const styles = (props) => StyleSheet.create({
   inputSection: {
     flexDirection: 'row',
-    marginTop:20,
-    marginBottom:10,
-    borderColor: 'red',
-    borderBottomWidth : 2,
+    marginBottom:16,
+    height : LayoutSize.InputHeight,
+    borderBottomWidth : 1,
     justifyContent:"flex-start",
-    alignItems:"flex-end",
+    alignItems:"center",
     width: props.size.wp,
+    // backgroundColor:"green",
 },
   container2 :{
-    flexDirection:"column"
+    flexDirection:"column",
+    justifyContent:"flex-end",
+    alignSelf:"flex-end",
+
 },
   textHolder : {
-    paddingLeft: 10,
+    // paddingLeft: 10,
     fontFamily:"EkkamaiNew-Regular",
-    fontSize:28,
-    top:-10,
+    fontSize: Device.fontSizer(FontSize.Subtitle1),
     position:"absolute",
-    color:"#d9dada",
-    //backgroundColor:"blue",
-    height: props.size.hp,
-    width: props.size.wp,
+    color:Color.Cover,
+    height: LayoutSize.InputHeight,
+    textAlignVertical:"center",
+    // width: props.size.wp,
 },
 
   inputIcon: {
-    padding:8,
+    paddingHorizontal:LayoutSize.InputPaddingHorizontal,
+    alignSelf:"center",
     // backgroundColor:"green"
 },
   textinput:{ 
     fontFamily:"EkkamaiNew-Regular",
-    fontSize: wp('3%'),
-    // height: hp('5.9%'),
+    // alignSelf:"flex-end",
+    fontSize: Device.fontSizer(FontSize.Subtitle1),
     width: props.size.wp,
+    // backgroundColor:"red",
     //marginTop : -10,
     //paddingTop :-5,
-    paddingLeft: 10,
-    color: Color.Background,
-    textAlignVertical:"center",
+    // paddingLeft: 10,
+    color: Color.Black,
+    // textAlignVertical:"center",
     },
 })
 

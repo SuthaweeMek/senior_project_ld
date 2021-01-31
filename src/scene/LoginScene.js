@@ -39,6 +39,7 @@ import NegativeModal from '../component/negativeModal'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientationChange as lor, removeOrientationListener as rol } from '../utils/Device'
 import Device from '../utils/Device'
 import { connect } from 'react-redux';
+import {FontSize} from '../resource/dimension'
 import Color from '../resource/color'
 import Font from '../resource/font'
 // //dimesions
@@ -47,8 +48,8 @@ import Font from '../resource/font'
 
 const LoginScene = (props) => {
   const [token, setToken] = useState('5')
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const [username, setUsername] = useState('admin')
+  const [password, setPassword] = useState('admin')
   const [orientation, setOrientation] = useState(Device.isPortrait() ? "portrait" : "landscape")
   const [negativeModal, setNegativeModal] = useState(false)
   const [errorMessage, setErrorMessage] = useState("")
@@ -56,7 +57,7 @@ const LoginScene = (props) => {
   const moveAnim = useRef(new Animated.Value(-25)).current  // Initial value for top : 0
   const fadeAnim = useRef(new Animated.Value(0)).current // Initial value for fontSize: 28
   // console.log("ore",orientation,"style : ",orientation=="portrait" ? "portrait":"landscape"," hp wp",hp(100),"and",wp(100))
-  // console.log("orientation ",Device.orientation())
+  console.log("orientation ",Device.fontSizer(24))
 
   console.log(props.firstname)
   const onPress = async () => {
@@ -114,7 +115,7 @@ const LoginScene = (props) => {
     // console.log("testtttttttttt",props.upDateOrientation)
 
     lor(props.upDateOrientation)
-    Device.isTablet() ? null : Orientation.lockToPortrait();
+    Device.isTablet() ? Orientation.unlockAllOrientations() : Orientation.lockToPortrait();
     Animated.parallel([
       Animated.timing(moveAnim, {
         toValue: 0,
@@ -136,7 +137,7 @@ const LoginScene = (props) => {
 
 
     <NativeRouter>
-      <StatusBar translucent={false} barStyle={"light-content"} backgroundColor={Color.Background} />
+      <StatusBar translucent={false} barStyle={"dark-content"} backgroundColor={Color.Transparent} />
       {/* <ImageBackground source={backgroundLogin} style={styles(props.orientation).background} resizeMode={"stretch"}> */}
       <KeyboardAvoidingView
         // behavior={props.orientation=="landscape"? Platform.OS === "ios" ? "padding" : "height": Platform.OS === "ios" ? "padding" : "height"}
@@ -153,8 +154,8 @@ const LoginScene = (props) => {
               <Text style={styles(props.orientation).fontTopic}>
                 เข้าสู่ระบบ
                             </Text>
-              <InputBoxLogin text={username} onChangeText={handleUser} placeholder="Username" icon="user" size={{ hp: hp('6%'), wp: wp('80%') }} />
-              <InputBoxLogin text={password} onChangeText={handlePassword} placeholder="Password" icon="key" size={{ hp: hp('6%'), wp: wp('80%') }} password={true} />
+              <InputBoxLogin text={username} onChangeText={handleUser} placeholder="Username" icon="user" size={{ hp: hp('6%'), wp: wp('90%') }} />
+              <InputBoxLogin text={password} onChangeText={handlePassword} placeholder="Password" icon="key" size={{ hp: hp('6%'), wp: wp('90%') }} password={true} />
               <Text style={styles(props.orientation).fontForget} onPress={() => { console.log("do something1") }}>ลืมรหัสผ่าน</Text>
               <View style={styles(props.orientation).btnContainer}>
                 <ButtonCurveLogin onPress={onPress} text="เข้าสู่ระบบ" size={{ hp: hp('6%'), wp: wp('90%') }} />
@@ -184,14 +185,15 @@ const styles = (props) => StyleSheet.create({
     marginBottom: 36,
   },
   fontTopic: {
-    fontFamily: Font.Bold,
+    fontFamily: Font.Regular,
     // color: "#66b4c1",
     color: Color.Black,
-    fontSize: hp('5%'),
+    fontSize: Device.fontSizer(FontSize.H3),
     marginBottom: 36,
   },
   fontForget: {
-    fontSize: hp('2%'),
+    // fontSize: hp('2%'),
+    fontSize: Device.fontSizer(FontSize.OVERLINE),
     fontFamily: Font.Bold,
     textAlign: "right",
     width: wp('85%'),
@@ -200,7 +202,8 @@ const styles = (props) => StyleSheet.create({
 
   },
   fontRegis: {
-    fontSize: hp('2%'),
+    // fontSize: hp('2%'),
+    fontSize: Device.fontSizer(FontSize.Body2),
     marginBottom: 36,
     textDecorationLine: 'underline',
     fontFamily: Font.Bold,

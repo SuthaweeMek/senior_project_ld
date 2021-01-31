@@ -12,6 +12,7 @@ import {
   Text,
   StyleSheet,
   Dimensions,
+  StatusBar,
   Switch
 } from 'react-native';
 import { connect } from 'react-redux'; 
@@ -41,8 +42,8 @@ import spriteEnemy from '../resource/sprite_sheet/enemy1_character.png'
 import spriteEffect1 from '../resource/sprite_sheet/effect1.png'
 
 //dimesions
-width = Device.isPortrait() ? Dimensions.get('screen').height : Dimensions.get('screen').width //1:4.65
-height = Device.isPortrait() ? Dimensions.get('screen').width : Dimensions.get('screen').height //1:4.65
+// width = Device.isPortrait() ? Dimensions.get('screen').height : Dimensions.get('screen').width //1:4.65
+// height = Device.isPortrait() ? Dimensions.get('screen').width : Dimensions.get('screen').height //1:4.65
 
 console.log("is tablet ?",Device.isTablet())
 // console.log("Device height = ", height, " and width = ", width)
@@ -67,7 +68,12 @@ const GameFirstScene = (props) => {
   const enemyFade = useRef(new Animated.Value(1)).current; 
   const backgroundTransition = useRef(new Animated.Value(0)).current;
   
-
+  var orientation = props.orientation
+  useEffect(()=>{
+    Orientation.lockToLandscape();
+    lor(props.upDateOrientation)
+    return rol()
+  },[])
   useEffect(() => {
     playPlayer("idle")
     playEnemy("idle")
@@ -77,7 +83,6 @@ const GameFirstScene = (props) => {
     // ary_th_alphabet.includes("th_alphabet_end") ? null : ary_th_alphabet.push("th_alphabet_end")
     Arrays.Shuffle(ary_th_alphabet)
     ary_th_alphabet.push("th_alphabet_end")
-    Orientation.lockToLandscape();
   }, [])
 
   useEffect(() => {
@@ -112,9 +117,6 @@ const GameFirstScene = (props) => {
         }
         return () => clearInterval(interval)
       }, time);
-    }
-    return () => {
-      Orientation.unlockAllOrientations();
     }
   }, [enemyHeartEmpty])
 
@@ -308,22 +310,23 @@ const GameFirstScene = (props) => {
   return (
     // <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
     // resizeMode cover stretch
-    <View style={styles.container}>
-      <Animated.View style={[styles.fadingContainer,{ left:backgroundTransition}]}>  
-        <Image source={imageGameSceneBG1} resizeMode="stretch" style={[styles.background]} />
+    <View style={styles(orientation).container}>
+      <StatusBar hidden={true}/>
+      <Animated.View style={[styles(orientation).fadingContainer,{ left:backgroundTransition}]}>  
+        <Image source={imageGameSceneBG1} resizeMode="stretch" style={[styles(orientation).background]} />
       </Animated.View>
-      <View style={styles.statusHP} >
+      <View style={styles(orientation).statusHP} >
         <View style={{ flexDirection: 'row' }}>
-          <Image source={imagePlayer} style={styles.imageCircle} />
+          <Image source={imagePlayer} style={styles(orientation).imageCircle} />
           <StatusHP heart={playerHeart} heartEmpty={playerHeartEmpty} side={"left"} />
         </View>
         <View style={{ flexDirection: 'row' }}>
           <StatusHP heart={enemyHeart} heartEmpty={enemyHeartEmpty} side={"right"} />
-          <Image source={imageEnemy} style={styles.imageCircle} />
+          <Image source={imageEnemy} style={styles(orientation).imageCircle} />
         </View>
       </View>
 
-      <View style={styles.field}>
+      <View style={styles(orientation).field}>
         <View style={{left:"30%"}}>
           <SpriteSheet
             ref={ref => (player = ref)}
@@ -341,7 +344,7 @@ const GameFirstScene = (props) => {
             }}
           />
         </View>
-        <Animated.View style={[styles.effect,{left:effectSpeed ,opacity:effectFade}]}>
+        <Animated.View style={[styles(orientation).effect,{left:effectSpeed ,opacity:effectFade}]}>
             <SpriteSheet
               ref={ref => (effect = ref)}
               source={spriteEffect1}
@@ -362,7 +365,7 @@ const GameFirstScene = (props) => {
               }}
             />
             </Animated.View>
-        <Animated.View style={[styles.enemy,{opacity:enemyFade}]}>
+        <Animated.View style={[styles(orientation).enemy,{opacity:enemyFade}]}>
           <SpriteSheet
             ref={ref => (enemy = ref)}
             source={spriteEnemy}
@@ -384,7 +387,7 @@ const GameFirstScene = (props) => {
         </Modal>
         
       </View>
-      <Image source={imageGameSceneFG1} resizeMode="stretch" style={[styles.foreground]} />
+      <Image source={imageGameSceneFG1} resizeMode="stretch" style={[styles(orientation).foreground]} />
      
 
 
@@ -424,7 +427,7 @@ const GameFirstScene = (props) => {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = (orientation) => StyleSheet.create({
   container: {
     flex: 1,
     //backgroundColor: "green",
@@ -499,7 +502,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-      scene: state.scene
+      scene: state.scene,
+      orientation : state.orientation
   }
 }
 
@@ -509,8 +513,10 @@ const mapDispatchToProps = dispatch => {
     
       upDateScene: (scene) => {
         dispatch({type: 'EDIT_SCENE', payload: scene})
-    }
-
+    },
+    upDateOrientation: (orientation) => {
+      dispatch({type: 'EDIT_ORIENTATION', payload: orientation})
+  }
 
   }
 } 

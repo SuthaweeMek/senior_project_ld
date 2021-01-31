@@ -18,16 +18,19 @@ import {
     ImageBackground,
     Image,
     Dimensions,
+    TouchableOpacity,
     Alert
 } from 'react-native';
 import { NativeRouter, Route, Link } from "react-router-native";
 import backgroundLogin from '../resource/image/backgroundLogin.png'
+import imageOverlay from '../resource/image/LDSpotOverlay.png'
 import Router from '../router'
 import ButtonCurve from '../component/buttonCurve.js';
 import InputBoxLogin from '../component/inputboxLogin';
 import { connect } from 'react-redux';
 import InputBox from '../component/inputBox';
 import SelectionInput from '../component/picker';
+import Orientation from 'react-native-orientation';
 // import ButtonStart from '../component/buttonStart';
 import Device from '../utils/Device';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientationChange as lor, removeOrientationListener as rol } from '../utils/Device'
@@ -35,7 +38,8 @@ import Color from '../resource/color';
 import Font from '../resource/font';
 import NegativeModal from '../component/negativeModal'
 import LocalStorage from '../utils/LocalStorage'
-
+import { Icon } from 'react-native-elements'
+import { FontSize, LayoutSize } from '../resource/dimension'
 
 width = Device.isPortrait() ? Dimensions.get('screen').height : Dimensions.get('screen').width //1:4.65
 height = Device.isPortrait() ? Dimensions.get('screen').width : Dimensions.get('screen').height //1:4.65
@@ -47,7 +51,7 @@ const StartTestScene = (props) => {
 
     const [name, setName] = useState('')
     const [surname, setSurname] = useState('')
-    const [childrenID, setChildrenID] = useState('')
+    const [childrenID, setChildrenID] = useState('HN')
     const [gender, setGender] = useState('m')
     const [vocabType, setVocabType] = useState({ key: "1", value: "ระดับที่ 1" })
     const [age, setAge] = useState('')
@@ -72,10 +76,10 @@ const StartTestScene = (props) => {
             key: "5", value: "ระดับที่ 5"
         },
     ];
-    console.log("what ?", props.orientation == "portrait" ? "true" : "false")
-    console.log(props.orientation)
-    console.log(childrenID)
-    console.log(gender)
+    // console.log("what ?", props.orientation == "portrait" ? "true" : "false")
+    // console.log(props.orientation)
+    // console.log(childrenID)
+    // console.log(gender)
     const queryChildren = async () => {
         if (childrenID.length == 10) {
             let res = await fetch(
@@ -214,22 +218,35 @@ const StartTestScene = (props) => {
         <View style={styles(props.orientation).container}>
 
             <View style={styles(props.orientation).containerStartTest} >
+                {props.orientation == 'portrait' ?
+                    <View style={styles(props.orientation).appBars} >
+                        <TouchableOpacity onPress={() => { props.upDateMenuDrawer(true), console.log("moo", props.menuDrawer) }}>
+                            <Icon
+                                //reverse
+                                name={"bars"}
+                                type='font-awesome'
+                                color={Color.Black}
+                                size={24}
+                                style={{ alignSelf: "flex-start" ,marginRight:32}}
+                            />
+                        </TouchableOpacity>
+                        <Text style={[styles(props.orientation).fontStartTest, {}]} >ข้อมูลผู้ทำแบบทดสอบ</Text>
+                    </View> 
+                    :
+                    <Text style={styles(props.orientation).fontStartTest} >ข้อมูลผู้ทำแบบทดสอบ</Text>
+                }
+
+
                 <NegativeModal modalVisible={negativeModal} onChangeVisible={handleModalNegative} title={titleMessage} text={errorMessage} />
 
-                <Text style={styles(props.orientation).fontStartTest} >ข้อมูลผู้ทำแบบทดสอบ</Text>
-                {/* <Text style={styles(props.orientation).fontStartTestInput} >รหัสประจำตัวเด็ก</Text> */}
                 {props.userrole == "student" ? <Text style={styles(props.orientation).fontStartTestInfo} >{"รหัสประจำตัวเด็ก : " + childrenID} </Text>
-                    : <InputBoxLogin text={childrenID} onChangeText={handleChildrenID} placeholder="รหัสประจำตัวเด็ก" icon="user" size={{ hp: hp('6%'), wp: wp('35%') }} />}
-                {/* <InputBox text={childrenID} onChangeText={handleChildrenID} placeholder="รหัสประจำตัวผู้เข้าทำแบบทดสอบ"></InputBox> */}
+                    : <InputBoxLogin text={childrenID} onChangeText={handleChildrenID} maxLength={10} placeholder="รหัสประจำตัวเด็ก" icon="user" size={{ hp: hp('6%'), wp: 200 }} />}
                 <View style={styles(props.orientation).containerStartTestInput}>
-                    <Text style={styles(props.orientation).fontStartTestInfo} >เพศ : {gender == 'm' ? "ชาย" : "หญิง"} </Text>
-                    {/* <SelectionInput onChangeGender={handleGender} value={gender}></SelectionInput> */}
-                    <Text style={styles(props.orientation).fontStartTestInfo} >ชื่อ-สกุล : {gender == 'm' ? "เด็กชาย" : "เด็กหญิง"} {name} {surname}</Text>
-                    {/* <InputBox text={name} onChangeText={handleName} placeholder="ชื่อและนามสกุล"></InputBox> */}
+                    <Text style={styles(props.orientation).fontStartTestInfo} >ชื่อ-สกุล : {name == '' ? "-" : gender == 'm' ? "ชาย" : "หญิง"} {name} {surname}</Text>
                     <Text style={styles(props.orientation).fontStartTestInfo} >อายุ : {age}</Text>
-                    {/* <InputBox text={age} onChangeText={handleAge} placeholder="อายุ"></InputBox> */}
                 </View>
                 <View style={styles(props.orientation).StartPosition}>
+                    <Image source={imageOverlay} style={styles(props.orientation).ImageOverlay}/>
                     <Text style={styles(props.orientation).fontStartTestInput} >แบบทดสอบ</Text>
                     <View style={styles(props.orientation).Picker}>
                         <Text style={styles(props.orientation).fontStartTestInfo} >ระดับ : </Text>
@@ -263,17 +280,21 @@ const styles = (props) => StyleSheet.create({
         flexDirection: 'column',
         //margin: height - (height * 0.9),
         marginVertical: hp("3%"),
-        marginRight: hp("3%"),
+        marginRight: props == "portrait" ? null:hp("3%"),
         paddingHorizontal: wp("4%"),
         paddingTop: hp("8%"),
         backgroundColor: Color.White,
         // borderTopRightRadius:50,
         // borderBottomRightRadius:50,
-        borderRadius: hp("3.5%"),
+        borderRadius: LayoutSize.ContainerRadius,
         //justifyContent: 'center', 
         //alignItems: 'center'
         //flex: 1 1 auto, 
         //marginTop: 22
+    },
+    appBars:{
+        flexDirection: 'row' ,
+        alignItems:"center",
     },
     containerStartTestInput: {
         flexDirection: 'column',
@@ -294,11 +315,18 @@ const styles = (props) => StyleSheet.create({
         // alignSelf: "center",
         marginTop: 12,
         padding: 24,
-        borderTopLeftRadius: hp("3.5%"),
-        borderTopRightRadius: hp("3.5%"),
+        borderTopLeftRadius: LayoutSize.ContainerRadius,
+        borderTopRightRadius: LayoutSize.ContainerRadius,
         justifyContent: "flex-start",
+        // alignSelf:"flex-end",
         alignItems: props == "portrait" ? "center" : "flex-start",
         backgroundColor: Color.Sub_Background
+    },
+    ImageOverlay:{
+        position:'absolute',
+        width: props == "portrait" ? wp('92%'):wp('71%'),
+        alignSelf:"center",
+        // marginVertical: 200,
     },
     Picker: {
         flexDirection: "row",
@@ -318,7 +346,7 @@ const styles = (props) => StyleSheet.create({
     },
     fontStartTest: {
         color: Color.Black,
-        fontSize: props == "portrait" ? wp('4%') : wp('4%'),
+        fontSize: props == "portrait" ? Device.fontSizer(FontSize.H6) : Device.fontSizer(FontSize.H6) ,
         // marginTop: 40,
         // marginBottom: 30,
         marginVertical: 12,
@@ -328,7 +356,7 @@ const styles = (props) => StyleSheet.create({
     },
     fontStartTestInput: {
         // color: 'black',
-        fontSize: wp('3%'),
+        fontSize: Device.fontSizer(FontSize.H5),
         // marginLeft: 70,
         // marginTop: 10,
         marginVertical: 12,
@@ -339,7 +367,7 @@ const styles = (props) => StyleSheet.create({
     },
     fontStartTestInfo: {
         // color: 'black',t
-        fontSize: wp('3%'),
+        fontSize: Device.fontSizer(FontSize.Body1),
         // marginLeft: 70,
         // marginTop: 10,
         marginVertical: 8,
@@ -361,7 +389,8 @@ const mapStateToProps = state => {
         orientation: state.orientation,
         testId: state.testId,
         userId: state.userId,
-        userrole: state.userrole
+        userrole: state.userrole,
+        menuDrawer: state.menuDrawer,
     }
 }
 
@@ -377,8 +406,10 @@ const mapDispatchToProps = dispatch => {
         },
         upDateOrientation: (orientation) => {
             dispatch({ type: 'EDIT_ORIENTATION', payload: orientation })
+        },
+        upDateMenuDrawer: (menuDrawer) => {
+            dispatch({ type: 'EDIT_DRAWER', payload: menuDrawer })
         }
-
     }
 }
 

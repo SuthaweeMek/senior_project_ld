@@ -4,6 +4,7 @@ import Device from '../utils/Device';
 import Color from '../resource/color';
 import Font from '../resource/font';
 import {connect} from 'react-redux';
+import { FontSize, LayoutSize } from '../resource/dimension'
 
 import { widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientationChange as lor, removeOrientationListener as rol } from '../utils/Device'
 
@@ -72,15 +73,18 @@ const Pagination = (props) => {
 
 const styles=(props) => StyleSheet.create({
   container: {
-    marginTop: StatusBar.currentHeight || 0,
+    // marginTop: StatusBar.currentHeight || 0,
+    flex:1,
+    justifyContent:"center",
+    alignItems:"center",
   },
   item: {
-    borderRadius: wp(1),
-    padding: 20,
+    borderRadius: LayoutSize.PaginationBorderRadius,
+    // padding: 20,
     marginVertical: 8,
-    marginHorizontal: 16,
-    width : wp(6),
-    height : wp(6),
+    marginHorizontal: props.orientation=="portrait" ? 6 :18,
+    width : LayoutSize.PaginationWidth,
+    height : LayoutSize.PaginationHeight,
     alignItems : "center",
     justifyContent:"center",
     shadowColor: "#000",
@@ -94,9 +98,10 @@ const styles=(props) => StyleSheet.create({
     elevation: 5,
   },
   title: {
-    fontSize: wp(2),
+    fontSize: Device.fontSizer(FontSize.BUTTON),
     textAlign:"center",
     textAlignVertical:"center",
+    fontFamily : Font.Regular,
   },
 });
 
