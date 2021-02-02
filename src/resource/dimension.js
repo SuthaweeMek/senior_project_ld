@@ -39,9 +39,40 @@ export const LayoutSize = {
     ContainerRadius:16,
 
     PickerHeight : 36,
+    PickerRadius : 18,
+    PickerMinWidth : 64,
+    PickerPaddingHorizontal :18,
 
     PaginationHeight : 46,
     PaginationWidth : 46,
     PaginationBorderRadius : 6,
+    PickerBorderWidth :2,
+
+    IconEditResult : 20,
+
+    ModalHeight : 48,
+    ModalWidth : 153,
+    ModalPadding :16,
+    ModalRadius : 16,
+    ModalCloseIcon : 24,
+
+    DatePickerPaddingHorizontal: 8, 
+    DatePickerHeight : 36,
+    DatePickerMinWidth : 64,
+    DatePickerRadius:18  ,
+    DatePickerBorderWidth :2,
+    DatePickerIcon : 24,
+
+    RadioHeight : 24,
+    RadioWidth : 24,
+    RadioBorderWidth : 2,
+    RadioRadius :24,
+    
+    RadioInnerHeight : 16,
+    RadioInnerWidth : 16,
+    RadioInnerBorderWidth : 1,
+    RadioInnerRadius :16,
+
+
 }
 

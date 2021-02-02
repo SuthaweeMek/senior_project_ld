@@ -48,7 +48,7 @@ const DATA = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13
 const DATA2 = ["1", "2", "3", "4"]
 const ResultScene = (props) => {
     var orientation = props.orientation
-    const paginationSplit = DeviceInfo.isTablet() == true ? 5:4
+    const paginationSplit = DeviceInfo.isTablet() == true ? 5 : 4
 
     const [search, setSearch] = useState("");
     const [reportList, setReportList] = useState([1, 2, 3, 4, 5]);
@@ -233,7 +233,7 @@ const ResultScene = (props) => {
                         name={"pencil-square"}
                         type="font-awesome"
                         color={Color.Sub_Surface}
-                        size={wp("3%")}
+                        size={LayoutSize.IconEditResult}
                         style={{ margin: 5 }}
                     />
                 </TouchableOpacity>
@@ -245,8 +245,8 @@ const ResultScene = (props) => {
                 setModalVisible(true)
             }}>
                 <Image source={{ uri: `http://10.0.2.2:8000${item.ImageName}` }} style={{
-                    width: wp("12%"),
-                    height: wp("12%"),
+                    width: 120,
+                    height: 120,
                     resizeMode: 'contain',
                 }} />
             </TouchableOpacity>
@@ -363,20 +363,20 @@ const ResultScene = (props) => {
                                 name={"cancel"}
                                 type="materialIcons"
                                 color={Color.Wrong}
-                                size={wp("3%")}
+                                size={LayoutSize.ModalCloseIcon}
                             />
                         </TouchableOpacity>
                         <Text style={styles({ orientation }).modalTitle}>แก้ไขข้อมูล</Text>
                         <View style={{ flexDirection: "row", justifyContent: "space-between", paddingRight: wp('3%') }}>
-                            <Text style={styles({ orientation }).modalText}> {selectedModalId.index + 1}) : ก  </Text>
+                            <Text style={styles({ orientation }).modalText}> {selectedModalId.index + 1}) : {selectedModalId.item.labelimage} </Text>
                         </View>
                         <Text style={styles({ orientation }).modalText}>โมเดลทำนาย :
                         <Picker
                                 selectedValue={editPrediction}
-                                style={{ height: wp(3), width: wp(15), borderBottomWidth: 2, borderBottomColor: Color.Gray, justifyContent: "flex-end", alignItems: "flex-end" }}
+                                style={{ height: 24, width: 185, borderBottomWidth: 2, borderBottomColor: Color.Gray, justifyContent: "flex-end", alignItems: "flex-end" }}
                                 pickerStyleType={{ fontSize: wp(4), color: 'yellow' }}
-
-                                mode="slide"
+                                
+                                mode="dropdown"
                                 onValueChange={(itemValue, itemIndex) =>
                                 //
                                 { setEditPrediction(itemValue) }
@@ -387,7 +387,12 @@ const ResultScene = (props) => {
                                 <Picker.Item label="กลับด้าน" value={3} />
                             </Picker>
                         </Text>
-                        <Text style={styles({ orientation }).modalText}>ความน่าจะเป็น : 99%</Text>
+                        {/* <Text style={styles({ orientation }).modalText}>ความน่าจะเป็น : 99%</Text> */}
+                        <Image source={{ uri: `http://10.0.2.2:8000${selectedModalId.item.ImageName}` }} style={{
+                        width: 120,
+                        height: 120,
+                        resizeMode: 'contain',
+                        }} />
                         <TouchableOpacity
                             style={{ ...styles({ orientation }).openButton, backgroundColor: "#2196F3" }}
                             onPress={() => {
@@ -422,7 +427,7 @@ const ResultScene = (props) => {
             </Modal>
 
             <View style={styles({ orientation }).containerResult}>
-                <View style={{ flexDirection: 'row', justifyContent: "flex-start", alignItems: "center", }}>
+                {/* <View style={{ flexDirection: 'row', justifyContent: "flex-start", alignItems: "center", }}>
 
 
                     <TouchableOpacity onPress={() => {
@@ -438,27 +443,43 @@ const ResultScene = (props) => {
                         />
                     </TouchableOpacity>
                     <Text style={styles({ orientation }).textIDPersonal}>{testId}</Text>
-                </View>
+                </View> */}
+                    <View style={styles({ orientation }).appBars} >
+                        <TouchableOpacity onPress={() => {
+                        setSelectItem(0)
+                        setTestId(-1)
+                        }} >
+                            <Icon
+                                //reverse
+                                name={"chevron-back"}
+                                type='ionicon'
+                                color={Color.Black}
+                                size={36}
+                                style={{ alignSelf: "flex-start", marginRight: 32 }}
+                            />
+                        </TouchableOpacity>
+                        <Text style={[styles({ orientation }).headerText, {}]} >{testId} </Text>
+                        <Text style={styles({ orientation }).dateInfoPersonal}>{selectDate}</Text>
 
-
+                    </View>
 
                 <View style={styles({ orientation }).containerinfoPersonal}>
-                    <View style={{ flex: 1 }}>
+                    <View style={{}}>
                         <Text style={styles({ orientation }).textInfoPersonal}>{name}</Text>
-                        <Text style={styles({ orientation }).textInfoPersonal}>ความน่าจะเป็น 97.2431%</Text>
-                        <Text style={styles({ orientation }).textInfoPersonal}>พยัญชนะ : {orientation == "portrait" ? "\n\n" : null}เขียนถูก {testResult.countAlphabetTrue} ตัว <Text style={{ color: Color.Correct }}>เขียนผิด</Text> {testResult.countAlphabetFalse}ตัว <Text style={{ color: Color.Wrong }} >เขียนกลับด้าน</Text> {testResult.countAlphabetMirror} ตัว</Text>
-                        <Text style={styles({ orientation }).textInfoPersonal}>สระ : {orientation == "portrait" ? "\n\n" : null}เขียนถูก {testResult.countVowelTrue} ตัว <Text style={{ color: Color.Correct }}>เขียนผิด</Text> {testResult.countVowelFalse} ตัว <Text style={{ color: Color.Wrong }} >เขียนกลับด้าน</Text> {testResult.countVowelMirror} ตัว</Text>
-                        <Text style={styles({ orientation }).textInfoPersonal}>คำสะกด : {orientation == "portrait" ? "\n\n" : null}เขียนถูก {testResult.countVocabTrue} ตัว <Text style={{ color: Color.Correct }}>เขียนผิด</Text> {testResult.countVocabFalse} ตัว </Text>
+                        {/* <Text style={styles({ orientation }).textInfoPersonal}>ความน่าจะเป็น 97.2431%</Text> */}
+                        <Text style={styles({ orientation }).textInfoPersonal}>พยัญชนะ : {orientation == "portrait" ? "\n" : null}<Text style={{ color: Color.Correct }} >เขียนถูก {testResult.countAlphabetTrue} ตัว</Text> <Text style={{ color: Color.Wrong }}> เขียนผิด {testResult.countAlphabetFalse} ตัว </Text> <Text>เขียนกลับด้าน {testResult.countAlphabetMirror} ตัว</Text></Text>
+                        <Text style={styles({ orientation }).textInfoPersonal}>สระ : {orientation == "portrait" ? "\n" : null}<Text style={{ color: Color.Correct }} >เขียนถูก {testResult.countAlphabetTrue} ตัว</Text><Text style={{ color: Color.Wrong }}> เขียนผิด {testResult.countVowelFalse} ตัว </Text> <Text>เขียนกลับด้าน {testResult.countVowelMirror} ตัว</Text></Text>
+                        <Text style={styles({ orientation }).textInfoPersonal}>คำสะกด : {orientation == "portrait" ? "\n" : null}<Text style={{ color: Color.Correct }} >เขียนถูก {testResult.countAlphabetTrue} ตัว</Text><Text style={{ color: Color.Wrong }}> เขียนผิด {testResult.countVocabFalse} ตัว </Text></Text>
                     </View>
                     <View style={{ backgroundColor: "white", alignItems: "flex-end" }}>
-                        <Text style={styles({ orientation }).dateInfoPersonal}>{selectDate}</Text>
+
                     </View>
                 </View>
 
 
                 <View style={styles({ orientation }).containerImagePersonal}>
                     <Text style={styles({ orientation }).titleImagePersonal}>รูปภาพการทำแบบทดสอบ</Text>
-                    <View style={{ marginTop: "2%", flex: 1, flexDirection: 'row' }}>
+                    <View style={{ marginTop: "2%", flexDirection: 'row',paddingLeft:16, }}>
                         <TouchableOpacity
                             style={[styles({ orientation }).backgroundSelectTab, selectTab == 0 ? { backgroundColor: Color.Sub_Background } : { backgroundColor: Color.Cover }]}
                             onPress={() => onPress(0)}
@@ -488,7 +509,7 @@ const ResultScene = (props) => {
                             keyExtractor={(item) => item.id}
                             extraData={selectedModalId}
                             horizontal={false}
-                            numColumns={4}
+                            numColumns={DeviceInfo.isTablet()==true ?4:2}
                         />
                     </View>
                 </View>
@@ -565,7 +586,7 @@ const ResultScene = (props) => {
                                 </TouchableOpacity> : null}
                             </View>
                         </View>
-                        
+
                     </View>
                 </View>
 
@@ -593,10 +614,6 @@ const styles = (props) => StyleSheet.create({
         // borderTopRightRadius:50,
         // borderBottomRightRadius:50,
         borderRadius: LayoutSize.ContainerRadius,
-        //justifyContent: 'center', 
-        //alignItems: 'center'
-        //flex: 1 1 auto, 
-        //marginTop: 22
     },
     headerText: {
         color: Color.Black,
@@ -614,7 +631,7 @@ const styles = (props) => StyleSheet.create({
     },
     searchBox: {
         height: LayoutSize.InputHeight,
-        width: DeviceInfo.isTablet()==true? '40%':'100%',
+        width: DeviceInfo.isTablet() == true ? '40%' : '100%',
         borderColor: Color.Sub_Surface,
         borderWidth: 2,
         alignSelf: 'flex-end',
@@ -669,9 +686,9 @@ const styles = (props) => StyleSheet.create({
     },
     containerPagination: {
         // margin : 16,
-        marginVertical : 16,
+        marginVertical: 16,
         // flexDirection: DeviceInfo.isTablet()==true ? "row":"column",
-        flexDirection : "row",
+        flexDirection: "row",
         justifyContent: "center",
         // backgroundColor:"blue",
         // alignSelf:"flex-start",
@@ -694,7 +711,7 @@ const styles = (props) => StyleSheet.create({
     },
     textButtonPagination: {
         fontSize: Device.fontSizer(FontSize.H6),
-        paddingHorizontal:12,
+        paddingHorizontal: 12,
         fontFamily: Font.Bold,
     },
 
@@ -704,20 +721,25 @@ const styles = (props) => StyleSheet.create({
         fontFamily: Font.Bold,
     },
     containerinfoPersonal: {
-        flex: 1.5,
+        // flex: 1.5,
         flexDirection: 'row',
+        justifyContent:"flex-start",
         marginHorizontal: "5%",
-        backgroundColor: Color.White,
+        // backgroundColor: Color.Black,
         padding: "2%"
     },
     textInfoPersonal: {
-        marginBottom: "1.5%",
+        // marginBottom: "1.5%",
+        lineHeight : 24,
         color: Color.Black,
-        fontSize: props.orientation == "portrait" ? wp("2%") : wp("1.5%"),
+        // fontSize: props.orientation == "portrait" ? wp("2%") : wp("1.5%"),
+        fontSize : Device.fontSizer(FontSize.Body1),
         fontFamily: Font.Regular,
     },
     dateInfoPersonal: {
-        fontSize: wp("3%"),
+        fontSize: Device.fontSizer(FontSize.H6),
+        flex:1,
+        textAlign : "right",
         fontFamily: Font.Bold,
     },
     containerImagePersonal: {
@@ -728,35 +750,35 @@ const styles = (props) => StyleSheet.create({
     },
     titleImagePersonal: {
         marginLeft: "3%",
-        fontSize: wp("2.5%"),
+        fontSize: Device.fontSizer(FontSize.H6),
         fontFamily: Font.Bold,
     },
     backgroundSelectTab: {
         backgroundColor: Color.White,
-        marginLeft: wp('2%'),
-        paddingHorizontal: "2%",
+        marginHorizontal: 8,
+        paddingHorizontal: 8,
         alignItems: 'center',
         justifyContent: 'center',
-        borderColor: Color.Black,
+        borderColor: Color.White,
         borderTopWidth: 1,
         borderRightWidth: 1,
         borderLeftWidth: 1,
-        borderTopEndRadius: 30,
-        borderTopStartRadius: 30
+        borderTopEndRadius: LayoutSize.ContainerRadius ,
+        borderTopStartRadius: LayoutSize.ContainerRadius
     },
     fontSelectTab: {
         // color: selectTab == 0 ? "black" : 'rgba(142,142,142,1)', 
         color: Color.Black,
-        fontSize: wp("2%"),
+        fontSize: Device.fontSizer(FontSize.BUTTON),
         fontFamily: Font.Bold
     },
     containerImageResult: {
-        flex: 14,
+        flex: 16,
         flexDirection: 'column',
         justifyContent: "center",
         alignItems: "center",
-        borderTopRightRadius: wp('2%'),
-        borderTopStartRadius: wp("2%"),
+        borderTopRightRadius: LayoutSize.ContainerRadius,
+        borderTopStartRadius: LayoutSize.ContainerRadius,
         backgroundColor: Color.Sub_Background,
     },
     imageResult: {
@@ -770,7 +792,7 @@ const styles = (props) => StyleSheet.create({
     },
     textResult: {
         fontFamily: Font.Regular,
-        fontSize: wp('1.6%'),
+        fontSize: Device.fontSizer(FontSize.Body1),
     },
 
     centeredView: {
@@ -782,10 +804,10 @@ const styles = (props) => StyleSheet.create({
         alignItems: "center",
     },
     modalView: {
-        margin: 20,
+        // margin: 20,
         backgroundColor: Color.White,
-        borderRadius: 20,
-        padding: 35,
+        borderRadius: LayoutSize.ModalRadius,
+        padding: LayoutSize.ModalPadding,
         alignItems: "flex-start",
         shadowColor: "#000",
         shadowOffset: {
@@ -798,28 +820,32 @@ const styles = (props) => StyleSheet.create({
     },
     openButton: {
         backgroundColor: Color.OpenButton,
-        borderRadius: 20,
-        padding: 10,
+        borderRadius: LayoutSize.ButtonRadius,
+        paddingHorizontal: LayoutSize.ButtonPaddingHorizontal,
+        height : LayoutSize.ButtonHeight,
+        minWidth : LayoutSize.ButtonMinWidth,
+        justifyContent:"center",
+        alignItems:"center",
         elevation: 2,
         alignSelf: "flex-end"
     },
     textStyle: {
         color: Color.White,
         fontFamily: Font.Bold,
-        fontSize: wp('2%'),
-        textAlign: "center"
+        fontSize: Device.fontSizer(FontSize.BUTTON),
+        textAlign: "center",
     },
     modalTitle: {
         marginBottom: 15,
         textAlign: "center",
         fontFamily: Font.Bold,
-        fontSize: wp('3%')
+        fontSize: Device.fontSizer(FontSize.H6)
     },
     modalText: {
         marginBottom: 15,
         textAlign: "center",
         fontFamily: Font.Regular,
-        fontSize: wp('2%')
+        fontSize: Device.fontSizer(FontSize.Body1)
     },
 });
 

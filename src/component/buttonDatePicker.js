@@ -6,6 +6,8 @@ import Color from '../resource/color'
 import Font from '../resource/font'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp,listenOrientationChange as lor,removeOrientationListener as rol} from '../utils/Device'
 import { Icon } from 'react-native-elements'
+import Device from '../utils/Device'
+import {FontSize,LayoutSize} from '../resource/dimension'
 
 const formatDate = (date) =>{
   format = String(date.getDate())+"/"+String(date.getMonth()+1)+"/"+String(date.getFullYear())
@@ -53,7 +55,7 @@ const ButtonDatePicker = (props) => {
             name={"date"}
             type = "fontisto"
             color= {Color.Sub_Surface} 
-            size={hp("4%")}
+            size={LayoutSize.DatePickerIcon}
             style={styles({orientation,size}).icon} 
             />         
           </View>
@@ -89,8 +91,8 @@ const ButtonDatePicker = (props) => {
 
   const styles= (props) => StyleSheet.create({
     container: {
-      paddingHorizontal : 12,
-      // flex:1,
+      // paddingHorizontal : 12,
+      flex:1,
       // justifyContent: "center",
       // alignContent:"center",
       // alignItems:"center",
@@ -107,20 +109,22 @@ const ButtonDatePicker = (props) => {
       // borderWidth: 0.5
     },
     btnStyle: {
-      paddingHorizontal : 12,
+      paddingHorizontal : LayoutSize.DatePickerPaddingHorizontal,
       flexDirection:"row",
       borderColor : Color.Surface,
-      borderWidth:2,
+      borderWidth:  LayoutSize.DatePickerBorderWidth,
+      paddingHorizontal : LayoutSize.DatePickerPaddingHorizontal,
       width:props.size.wp,
-      height:props.size.hp,
-      borderRadius: 9999,
+      height:LayoutSize.DatePickerHeight,
+      borderRadius: LayoutSize.DatePickerRadius,
+      minWidth : LayoutSize.DatePickerMinWidth,
       // justifyContent:"flex-start",
       // alignItems:"center",
       justifyContent: "center",
       alignItems:"center",
     },
     btnTextStyle: {
-    fontSize : props.orientation=="portrait"?wp("3%"):wp("2%"),
+    fontSize : Device.fontSizer(FontSize.BUTTON),
     fontFamily : "EkkamaiNew-Regular",
     },
     icon:{
@@ -131,7 +135,7 @@ const ButtonDatePicker = (props) => {
       // alignContent:"flex-end",
       justifyContent:"center",
       paddingLeft : 12,
-      height:props.size.hp,
+      height: LayoutSize.DatePickerIcon,
     },
   });
 

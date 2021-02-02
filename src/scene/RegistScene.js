@@ -47,6 +47,7 @@ import imageRegistTypeDocter from '../resource/image/registTypeDocter.png'
 import imageRegistTypeStudent from '../resource/image/registTypeStudent.png'
 import PositiveModal from '../component/positiveModal'
 import NegativeModal from '../component/negativeModal'
+import { FontSize, LayoutSize } from '../resource/dimension'
 // // dimesions
 // width = Device.isPortrait() ? Dimensions.get('window').height : Dimensions.get('window').width //1:4.65
 // height = Device.isPortrait() ? Dimensions.get('window').width : Dimensions.get('window').height //1:4.65  
@@ -58,15 +59,16 @@ const RegistScene = (props) => {
   const [password, setPassword] = useState('')
   const [password2, setPassword2] = useState('')
   const [idnumber, setIdnumber] = useState('')
+  const [gender,setGender] = useState('')
   const [name, setName] = useState('')
   const [surname, setSurname] = useState('')
   const [stateregist, setStateregist] = useState(1)
   const [registTypeSelect, setRegistTypeSelect] = useState("student")
-  const [currentDate,setCurrentDate] = useState(null)
-  const [stepColor,setStepcolor] = useState([{backgroundColor:Color.Gray},{backgroundColor:Color.Gray}])
-  const [positiveModal,setPositiveModal] = useState(false)
-  const [negativeModal,setNegativeModal] = useState(false)
-  const [errorMessage,setErrorMessage] = useState("")
+  const [currentDate, setCurrentDate] = useState(null)
+  const [stepColor, setStepcolor] = useState([{ backgroundColor: Color.Gray }, { backgroundColor: Color.Gray }])
+  const [positiveModal, setPositiveModal] = useState(false)
+  const [negativeModal, setNegativeModal] = useState(false)
+  const [errorMessage, setErrorMessage] = useState("")
   const moveAnim = useRef(new Animated.Value(-25)).current  // Initial value for top : 0
   const fadeAnim = useRef(new Animated.Value(0)).current // Initial value for fontSize: 28
   // console.log("ore",orientation,"style : ",orientation=="portrait" ? "portrait":"landscape"," hp wp",hp(100),"and",wp(100))
@@ -74,8 +76,8 @@ const RegistScene = (props) => {
 
   const [currentStudy, setCurrentStudy] = useState({ key: "1", value: "ประถมศึกษาปีที่ 1" })
 
-  const formatDate =  (date) =>{
-    return String(date.getFullYear())+"-"+String(date.getMonth()+1)+"-"+String(date.getDate())
+  const formatDate = (date) => {
+    return String(date.getFullYear()) + "-" + String(date.getMonth() + 1) + "-" + String(date.getDate())
   }
 
   const pickerItem = [
@@ -98,8 +100,8 @@ const RegistScene = (props) => {
       key: "6", value: "ประถมศึกษาปีที่ 6"
     },
   ];
-  const checkRegexID = (ID) =>{
-    
+  const checkRegexID = (ID) => {
+
     return /^HN\d{8}/.test(ID)
   }
   const checkStateregist = async (stateRegist) => {
@@ -138,7 +140,7 @@ const RegistScene = (props) => {
           setNegativeModal(true)
           break
         }
-        if (!checkRegexID(idnumber)){
+        if (!checkRegexID(idnumber)) {
           console.log("ID IS WRONG FORMAT")
           setErrorMessage("ChildrenID Wrong Format")
           setNegativeModal(true)
@@ -162,7 +164,7 @@ const RegistScene = (props) => {
           setNegativeModal(true)
           break
         }
-        
+
         let res = await fetch('http://10.0.2.2:8000/users/', {
           method: 'POST',
           headers: {
@@ -173,29 +175,29 @@ const RegistScene = (props) => {
             userid: username,
             password: password,
             childrenID: idnumber,
-            name:name,
-            surname:surname,
-            birthday:formatDate(currentDate),
-            education:currentStudy.key,
-            is_student: registTypeSelect == "student"? 1:0  
+            name: name,
+            surname: surname,
+            birthday: formatDate(currentDate),
+            education: currentStudy.key,
+            is_student: registTypeSelect == "student" ? 1 : 0
           })
         })
-          let responseJson = await res.json();
-          if (res.ok) { 
+        let responseJson = await res.json();
+        if (res.ok) {
 
-            setPositiveModal(true)
+          setPositiveModal(true)
+        }
+        else {
+          if (responseJson.childrenID !== undefined) {
+            setErrorMessage("ChildrenID นี้มีแล้วครับ")
+            setNegativeModal(true)
           }
-          else{
-            if(responseJson.childrenID !== undefined){    
-              setErrorMessage("ChildrenID นี้มีแล้วครับ")
-              setNegativeModal(true)
-            }
-            else if(responseJson.userid !== undefined){
-              setErrorMessage("UserID นี้มีแล้วครับ")
-              setNegativeModal(true)
-            }
-            console.log('error: ' , responseJson);
+          else if (responseJson.userid !== undefined) {
+            setErrorMessage("UserID นี้มีแล้วครับ")
+            setNegativeModal(true)
           }
+          console.log('error: ', responseJson);
+        }
         break
     }
   }
@@ -230,20 +232,20 @@ const RegistScene = (props) => {
   const handleCurrentStudy = (text) => {
     setCurrentStudy(text)
   }
-  const handleModalPositive = (bool) =>{
+  const handleModalPositive = (bool) => {
     setPositiveModal(bool)
     props.upDateScene(-1)
   }
-  const handleModalNegative = (bool) =>{
+  const handleModalNegative = (bool) => {
     setNegativeModal(bool)
   }
 
 
   useEffect(() => {
     console.log(stateregist)
-    switch(stateregist){
-      case 1 : 
-        setStepcolor([{backgroundColor:Color.Gray},{backgroundColor:Color.Gray}])
+    switch (stateregist) {
+      case 1:
+        setStepcolor([{ backgroundColor: Color.Gray }, { backgroundColor: Color.Gray }])
         break
       case 2:
         setStepcolor([{ backgroundColor: Color.Background }, { backgroundColor: Color.Gray }])
@@ -280,8 +282,8 @@ const RegistScene = (props) => {
 
     <NativeRouter>
       <StatusBar translucent={false} barStyle={"light-content"} backgroundColor={Color.Background} />
-      <PositiveModal modalVisible={positiveModal} onChangeVisible={handleModalPositive} title={"Register Success"} text={"สมัครสมาชิกสำเร็จ กดตกลงเพื่อไปหน้า Login"}/>
-      <NegativeModal modalVisible={negativeModal} onChangeVisible={handleModalNegative} title={"Register Failed"} text={errorMessage}/>
+      <PositiveModal modalVisible={positiveModal} onChangeVisible={handleModalPositive} title={"Register Success"} text={"สมัครสมาชิกสำเร็จ กดตกลงเพื่อไปหน้า Login"} />
+      <NegativeModal modalVisible={negativeModal} onChangeVisible={handleModalNegative} title={"Register Failed"} text={errorMessage} />
 
       {/* <ImageBackground source={backgroundLogin} style={styles(props.orientation).background} resizeMode={"stretch"}> */}
       <KeyboardAvoidingView
@@ -293,143 +295,178 @@ const RegistScene = (props) => {
           <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <Animated.View style={[styles(props.orientation).inner, { top: moveAnim, opacity: fadeAnim }]}>
               <ScrollView>
-              <View style={{ flex: 1 }} />
-              <View style={[styles(props.orientation).containerFill]}>
-                <View style={{ flexDirection: "row", width: wp(90) }}>
-                  {/* <View style={{flexDirection:"column",width:wp(50)}}> */}
-                      <TouchableOpacity onPress={() =>  {stateregist == 1 ? props.upDateScene(-1) :setStateregist(stateregist-1)}}>
+                <View style={{ flex: 1 }} />
+                <View style={[styles(props.orientation).containerFill]}>
+                  <View style={{ flexDirection: "row", width: "100%", alignItems: "center", justifyContent: "flex-start" }}>
+                    <TouchableOpacity onPress={() => { stateregist == 1 ? props.upDateScene(-1) : setStateregist(stateregist - 1) }}>
                       <Icon
-                                //reverse
-                                name={"chevron-back"}
-                                type='ionicon'
-                                color= {"black"} 
-                                size={wp('6%')}
-                                style={{alignSelf:"flex-start"}}
-                                />
+                        //reverse
+                        name={"chevron-back"}
+                        type='ionicon'
+                        color={Color.Black}
+                        size={36}
+                      />
                     </TouchableOpacity>
+                    <Text style={styles(props.orientation).fontTopic}>
+                      ระบบสมัครสมาชิก
+                    </Text>
 
-                  {/* </View> */}
-
-                  <Text style={styles(props.orientation).fontTopic}>
-                    ระบบสมัครสมาชิก
-                </Text>
-
-                </View>
-
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <View style={{ flex: 2 }} />
-                  <View style={{ flexDirection: 'column', alignItems: "center" }}>
-                    <View style={[styles(props.orientation).circleStepProgressBar]}>
-                      <Text style={styles(props.orientation).numberStepProgressBar}>1</Text>
-                    </View>
                   </View>
 
-                  <View style={[{ flex: 1, height: 1, }, stepColor[0]]} />
-
-                  <View style={{ flexDirection: 'column', alignItems: "center" }}>
-                    <View style={[styles(props.orientation).circleStepProgressBar, stepColor[0]]}>
-                      <Text style={styles(props.orientation).numberStepProgressBar}>2</Text>
-                    </View>
-                  </View>
-
-                  <View style={[{ flex: 1, height: 1, }, stepColor[1]]} />
-
-                  <View style={{ flexDirection: 'column', alignItems: "center" }}>
-                    <View style={[styles(props.orientation).circleStepProgressBar, stepColor[1]]}>
-                      <Text style={styles(props.orientation).numberStepProgressBar}>3</Text>
-                    </View>
-                  </View>
-                  <View style={{ flex: 2 }} />
-                </View>
-
-                <View style={{ flexDirection: 'row' }}>
-                  <View style={{ flex: 2 }} />
-                  <Text style={styles(props.orientation).textStepProgressBar}>ประเภท</Text>
-                  <View style={{ flex: 0.5, }} />
-                  <Text style={styles(props.orientation).textStepProgressBar}>สร้างบัญชี</Text>
-                  <View style={{ flex: 0.5, }} />
-                  <Text style={styles(props.orientation).textStepProgressBar}>ข้อมูลส่วนตัว</Text>
-                  <View style={{ flex: 2 }} />
-                </View>
-
-                {stateregist == 1 ? <>
-                  <Text style={[styles(props.orientation).textTitle]} >ประเภทสมาชิก</Text>
-                  <View style={{flexDirection:"row"}}>
-                    <TouchableOpacity disabled={registTypeSelect=="student"?true:false} onPress={()=>{setRegistTypeSelect("student") ,setCurrentStudy("1"),setCurrentDate(null)}}>
-                      <View style={[styles(props.orientation).containerRegistType,{opacity:registTypeSelect=="student"?1:0.5}]}>
-                        <Image source={imageRegistTypeStudent} style={styles(props.orientation).imageRegistType} />
-                        <Text style={styles(props.orientation).textRegistType}>นักเรียน</Text>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={{ flex: 2 }} />
+                    <View style={{ flexDirection: 'column', alignItems: "center" }}>
+                      <View style={[styles(props.orientation).circleStepProgressBar]}>
+                        <Text style={styles(props.orientation).numberStepProgressBar}>1</Text>
                       </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity disabled={registTypeSelect=="personnel"?true:false} onPress={()=>{setRegistTypeSelect("personnel"),setCurrentStudy({ key: "0", value: "personel" }),setCurrentDate(new Date)}}>
-                      <View style={[styles(props.orientation).containerRegistType,{opacity:registTypeSelect=="personnel"?1:0.5}]}>
-                        <Image source={imageRegistTypeDocter} style={styles(props.orientation).imageRegistType}/>
-                        <Text style={styles(props.orientation).textRegistType}>บุคลากร</Text>        
-                      </View>
-                    </TouchableOpacity>
-                  </View>
-                  <Text style={styles(props.orientation).textRegistType}>ท่านสมัครสมาชิกในฐานะ : {registTypeSelect == "personnel" ? "บุคลากร" : "นักเรียน"}</Text>
-
-                </>
-                  : null}
-
-                {stateregist == 2 ? <>
-                  <Text style={[styles(props.orientation).textTitle]} >ชื่อบัญชีและรหัสผ่าน</Text>
-                  <InputBoxLogin text={username} onChangeText={handleUser} placeholder="Username" icon="user" size={{ hp: hp('6%'), wp: wp('80%') }} />
-                  <InputBoxLogin text={password} onChangeText={handlePassword} placeholder="Password" icon="key" size={{ hp: hp('6%'), wp: wp('80%') }} password={true} />
-                  <InputBoxLogin text={password2} onChangeText={handlePassword2} placeholder="Confirm Password" icon="key" size={{ hp: hp('6%'), wp: wp('80%') }} password={true} />
-                </>
-                  : null}
-
-                {stateregist == 3 ? <>
-                  <Text style={[styles(props.orientation).textTitle]} >ข้อมูลส่วนตัว</Text>
-                  <InputBoxLogin text={idnumber} maxLength={10} onChangeText={handleID} placeholder="HNXXXXXXXX (Children Id)" icon="id-card" size={{ hp: hp('6%'), wp: wp('80%') }} />
-                  
-                  {registTypeSelect=="student"?
-                  <View style={{flexDirection:"row"}}>
-                    <InputBoxLogin text={name} onChangeText={handleName} placeholder="Name" icon="user" size={{ hp: hp('6%'), wp: wp('39%') }} />
-                    <View style={{width:wp('2%')}}></View>
-                    <InputBoxLogin text={surname} onChangeText={handleSurname} placeholder="Surname" icon="user" size={{ hp: hp('6%'), wp: wp('39%') }} />
-                  </View>
-                  :<>
-                      <InputBoxLogin text={name} onChangeText={handleName} placeholder="Name" icon="user" size={{ hp: hp('6%'), wp: wp('80%') }} />
-                      <InputBoxLogin text={surname} onChangeText={handleSurname} placeholder="Surname" icon="user-friends" size={{ hp: hp('6%'), wp: wp('80%') }} />
-
-                  </>}
-                  {registTypeSelect=="student"?
-                    <View style={styles(props.orientation).containerInfo}>
-                      <Text style={styles(props.orientation).textInfo}>วันเกิด : </Text>
-                      <DateTimePicker onChangeDate={handleCurrentDate} size={{ hp: hp('6%'), wp: wp('35%') } }/>
                     </View>
-                  :null}
-                  {registTypeSelect=="student"?
-                    <View style={styles(props.orientation).containerInfo} >
-                    <Text style={styles(props.orientation).textInfo}>ระดับชั้นปีที่กำลังศึกษา : </Text>
-                    {props.orientation == "portrait" ? <SelectionInput onChangeItem={handleCurrentStudy} value={currentStudy} size={{ hp: hp('6%'), wp: wp('35%') }} items={pickerItem} title="ระดับชั้นปีที่กำลังศึกษา" /> : 
-                    <SelectionInput onChangeItem={handleCurrentStudy}  value={currentStudy} size={{ hp: hp('6%'), wp: wp('35%') }} items={pickerItem} title="ระดับชั้นปีที่กำลังศึกษา" />}
+
+                    <View style={[{ flex: 1, height: 1, }, stepColor[0]]} />
+
+                    <View style={{ flexDirection: 'column', alignItems: "center" }}>
+                      <View style={[styles(props.orientation).circleStepProgressBar, stepColor[0]]}>
+                        <Text style={styles(props.orientation).numberStepProgressBar}>2</Text>
+                      </View>
+                    </View>
+
+                    <View style={[{ flex: 1, height: 1, }, stepColor[1]]} />
+
+                    <View style={{ flexDirection: 'column', alignItems: "center" }}>
+                      <View style={[styles(props.orientation).circleStepProgressBar, stepColor[1]]}>
+                        <Text style={styles(props.orientation).numberStepProgressBar}>3</Text>
+                      </View>
+                    </View>
+                    <View style={{ flex: 2 }} />
                   </View>
-                  :null}
-    
-                 
-                </>
-                  : null}
 
-                <View style={styles(props.orientation).btnContainer}>
-                  <ButtonCurveLogin onPress={() => {
-                    stateregist == 1 ? setStateregist(2) :
-                      stateregist == 2 ? checkStateregist(2) : checkStateregist(3)
-                    }} 
-                    text={stateregist == 3 ? "สมัครสมาชิก" : "ถัดไป >"} 
-                    size={{ hp: hp('6%'), wp: wp('30%') }} />
+                  <View style={{ flexDirection: 'row' }}>
+                    <View style={{ flex: 2 }} />
+                    <Text style={styles(props.orientation).textStepProgressBar}>ประเภท</Text>
+                    <View style={{ flex: 0.5, }} />
+                    <Text style={styles(props.orientation).textStepProgressBar}>สร้างบัญชี</Text>
+                    <View style={{ flex: 0.5, }} />
+                    <Text style={styles(props.orientation).textStepProgressBar}>ข้อมูลส่วนตัว</Text>
+                    <View style={{ flex: 2 }} />
+                  </View>
+
+                  {stateregist == 1 ? <>
+                    <Text style={[styles(props.orientation).textTitle]} >ประเภทสมาชิก</Text>
+                    <View style={{ flexDirection: "row" }}>
+                      <TouchableOpacity disabled={registTypeSelect == "student" ? true : false} onPress={() => { setRegistTypeSelect("student"), setCurrentStudy({ key: "1", value: "ประถมศึกษาปีที่ 1" }), setCurrentDate(null) }}>
+                        <View style={[styles(props.orientation).containerRegistType, { opacity: registTypeSelect == "student" ? 1 : 0.5 }]}>
+                          <Image source={imageRegistTypeStudent} style={styles(props.orientation).imageRegistType} />
+                          <Text style={styles(props.orientation).textRegistType}>นักเรียน</Text>
+                        </View>
+                      </TouchableOpacity>
+                      <TouchableOpacity disabled={registTypeSelect == "personnel" ? true : false} onPress={() => { setRegistTypeSelect("personnel"), setCurrentStudy({ key: "0", value: "personel" }), setCurrentDate(new Date),setGender('') }}>
+                        <View style={[styles(props.orientation).containerRegistType, { opacity: registTypeSelect == "personnel" ? 1 : 0.5 }]}>
+                          <Image source={imageRegistTypeDocter} style={styles(props.orientation).imageRegistType} />
+                          <Text style={styles(props.orientation).textRegistType}>บุคลากร</Text>
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+                    <Text style={styles(props.orientation).textRegistType}>ท่านสมัครสมาชิกในฐานะ : {registTypeSelect == "personnel" ? "บุคลากร" : "นักเรียน"}</Text>
+
+                  </>
+                    : null}
+
+                  {stateregist == 2 ? <>
+                    <Text style={[styles(props.orientation).textTitle]} >ชื่อบัญชีและรหัสผ่าน</Text>
+                    <InputBoxLogin text={username} onChangeText={handleUser} placeholder="Username" icon="user" size={{ hp: hp('6%'), wp: wp('80%') }} />
+                    <InputBoxLogin text={password} onChangeText={handlePassword} placeholder="Password" icon="key" size={{ hp: hp('6%'), wp: wp('80%') }} password={true} />
+                    <InputBoxLogin text={password2} onChangeText={handlePassword2} placeholder="Confirm Password" icon="key" size={{ hp: hp('6%'), wp: wp('80%') }} password={true} />
+                  </>
+                    : null}
+
+                  {stateregist == 3 ? <>
+                    <Text style={[styles(props.orientation).textTitle]} >ข้อมูลส่วนตัว</Text>
+                    <InputBoxLogin text={idnumber} maxLength={10} onChangeText={handleID} placeholder="HNXXXXXXXX (Children Id)" icon="id-card" size={{ hp: hp('6%'), wp: wp('80%') }} />
+
+                    {registTypeSelect == "student" ?
+                      // <View style={{ flexDirection: "row" }}>
+                      <>
+                        <InputBoxLogin text={name} onChangeText={handleName} placeholder="Name" icon="user" size={{ hp: hp('6%'), wp: wp('80%') }} />
+                        {/* <View style={{ width: wp('2%') }}></View> */}
+                        <InputBoxLogin text={surname} onChangeText={handleSurname} placeholder="Surname" icon="user-friends" size={{ hp: hp('6%'), wp: wp('80%') }} />
+                        {/* // </View> */}
+                      </>
+                      :
+                      //Personel
+                      <>
+                        <InputBoxLogin text={name} onChangeText={handleName} placeholder="Name" icon="user" size={{ hp: hp('6%'), wp: wp('80%') }} />
+                        <InputBoxLogin text={surname} onChangeText={handleSurname} placeholder="Surname" icon="user-friends" size={{ hp: hp('6%'), wp: wp('80%') }} />
+
+                      </>}
+                    {registTypeSelect == "student" ?
+                      <View style={styles(props.orientation).containerInfo}>
+                        <Text style={styles(props.orientation).textInfo}>เพศ : </Text>
+                        <View style={{ flexDirection: "row",paddingLeft:12}}>
+                         
+                          <TouchableOpacity onPress={()=>{setGender("male")}}>
+                            <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center",paddingRight:12 }}>
+                              <View style={[styles(props.orientation).radio, gender == 'male' ? { borderColor: Color.Surface } : { borderColor: Color.Gray }]} >
+                                <View style={[styles(props.orientation).radioInner, gender == 'male' ? { backgroundColor: Color.Surface } : { backgroundColor: null }]} />
+                              </View>
+                              <Text style={[styles(props.orientation).textRadio, gender == 'male' ? { color: Color.Cover } : { color: Color.Black }]} >ชาย</Text>
+                            </View>
+                          </TouchableOpacity>
+                          <TouchableOpacity onPress={()=>{setGender("female")}}>
+                            <View style={{ flexDirection: "row", justifyContent: "center", alignItems: "center" }}>
+                              <View style={[styles(props.orientation).radio, gender == 'female' ? { borderColor: Color.Surface } : { borderColor: Color.Gray }]} >
+                                <View style={[styles(props.orientation).radioInner, gender == 'female' ? { backgroundColor: Color.Surface } : { backgroundColor: null }]} />
+                              </View>
+                              <Text style={[styles(props.orientation).textRadio, gender == 'female' ? { color: Color.Cover } : { color: Color.Black }]} >หญิง</Text>
+                            </View>
+                          </TouchableOpacity>
+
+                          {/* <TouchableOpacity>
+                            <View />
+                            <Text>หญิง</Text>
+                          </TouchableOpacity> */}
+                        </View>
+                      </View>
+                      : null}
+                    {registTypeSelect == "student" ?
+                      <View style={styles(props.orientation).containerInfo}>
+                        <Text style={styles(props.orientation).textInfo}>วันเกิด : </Text>
+                        {props.orientation == "portrait" ?
+                          <DateTimePicker onChangeDate={handleCurrentDate} size={{ hp: hp('6%'), wp: '100%' }} />
+                          :
+                          <DateTimePicker onChangeDate={handleCurrentDate} size={{ hp: hp('6%'), wp: wp('35%') }} />
+                        }
+                      </View>
+                      : null}
+                    {registTypeSelect == "student" ?
+                      <View style={styles(props.orientation).containerInfo} >
+                        <Text style={styles(props.orientation).textInfo}>ระดับชั้นปีที่กำลังศึกษา : </Text>
+                        {props.orientation == "portrait" ?
+                          <SelectionInput onChangeItem={handleCurrentStudy} value={currentStudy} size={{ hp: hp('6%'), wp: '100%' }} items={pickerItem} title="ระดับชั้นปีที่กำลังศึกษา" />
+                          :
+                          <SelectionInput onChangeItem={handleCurrentStudy} value={currentStudy} size={{ hp: hp('6%'), wp: wp('35%') }} items={pickerItem} title="ระดับชั้นปีที่กำลังศึกษา" />
+                        }
+                      </View>
+                      : null}
+
+
+                  </>
+                    : null}
+
+                  <View style={styles(props.orientation).btnContainer}>
+                    <ButtonCurveLogin onPress={() => {
+                      stateregist == 1 ? setStateregist(2) :
+                        stateregist == 2 ? checkStateregist(2) : checkStateregist(3)
+                    }}
+                      text={stateregist == 3 ? "สมัครสมาชิก" : "ถัดไป >"}
+                      size={{ hp: hp('6%'), wp: wp('40%') }} />
+                  </View>
                 </View>
-              </View>
 
 
 
 
-              <View style={{ flex: 1 }} />
+                <View style={{ flex: 1 }} />
               </ScrollView>
-                      
+
             </Animated.View>
           </TouchableWithoutFeedback>
         </SafeAreaView>
@@ -455,15 +492,12 @@ const styles = (props) => StyleSheet.create({
   },
   fontTopic: {
     fontFamily: Font.Bold,
-    // color: "#66b4c1",
     color: "black",
-    fontSize: props == "portrait" ? wp('6%') : wp('4%'),
-    // alignSelf: 'center',
+    fontSize: Device.fontSizer(FontSize.H5),
     textAlign: "center",
     textAlignVertical: "center",
-    // backgroundColor:"blue",
-    width: wp("78%")
-    // marginTop: hp('3%'),
+    flex: 1,
+    marginRight: 36
   },
   fontRegis: {
     fontSize: hp('2%'),
@@ -478,32 +512,21 @@ const styles = (props) => StyleSheet.create({
     flex: 1
   },
   inner: {
-    padding: 24,
     flex: 1,
-    justifyContent: "flex-end",
-    alignItems: "center",
-    fontSize: 50,
-    top: -25,
-    opacity: 0,
+    // fontSize: 50,
     backgroundColor: Color.Background,
-    //margin: height - (height * 0.95)
   },
   containerFill: {
-    borderRadius: hp("2%"),
+    // flex: 2,
+    height: hp('90%'),
+    flexDirection: 'column',
+    margin: hp("3%"),
+    paddingHorizontal: wp("4%"),
+    paddingTop: hp("8%"),
     backgroundColor: Color.White,
-    padding: wp("2%"),
-    justifyContent: "center",
+    borderRadius: LayoutSize.ContainerRadius,
+    justifyContent: "flex-start",
     alignItems: "center",
-    height:hp("90%"),
-    // margin:hp('3%')
-  },
-  header: {
-    fontFamily: Font.Bold,
-    fontSize: hp('4%'),
-    flex: 2,
-    textAlignVertical: "center",
-    //backgroundColor: "blue",
-    marginBottom: 48
   },
   btnContainer: {
     marginVertical: 15,
@@ -527,28 +550,53 @@ const styles = (props) => StyleSheet.create({
     fontFamily: Font.Bold
   },
   textStepProgressBar: {
-    fontSize: wp('2%'),
+    fontSize: Device.fontSizer(FontSize.Caption),
     width: wp('11%'),
     textAlign: 'center',
     fontFamily: Font.Regular
   },
   containerInfo: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: props == "portrait" ? "column" : "row",
+    // alignItems: "center",
     marginBottom: 8,
-    alignSelf: "flex-start",
-    paddingLeft: wp("6%")
+    width: "100%"
+    // alignSelf: "flex-start",
+    // paddingLeft: wp("6%")
   },
   textInfo: {
-    fontSize: wp('3%'),
-    paddingLeft: 12,
+    fontSize: Device.fontSizer(FontSize.Body1),
+    // paddingLeft: 12,
     fontFamily: Font.Regular,
+    paddingLeft: wp("6%"),
   },
-  containerRegistType:{
-    padding : 12,
-    margin :12,
-    height : props=="portrait"?wp('30%'):wp('20%'),
-    width : props=="portrait"?wp('30%'):wp('20%'),
+  textRadio: {
+    fontSize: Device.fontSizer(FontSize.Body1),
+    // paddingLeft: 12,
+    fontFamily: Font.Regular,
+    paddingLeft: 8,
+  },
+  radio: {
+    height: LayoutSize.RadioHeight,
+    width: LayoutSize.RadioWidth,
+    borderColor: Color.Gray,
+    borderWidth: LayoutSize.RadioBorderWidth,
+    borderRadius: LayoutSize.RadioRadius,
+    // marginRight: 24,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  radioInner: {
+    height: LayoutSize.RadioInnerHeight,
+    width: LayoutSize.RadioInnerWidth,
+    borderRadius: LayoutSize.RadioInnerRadius,
+    borderWidth: LayoutSize.RadioInnerBorderWidth,
+    borderColor: Color.White
+  },
+  containerRegistType: {
+    padding: 12,
+    margin: 12,
+    height: props == "portrait" ? wp('30%') : wp('20%'),
+    width: props == "portrait" ? wp('30%') : wp('20%'),
     // flexDirection:"row",
     // borderColor : Color.Surface,
     backgroundColor: Color.Background,
@@ -563,17 +611,17 @@ const styles = (props) => StyleSheet.create({
     height: props == "portrait" ? wp('30%') : wp('20%'),
     width: props == "portrait" ? wp('30%') : wp('20%'),
   },
-  imageRegistType:{
-    height:props=="portrait"?wp('25%'):wp('16%'),
-    width:props=="portrait"?wp('25%'):wp('16%'),
-  }, 
-  textRegistType:{
-    fontFamily:Font.Bold,
-    fontSize:wp('3%')
+  imageRegistType: {
+    height: props == "portrait" ? wp('25%') : wp('16%'),
+    width: props == "portrait" ? wp('25%') : wp('16%'),
+  },
+  textRegistType: {
+    fontFamily: Font.Bold,
+    fontSize: Device.fontSizer(FontSize.Body1)
   },
   textTitle: {
-    fontFamily: Font.Bold,
-    fontSize: props == "portrait" ? wp('4%') : wp('3%'),
+    fontFamily: Font.Regular,
+    fontSize: Device.fontSizer(FontSize.H6),
     alignSelf: "flex-start",
     paddingLeft: wp("6%"),
   }

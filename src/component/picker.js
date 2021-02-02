@@ -88,7 +88,7 @@ const PickerCurve = (props) => {
 
 const styles = (props) => StyleSheet.create({
   container: {
-    paddingHorizontal: 12,
+    // paddingHorizontal: 12,
     // flex:1,
     // justifyContent: "center",
     // alignContent:"center",
@@ -108,10 +108,12 @@ const styles = (props) => StyleSheet.create({
   picker: {
     flexDirection: "row",
     borderColor: Color.Surface,
-    borderWidth: 2,
+    borderWidth: LayoutSize.PickerBorderWidth,
     width: props.size.wp,
+    minWidth : LayoutSize.PickerMinWidth,
+    paddingHorizontal : LayoutSize.PickerPaddingHorizontal,
     height: LayoutSize.PickerHeight,
-    borderRadius: size.wp,
+    borderRadius: LayoutSize.PickerRadius,
     // justifyContent:"flex-start",
     // alignItems:"center",
     justifyContent: "center",
@@ -127,7 +129,7 @@ const styles = (props) => StyleSheet.create({
     height: props.size.hp,
   },
   itemText: {
-    fontSize: Device.fontSizer(FontSize.Body1),
+    fontSize: Device.fontSizer(FontSize.BUTTON),
     fontFamily: "EkkamaiNew-Regular",
   },
   overlay: {
