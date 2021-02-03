@@ -468,8 +468,8 @@ const ResultScene = (props) => {
                         <Text style={styles({ orientation }).textInfoPersonal}>{name}</Text>
                         {/* <Text style={styles({ orientation }).textInfoPersonal}>ความน่าจะเป็น 97.2431%</Text> */}
                         <Text style={styles({ orientation }).textInfoPersonal}>พยัญชนะ : {orientation == "portrait" ? "\n" : null}<Text style={{ color: Color.Correct }} >เขียนถูก {testResult.countAlphabetTrue} ตัว</Text> <Text style={{ color: Color.Wrong }}> เขียนผิด {testResult.countAlphabetFalse} ตัว </Text> <Text>เขียนกลับด้าน {testResult.countAlphabetMirror} ตัว</Text></Text>
-                        <Text style={styles({ orientation }).textInfoPersonal}>สระ : {orientation == "portrait" ? "\n" : null}<Text style={{ color: Color.Correct }} >เขียนถูก {testResult.countAlphabetTrue} ตัว</Text><Text style={{ color: Color.Wrong }}> เขียนผิด {testResult.countVowelFalse} ตัว </Text> <Text>เขียนกลับด้าน {testResult.countVowelMirror} ตัว</Text></Text>
-                        <Text style={styles({ orientation }).textInfoPersonal}>คำสะกด : {orientation == "portrait" ? "\n" : null}<Text style={{ color: Color.Correct }} >เขียนถูก {testResult.countAlphabetTrue} ตัว</Text><Text style={{ color: Color.Wrong }}> เขียนผิด {testResult.countVocabFalse} ตัว </Text></Text>
+                        <Text style={styles({ orientation }).textInfoPersonal}>สระ : {orientation == "portrait" ? "\n" : null}<Text style={{ color: Color.Correct }} >เขียนถูก {testResult.countVowelTrue} ตัว</Text><Text style={{ color: Color.Wrong }}> เขียนผิด {testResult.countVowelFalse} ตัว </Text> <Text>เขียนกลับด้าน {testResult.countVowelMirror} ตัว</Text></Text>
+                        <Text style={styles({ orientation }).textInfoPersonal}>คำสะกด : {orientation == "portrait" ? "\n" : null}<Text style={{ color: Color.Correct }} >เขียนถูก {testResult.countVocabTrue} ตัว</Text><Text style={{ color: Color.Wrong }}> เขียนผิด {testResult.countVocabFalse} ตัว </Text></Text>
                     </View>
                     <View style={{ backgroundColor: "white", alignItems: "flex-end" }}>
 

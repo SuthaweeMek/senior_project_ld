@@ -101,7 +101,7 @@ const StartTestScene = (props) => {
                 setIsChildren(true)
             }
             else {
-                setErrorMessage("ลองลบแล้วแก้ไขดูนะครับ")
+                setErrorMessage("กรุณาใส่ ChildrenID ให้ถูกต้อง")
                 setTitleMessage("Can't find this ChildrenID")
                 setNegativeModal(true)
                 setIsChildren(false)

@@ -52,7 +52,7 @@ console.log("Device height = ", height, " and width = ", width)
 const GameThirdScene = (props) => {
   //HP Parameters
   const playerHeart = 5
-  const enemyHeart = 5
+  const enemyHeart = 1
   //State
   const [Transition, SetTransition] = useState(1);
   const [fps, setFps] = useState(16);
@@ -77,6 +77,11 @@ const GameThirdScene = (props) => {
   // index ==0 ? Arrays.Shuffle(ary_th_vocab) : null
   // index ==0 ? ary_th_vocab.push("th_vocab_end") : null
     Arrays.Shuffle(ary_th_vocab)
+    //fortestonly
+    ary_th_vocab = []
+    ary_th_vocab.push("th_vocab_0")
+    ary_th_vocab.push("th_vocab_0")
+    //fortestonly
     ary_th_vocab.push("th_vocab_end")
   }, [])
 
