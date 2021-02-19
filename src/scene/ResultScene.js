@@ -61,6 +61,7 @@ const ResultScene = (props) => {
     const [resultNumber, setResultNumber] = useState("0");
     const [imageModal, setImageModal] = useState("");
     const [testId, setTestId] = useState(-1);
+    const [childrenID, setChildrenID] = useState(-1)
     const [testResult, setTestResult] = useState([]);
     const [name, setName] = useState("")
     const [selectDate, setSelectDate] = useState("")
@@ -144,7 +145,7 @@ const ResultScene = (props) => {
 
     // useEffect(()=>{setReportList},[orientation])
     const mapNumberToLabel = {
-        0: "รอคุณหมอ",
+        0: "ว่างเปล่า",
         1: "เขียนถูก",
         2: "เขียนผิด",
         3: "กลับด้าน",
@@ -275,7 +276,7 @@ const ResultScene = (props) => {
                 }>
                     {DeviceInfo.isTablet() == true ?
                         <>
-                            <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.childrenID.childrenID}</Text></View>
+                            <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.id} - {element.childrenID.childrenID}</Text></View>
                             <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.Round}</Text></View>
                             <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.childrenID.name + " " + element.childrenID.surname}</Text></View>
                             <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.created === undefined ? "Pending" : element.created.split("T")[0]}</Text></View>
@@ -284,6 +285,7 @@ const ResultScene = (props) => {
                                     onPress={async () => {
                                         setImageList([])
                                         await getTestResult(element.id)
+                                        setChildrenID(element.childrenID.childrenID)
                                         setSelectItem(1)
                                         setSelectTab(0)
                                         setSelectDate(element.created.split("T")[0])
@@ -381,10 +383,10 @@ const ResultScene = (props) => {
                                 //
                                 { setEditPrediction(itemValue) }
                                 }>
-                                <Picker.Item label="ไม่เขียนอะไรเลย" value={0} />
-                                <Picker.Item label="เขียนถูก" value={1} />
-                                <Picker.Item label="เขียนผิด" value={2} />
-                                <Picker.Item label="กลับด้าน" value={3} />
+                                <Picker.Item label={mapNumberToLabel[0]} value={0} />
+                                <Picker.Item label={mapNumberToLabel[1]} value={1} />
+                                <Picker.Item label={mapNumberToLabel[2]} value={2} />
+                                <Picker.Item label={mapNumberToLabel[3]} value={3} />
                             </Picker>
                         </Text>
                         {/* <Text style={styles({ orientation }).modalText}>ความน่าจะเป็น : 99%</Text> */}
@@ -458,7 +460,7 @@ const ResultScene = (props) => {
                                 style={{ alignSelf: "flex-start", marginRight: 32 }}
                             />
                         </TouchableOpacity>
-                        <Text style={[styles({ orientation }).headerText, {}]} >{testId} </Text>
+                        <Text style={[styles({ orientation }).headerText, {}]} >{testId} - {childrenID} </Text>
                         <Text style={styles({ orientation }).dateInfoPersonal}>{selectDate}</Text>
 
                     </View>
@@ -553,15 +555,11 @@ const ResultScene = (props) => {
                                 {DeviceInfo.isTablet() == true ?
                                     <>
                                         <Text style={styles({ orientation }).textTitleTable}>เลขที่</Text>
-                                        <Text></Text>
                                         <Text style={styles({ orientation }).textTitleTable}>รอบที่</Text>
-                                        <Text></Text>
                                         <Text style={styles({ orientation }).textTitleTable}>ชื่อ-สกุล</Text>
-                                        <Text></Text>
                                         <Text style={styles({ orientation }).textTitleTable}>วันที่</Text>
-                                        <Text></Text>
-                                        <Text></Text>
-                                        <Text></Text>
+                                        <Text style={styles({ orientation }).textTitleTable}></Text>
+
                                     </>
                                     :
                                     <>
@@ -652,6 +650,8 @@ const styles = (props) => StyleSheet.create({
         justifyContent: "space-around",
     },
     textTitleTable: {
+        flex:1,
+        textAlign:"center",
         color: Color.Black,
         fontSize: Device.fontSizer(FontSize.Body2),
         fontWeight: "bold",

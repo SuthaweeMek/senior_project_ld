@@ -106,6 +106,20 @@ const HomeScene = (props) => {
                 </View>
               </Link>
 
+              <Link style={styles(props.orientation).link} to="/student" onPress={() => { setOnclick("student_scene") }} >
+                <View style={[styles(props.orientation).containerMenuContentRow, newStyle("student_scene").BG]} >
+                  <Icon
+                    //reverse
+                    name={"user-md"}
+                    type='font-awesome-5'
+                    color={newStyle("student_scene").LG.logocolor}
+                    size={LayoutSize.MunuIcon}
+                    style={styles(props.orientation).icon}
+                  />
+                  <Text style={[styles(props.orientation).fontMenuContent, newStyle("student_scene").TX]} numberOfLines={1} >บุคคล</Text>
+                </View>
+              </Link>
+
               <Link style={styles(props.orientation).link} to="/stat" onPress={() => { setOnclick("stat_scene") }} >
                 <View style={[styles(props.orientation).containerMenuContentRow, newStyle("stat_scene").BG]} >
                   <Icon
@@ -119,6 +133,8 @@ const HomeScene = (props) => {
                   <Text style={[styles(props.orientation).fontMenuContent, newStyle("stat_scene").TX]} numberOfLines={1} >สถิติ</Text>
                 </View>
               </Link>
+
+             
             </>
             : null}
 
@@ -184,6 +200,9 @@ const HomeScene = (props) => {
         onClick == fromscene ? new_style = menu_clicked : new_style = menu_unclick
         break
       case 'stat_scene':
+        onClick == fromscene ? new_style = menu_clicked : new_style = menu_unclick
+        break
+      case 'student_scene':
         onClick == fromscene ? new_style = menu_clicked : new_style = menu_unclick
         break
       case 'exit_scene':

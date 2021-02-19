@@ -58,7 +58,7 @@ const RegistScene = (props) => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [password2, setPassword2] = useState('')
-  const [idnumber, setIdnumber] = useState('')
+  const [idnumber, setIdnumber] = useState('HN')
   const [gender,setGender] = useState('')
   const [name, setName] = useState('')
   const [surname, setSurname] = useState('')
@@ -178,6 +178,7 @@ const RegistScene = (props) => {
             name: name,
             surname: surname,
             birthday: formatDate(currentDate),
+            gender : gender=="male" ? "m":"f",
             education: currentStudy.key,
             is_student: registTypeSelect == "student" ? 1 : 0
           })

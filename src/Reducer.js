@@ -7,7 +7,9 @@ init_state = {
     userId: 0,
     userrole: 'teacher',
     firstname: 'Pending',
-    menuDrawer : false
+    menuDrawer : false,
+    studentScene:0,
+    studentID:"",
 }
 
 export default Reducer = (state = init_state, action) => {
@@ -51,6 +53,16 @@ export default Reducer = (state = init_state, action) => {
             return {
                 ...state,
                 menuDrawer: action.payload
+            }
+        case 'EDIT_STUDENTSCENE':
+            return {
+                ...state,
+                studentScene: action.payload
+            }
+        case 'EDIT_STUDENTID':
+            return {
+                ...state,
+                studentID: action.payload
             }
         default:
             return state
