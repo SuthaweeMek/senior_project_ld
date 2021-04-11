@@ -1,5 +1,6 @@
 
 import AsyncStorage from '@react-native-community/async-storage'
+import {HOSTNAME} from "@env"
 var jwt_decode = require('jwt-decode')
 
 
@@ -7,7 +8,7 @@ var jwt_decode = require('jwt-decode')
 
 async function getAccessUsingRefresh(refreshToken) {
   console.log(refreshToken)
-  return fetch(`http://10.0.2.2:8000/api/token/refresh/`, {
+  return fetch(`${HOSTNAME}/api/token/refresh/`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',

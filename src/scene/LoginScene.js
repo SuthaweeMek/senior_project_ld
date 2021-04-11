@@ -7,6 +7,8 @@
  */
 
 import React, { useState, useRef, useEffect } from 'react';
+// import {HOSTNAME} from 'react-native-dotenv';
+import {HOSTNAME} from "@env"
 import {
   SafeAreaView,
   StyleSheet,
@@ -62,7 +64,7 @@ const LoginScene = (props) => {
   console.log(props.firstname)
   const onPress = async () => {
 
-    let res = await fetch('http://10.0.2.2:8000/api/token/', {
+    let res = await fetch(`${HOSTNAME}/api/token/`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',

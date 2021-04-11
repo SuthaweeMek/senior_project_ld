@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import {HOSTNAME} from "@env"
 import { View, StyleSheet, Modal, Text, TouchableOpacity, TouchableWithoutFeedback, FlatList, Image } from "react-native";
 import { connect } from 'react-redux'
 import Color from '../resource/color'
@@ -32,14 +33,14 @@ const ResultStudent = (props) => {
     let orientation = props.orientation
 
     const mapNumberToLabel = {
-        0: "ว่างเปล่า",
+        0: "รอคุณหมอ",
         1: "เขียนถูก",
         2: "เขียนผิด",
         3: "กลับด้าน",
     }
 
     const quertTestResult = async (id) => {
-        await fetch(`http://10.0.2.2:8000/classificationsresult/?testid=${testId}`, {
+        await fetch(`${HOSTNAME}/classificationsresult/?testid=${testId}`, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
@@ -54,7 +55,7 @@ const ResultStudent = (props) => {
     }
     const queryImage = async () => {
         setImageList([])
-        await fetch(`http://10.0.2.2:8000/classifications/?testid=${testId}&type=${selectTab}`, {
+        await fetch(`${HOSTNAME}/classifications/?testid=${testId}&type=${selectTab}`, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
@@ -86,7 +87,7 @@ const ResultStudent = (props) => {
 
     const handleEditPrediction = async (item) => {
         console.log(editPrediction)
-        let res = await fetch('http://10.0.2.2:8000/classifications/edit/prediction/', {
+        let res = await fetch(`${HOSTNAME}/classifications/edit/prediction/`, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -120,7 +121,7 @@ const ResultStudent = (props) => {
         return (<View
             style={styles({ orientation }).imageResult}
             onPress={() => {
-                setImageModal(`http://10.0.2.2:8000${item.ImageName}`)
+                setImageModal(`${HOSTNAME}${item.ImageName}`)
                 setModalVisible(true)
             }}
         >
@@ -140,10 +141,10 @@ const ResultStudent = (props) => {
             <Text style={styles({ orientation }).textResult}>โมเดลทำนาย : {mapNumberToLabel[item.prediction]}</Text>
             <Text style={styles({ orientation }).textResult}>ความน่าจะเป็น : {item.prediction == 1 ? item.predictionprob + "%" : "-"}</Text>
             <TouchableOpacity onPress={() => {
-                setImageModal(`http://10.0.2.2:8000${item.ImageName}`)
+                setImageModal(`${HOSTNAME}${item.ImageName}`)
                 setModalVisible(true)
             }}>
-                <Image source={{ uri: `http://10.0.2.2:8000${item.ImageName}` }} style={{
+                <Image source={{ uri: `${HOSTNAME}${item.ImageName}` }} style={{
                     width: 120,
                     height: 120,
                     resizeMode: 'contain',
@@ -212,7 +213,7 @@ const ResultStudent = (props) => {
                             </Picker>
                         </Text>
                         <Text style={styles({ orientation }).modalText}>ความน่าจะเป็น : 99%</Text>
-                        <Image source={{ uri: `http://10.0.2.2:8000${selectedModalId.item.ImageName}` }} style={{
+                        <Image source={{ uri: `${HOSTNAME}${selectedModalId.item.ImageName}` }} style={{
                             width: 120,
                             height: 120,
                             resizeMode: 'contain',

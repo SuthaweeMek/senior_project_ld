@@ -7,6 +7,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import {HOSTNAME} from "@env"
 import {
     SafeAreaView,
     StyleSheet,
@@ -83,7 +84,7 @@ const StartTestScene = (props) => {
     const queryChildren = async () => {
         if (childrenID.length == 10) {
             let res = await fetch(
-                `http://10.0.2.2:8000/users/children/?childrenID=${childrenID}`,
+                `${HOSTNAME}/users/children/?childrenID=${childrenID}`,
                 {
                     method: 'get',
                     headers: {
@@ -121,7 +122,7 @@ const StartTestScene = (props) => {
     const queryChildrenById = async () => {
 
         let res = await fetch(
-            `http://10.0.2.2:8000/users/children/?id=${props.userId}`,
+            `${HOSTNAME}/users/children/?id=${props.userId}`,
             {
                 method: 'get',
                 headers: {
@@ -184,7 +185,7 @@ const StartTestScene = (props) => {
     const onPress = async () => {
         if (isChildren) {
             let res = await fetch(
-                'http://10.0.2.2:8000/test/',
+                `${HOSTNAME}/test/`,
                 {
                     method: 'post',
                     body: JSON.stringify({

@@ -7,6 +7,7 @@
  */
 
 import React, { useState, useRef, useEffect } from 'react';
+import {HOSTNAME} from "@env"
 import {
   SafeAreaView,
   StyleSheet,
@@ -165,7 +166,7 @@ const RegistScene = (props) => {
           break
         }
 
-        let res = await fetch('http://10.0.2.2:8000/users/', {
+        let res = await fetch(`${HOSTNAME}/users/`, {
           method: 'POST',
           headers: {
             Accept: 'application/json',
@@ -381,11 +382,11 @@ const RegistScene = (props) => {
 
                   {stateregist == 3 ? <>
                     <Text style={[styles(props.orientation).textTitle]} >ข้อมูลส่วนตัว</Text>
-                    <InputBoxLogin text={idnumber} maxLength={10} onChangeText={handleID} placeholder="HNXXXXXXXX (Children Id)" icon="id-card" size={{ hp: hp('6%'), wp: wp('80%') }} />
 
                     {registTypeSelect == "student" ?
                       // <View style={{ flexDirection: "row" }}>
                       <>
+                        <InputBoxLogin text={idnumber} maxLength={10} onChangeText={handleID} placeholder="HNXXXXXXXX (Children Id)" icon="id-card" size={{ hp: hp('6%'), wp: wp('80%') }} />
                         <InputBoxLogin text={name} onChangeText={handleName} placeholder="Name" icon="user" size={{ hp: hp('6%'), wp: wp('80%') }} />
                         {/* <View style={{ width: wp('2%') }}></View> */}
                         <InputBoxLogin text={surname} onChangeText={handleSurname} placeholder="Surname" icon="user-friends" size={{ hp: hp('6%'), wp: wp('80%') }} />

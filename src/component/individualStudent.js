@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import {HOSTNAME} from "@env"
 import { View, StyleSheet, Modal, Text, TouchableOpacity, TouchableWithoutFeedback, FlatList, Image } from "react-native";
 import { connect } from 'react-redux'
 import Color from '../resource/color'
@@ -22,7 +23,7 @@ const IndividualStudent = (props) => {
     let orientation = props.orientation
 
     const queryStudentDetail = async () => {
-        fetch(`http://10.0.2.2:8000/students/?condition=${studentID}`, {
+        fetch(`${HOSTNAME}/students/?condition=${studentID}`, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
@@ -44,7 +45,7 @@ const IndividualStudent = (props) => {
     }
 
     const queryStudentResult = async () => {
-        fetch(`http://10.0.2.2:8000/test/?condition=${studentID}&allresult=True`, {
+        fetch(`${HOSTNAME}/test/?condition=${studentID}&allresult=True`, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',

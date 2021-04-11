@@ -71,7 +71,7 @@ const ResultScene = (props) => {
 
     const queryTestSearch = async () => {
         if (search == "") {
-            fetch(`http://10.0.2.2:8000/test/?page=${selectedId}`, {
+            fetch(`${HOSTNAME}/test/?page=${selectedId}`, {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
@@ -92,7 +92,7 @@ const ResultScene = (props) => {
                 });
         }
         else {
-            fetch(`http://10.0.2.2:8000/test/?page=${selectedId}&condition=${search}`, {
+            fetch(`${HOSTNAME}/test/?page=${selectedId}&condition=${search}`, {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
@@ -116,7 +116,7 @@ const ResultScene = (props) => {
 
     const queryImage = async () => {
         setImageList([])
-        await fetch(`http://10.0.2.2:8000/classifications/?testid=${testId}&type=${selectTab}`, {
+        await fetch(`${HOSTNAME}/classifications/?testid=${testId}&type=${selectTab}`, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
@@ -145,7 +145,7 @@ const ResultScene = (props) => {
 
     // useEffect(()=>{setReportList},[orientation])
     const mapNumberToLabel = {
-        0: "ว่างเปล่า",
+        0: "รอคุณหมอ",
         1: "เขียนถูก",
         2: "เขียนผิด",
         3: "กลับด้าน",
@@ -158,7 +158,7 @@ const ResultScene = (props) => {
 
     const handleEditPrediction = async (item) => {
         console.log(editPrediction)
-        let res = await fetch('http://10.0.2.2:8000/classifications/edit/prediction/', {
+        let res = await fetch(`${HOSTNAME}/classifications/edit/prediction/`, {
             method: 'POST',
             headers: {
                 Accept: 'application/json',
@@ -195,7 +195,7 @@ const ResultScene = (props) => {
     }, [testId, selectTab])
 
     const getTestResult = async (id) => {
-        await fetch(`http://10.0.2.2:8000/classificationsresult/?testid=${id}`, {
+        await fetch(`${HOSTNAME}/classificationsresult/?testid=${id}`, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',
@@ -222,7 +222,7 @@ const ResultScene = (props) => {
         return (<View
             style={styles({ orientation }).imageResult}
             onPress={() => {
-                setImageModal(`http://10.0.2.2:8000${item.ImageName}`)
+                setImageModal(`${HOSTNAME}${item.ImageName}`)
                 setModalVisible(true)
             }}
         >
@@ -242,10 +242,10 @@ const ResultScene = (props) => {
             <Text style={styles({ orientation }).textResult}>โมเดลทำนาย : {mapNumberToLabel[item.prediction]}</Text>
             <Text style={styles({ orientation }).textResult}>ความน่าจะเป็น : {item.prediction == 1 ? item.predictionprob + "%" : "-"}</Text>
             <TouchableOpacity onPress={() => {
-                setImageModal(`http://10.0.2.2:8000${item.ImageName}`)
+                setImageModal(`${HOSTNAME}${item.ImageName}`)
                 setModalVisible(true)
             }}>
-                <Image source={{ uri: `http://10.0.2.2:8000${item.ImageName}` }} style={{
+                <Image source={{ uri: `${HOSTNAME}${item.ImageName}` }} style={{
                     width: 120,
                     height: 120,
                     resizeMode: 'contain',
@@ -390,7 +390,7 @@ const ResultScene = (props) => {
                             </Picker>
                         </Text>
                         {/* <Text style={styles({ orientation }).modalText}>ความน่าจะเป็น : 99%</Text> */}
-                        <Image source={{ uri: `http://10.0.2.2:8000${selectedModalId.item.ImageName}` }} style={{
+                        <Image source={{ uri: `${HOSTNAME}${selectedModalId.item.ImageName}` }} style={{
                         width: 120,
                         height: 120,
                         resizeMode: 'contain',

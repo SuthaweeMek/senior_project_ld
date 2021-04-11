@@ -7,6 +7,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import {HOSTNAME} from "@env"
 import {
     SafeAreaView,
     StyleSheet,
@@ -66,7 +67,7 @@ const ResultScene = (props) => {
 
     const queryStudent = async () => {
         if (search == "") {
-            fetch(`http://10.0.2.2:8000/students/`, {
+            fetch(`${HOSTNAME}/students/`, {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',
@@ -86,7 +87,7 @@ const ResultScene = (props) => {
                 });
         }
         else {
-            fetch(`http://10.0.2.2:8000/students/?condition=${search}`, {
+            fetch(`${HOSTNAME}/students/?condition=${search}`, {
                 method: 'GET',
                 headers: {
                     Accept: 'application/json',

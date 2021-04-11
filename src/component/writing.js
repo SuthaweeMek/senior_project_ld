@@ -7,6 +7,7 @@
  */
 
 import React, { useState } from 'react';
+import {HOSTNAME} from "@env"
 import {
   StyleSheet,
   View,
@@ -155,7 +156,7 @@ const writing = (props) => {
     data.append('predictionprob',0);  
     //Please change file upload URL
     let res = await fetch(
-      'http://10.0.2.2:8000/classifications/',
+      `${HOSTNAME}/classifications/`,
       {
         method: 'post',
         body: data,
