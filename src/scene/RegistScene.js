@@ -129,19 +129,14 @@ const RegistScene = (props) => {
         setStateregist(3)
         break
       case 3:
-        if (idnumber == "") {
+        if (idnumber == "" && registTypeSelect == "student" ) {
           console.log("idnumber is empty")
           setErrorMessage("ChildrenID is Empty")
           setNegativeModal(true)
           break
         }
-        if (idnumber == "") {
-          console.log("idnumber is empty")
-          setErrorMessage("ChildrenID is Empty")
-          setNegativeModal(true)
-          break
-        }
-        if (!checkRegexID(idnumber)) {
+      
+        if (!checkRegexID(idnumber) && registTypeSelect == "student" ) {
           console.log("ID IS WRONG FORMAT")
           setErrorMessage("ChildrenID Wrong Format")
           setNegativeModal(true)
