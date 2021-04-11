@@ -7,6 +7,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import {HOSTNAME} from '@env'
 import {
     SafeAreaView,
     StyleSheet,
