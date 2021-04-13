@@ -355,7 +355,7 @@ const RegistScene = (props) => {
                           <Text style={styles(props.orientation).textRegistType}>นักเรียน</Text>
                         </View>
                       </TouchableOpacity>
-                      <TouchableOpacity disabled={registTypeSelect == "personnel" ? true : false} onPress={() => { setRegistTypeSelect("personnel"), setCurrentStudy({ key: "0", value: "personel" }), setCurrentDate(new Date),setGender('') }}>
+                      <TouchableOpacity disabled={registTypeSelect == "personnel" ? true : false} onPress={() => { setRegistTypeSelect("personnel"), setCurrentStudy({ key: "0", value: "personel" }), setCurrentDate(new Date),setGender(''),setIdnumber(null) }}>
                         <View style={[styles(props.orientation).containerRegistType, { opacity: registTypeSelect == "personnel" ? 1 : 0.5 }]}>
                           <Image source={imageRegistTypeDocter} style={styles(props.orientation).imageRegistType} />
                           <Text style={styles(props.orientation).textRegistType}>บุคลากร</Text>
