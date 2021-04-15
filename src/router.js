@@ -15,6 +15,7 @@ import StudentScene from './scene/StudentScene'
 import HomeScene from './scene/HomeScene'
 import GameFirstScene from './scene/GameFirstScene'
 import StartTestScene from './scene/StartTestScene'
+import StatScene from  './scene/StatScene'
 //import TestSprite from './scene/TestSprite'
 import {
   SafeAreaView,
@@ -54,7 +55,7 @@ const RouterComponent = (props) => {
       <Route path="/test" render={() => <StartTestScene handleScene={props.setScene} handleTestId={props.handleTestId} />} />
       <Route path="/result" component={ResultScene} />
       <Route path="/student" component={StudentScene}/>
-      <Route path="/stat" component={Stat} />
+      <Route path="/stat" component={StatScene} />
     </React.Fragment>
   );
 
