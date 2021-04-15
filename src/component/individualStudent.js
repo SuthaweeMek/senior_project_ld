@@ -28,7 +28,7 @@ const IndividualStudent = (props) => {
     const [studentResult, setStudentResult] = useState([])
     const [studentStat, setStudentStat] = useState([])
     const [studentMenu, setStudentMenu] = useState(2)
-    const [cardWidth, setCardWidth] = useState(wp('63$'))
+    const [cardWidth, setCardWidth] = useState(wp('63%'))
     const [countAlphabetFalse, setCountAlphabetFalse] = useState([])
     const [countAlphabetMirror, setCountAlphabetMirror] = useState([])
     const [countAlphabetTrue, setCountAlphabetTrue] = useState([])
@@ -64,29 +64,6 @@ const IndividualStudent = (props) => {
                 setStudentDetail(responseJson.student[0])
             }).catch((error) => {
                 console.log('error2: ' + error);
-            });
-    }
-
-    const queryStudentResult = async () => {
-        fetch(`${HOSTNAME}/test/?condition=${studentID}&allresult=True`, {
-            method: 'GET',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + await LocalStorage.readData("token")
-            },
-        }).then((response) => {
-            if (response.ok) {
-                return response.json()
-            }
-            else throw new Error(response.status);
-        })
-            .then((responseJson) => {
-                // console.log("responseJson ",responseJson.student[0])
-                setStudentResult(responseJson)
-            }).catch((error) => {
-                setStudentResult([])
-                console.log('error: ' + error);
             });
     }
 
