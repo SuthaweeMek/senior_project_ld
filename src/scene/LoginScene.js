@@ -51,7 +51,7 @@ import Font from '../resource/font'
 const LoginScene = (props) => {
   const [token, setToken] = useState('5')
   const [username, setUsername] = useState('admin')
-  const [password, setPassword] = useState('admin')
+  const [password, setPassword] = useState('1234')
   const [orientation, setOrientation] = useState(Device.isPortrait() ? "portrait" : "landscape")
   const [negativeModal, setNegativeModal] = useState(false)
   const [errorMessage, setErrorMessage] = useState("")

@@ -268,7 +268,7 @@ const ResultStudent = (props) => {
                         />
                     </TouchableOpacity>
                     <Text style={[styles({ orientation }).headerText, {}]} >{props.studentID}/{testId} </Text>
-                    <Text style={styles({ orientation }).dateInfoPersonal}>ทำแบบดทอบ : {testCreated}</Text>
+                    <Text style={styles({ orientation }).dateInfoPersonal}>ทำแบบทดสอบ : {testCreated}</Text>
 
                 </View>
 
