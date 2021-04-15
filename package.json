@@ -18,7 +18,10 @@
     "@react-navigation/native": "^5.9.2",
     "@terrylinla/react-native-sketch-canvas": "^0.8.0",
     "axios": "^0.20.0",
+    "dependencies": "^0.0.1",
+    "install": "^0.13.0",
     "jwt-decode": "^3.1.2",
+    "peer": "^0.6.1",
     "react": "16.13.1",
     "react-native": "0.63.2",
     "react-native-chart-kit": "^6.11.0",
@@ -44,7 +47,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
-    "@babel/runtime": "^7.8.4",
     "@react-native-community/eslint-config": "^1.1.0",
     "babel-jest": "^25.1.0",
     "eslint": "^6.5.1",

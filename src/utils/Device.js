@@ -95,7 +95,12 @@ exports.listenOrientationChange = (setStateHook = null) => {
 exports.removeOrientationListener = () => {
     Dimensions.removeEventListener('change', () => {});
   };
-
+exports.width = () =>{
+  return Dimensions.get('window').width;
+}
+exports.height = () =>{
+  return Dimensions.get('window').height;
+}
 //Guideline sizes are based on standard ~5" screen mobile device
 // const scale = SCREEN_WIDTH / 350;
 

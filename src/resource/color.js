@@ -14,5 +14,9 @@ const Color = {
      Wrong :  'rgba(232,89,89,1)',
      Correct: '#0cc078',
      OpenButton: "#F194FF",
+     Dot1 :'rgba(60, 174, 163,0.6)',
+     Dot2 : 'rgba(237, 85, 59, 0.6)',
+     Dot3 : 'rgba(134, 65, 244,0.6)',
+     Dot4 : 'rgba(250, 141, 87, 0.6)'
 }
 export default Color
