@@ -52,7 +52,7 @@ console.log("Device height = ", height, " and width = ", width)
 const GameThirdScene = (props) => {
   //HP Parameters
   const playerHeart = 5
-  const enemyHeart = 1
+  const enemyHeart = 5
   //State
   const [Transition, SetTransition] = useState(1);
   const [fps, setFps] = useState(16);
