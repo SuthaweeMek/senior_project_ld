@@ -169,11 +169,12 @@ const StartTestScene = (props) => {
 
         backgroundGradientFrom: "white",
         backgroundGradientTo: "white",
-
-        color: () => `red`,
+        color: () => `green`,
         strokeWidth: 2, // optional, default 3
         barPercentage: 1,
-        useShadowColorFromDataset: false // optional
+        useShadowColorFromDataset: false, // optional
+        fillShadowGradientOpacity: 1,
+        
     };
 
     const vowelChartConfig = {
@@ -183,7 +184,9 @@ const StartTestScene = (props) => {
         color: () => `red`,
         strokeWidth: 5, // optional, default 3
         barPercentage: 1,
-        useShadowColorFromDataset: false // optional
+        useShadowColorFromDataset: false, // optional
+        fillShadowGradientOpacity: 1,
+
     };
     const vocabChartConfig = {
         alignSelf: 'flex-start',
@@ -192,7 +195,9 @@ const StartTestScene = (props) => {
         color: () => `red`,
         strokeWidth: 5, // optional, default 3
         barPercentage: 1,
-        useShadowColorFromDataset: false // optional
+        useShadowColorFromDataset: false, // optional
+        fillShadowGradientOpacity: 1,
+
     };
     return (
         <View style={styles(props.orientation).container}>
