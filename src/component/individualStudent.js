@@ -147,13 +147,9 @@ const IndividualStudent = (props) => {
                             <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{item.createdAt === undefined ? "Pending" : item.createdAt.split("T")[0]}</Text></View>
                             <View style={styles({ orientation }).itemTable} >
                                 <TouchableOpacity
-                                    onPress={async () => {
-                                        setImageList([])
-                                        await getTestResult(item.testId)
-                                        setSelectItem(1)
-                                        setSelectTab(0)
-                                        setSelectDate(item.createdAt.split("T")[0])
-                                        setName(studentDetail.name + " " + studentDetail.surname)
+                                    onPress={() => {
+                                        props.handleTestID(item.testId, studentDetail.name, studentDetail.surname, item.createdAt.split("T")[0])
+                                        props.upDateStudentScene(2)
                                     }}
                                     color={Color.Sub_Surface}
                                 >
@@ -446,11 +442,13 @@ const IndividualStudent = (props) => {
                                                 </>
                                                 :
                                                 <>
-                                                    <Text style={styles({ orientation }).textTitleTable}>ชื่อ-สกุล</Text>
-                                                    <Text style={styles({ orientation }).textTitleTable}></Text>
+                                                    <View style={styles({ orientation }).itemTableName}>
+                                                        <Text style={styles({ orientation }).textTitleTable}>ชื่อ-สกุล</Text>
+                                                    </View>
                                                     <Text style={styles({ orientation }).textTitleTable}>วันที่</Text>
-                                                    <Text style={styles({ orientation }).textTitleTable}></Text>
-                                                    <Text></Text>
+                                                    <View style={styles({ orientation }).itemTable} >
+                                                        <Text style={styles({ orientation }).textTitleTable}></Text>
+                                                    </View>
                                                 </>
                                             }
                                         </View>
@@ -459,7 +457,7 @@ const IndividualStudent = (props) => {
                                             renderItem={renderItem}
                                             keyExtractor={(item) => item.id}
                                             horizontal={false}
-                                            // style={{  transform: [{ scaleY: -1 }] }}
+                                        // style={{  transform: [{ scaleY: -1 }] }}
                                         />
                                     </>
                                     :

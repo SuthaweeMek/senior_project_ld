@@ -7,7 +7,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import {HOSTNAME} from "@env"
+import { HOSTNAME } from "@env"
 import {
     SafeAreaView,
     StyleSheet,
@@ -125,25 +125,32 @@ const ResultScene = (props) => {
         queryStudent()
     }, [])
 
-    const handleTestID = (id,name,surname,created) =>{
-        setTestId([id,name,surname,created])
+    const handleTestID = (id, name, surname, created) => {
+        setTestId([id, name, surname, created])
     }
     useEffect(() => {
         queryStudent()
     }, [search])
 
-    const Item = ({ item, index, onPress }) =>
-    {
+    const Item = ({ item, index, onPress }) => {
         return (
-            <TouchableOpacity onPress={onPress}>
-                <View style={styles({ orientation }).containerItemTable}>
-                    <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{item.childrenID}</Text></View>
-                    <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{item.name} {item.surname}</Text></View>
-                    <View style={styles({ orientation }).itemTable} ></View>
-                    <View style={styles({ orientation }).itemTable} ></View>
-                    <View style={styles({ orientation }).itemTable} ></View>
-                </View>
-            </TouchableOpacity>
+            DeviceInfo.isTablet() == true ?
+                <TouchableOpacity onPress={onPress}>
+                    <View style={styles({ orientation }).containerItemTable}>
+                        <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{item.childrenID}</Text></View>
+                        <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{item.name} {item.surname}</Text></View>
+                        <View style={styles({ orientation }).itemTable} ></View>
+                        <View style={styles({ orientation }).itemTable} ></View>
+                        <View style={styles({ orientation }).itemTable} ></View>
+                    </View>
+                </TouchableOpacity> :
+                <TouchableOpacity onPress={onPress}>
+                    <View style={styles({ orientation }).containerItemTable}>
+                        <View style={[styles({ orientation }).itemTable,{flexGrow:1}]} ><Text style={styles({ orientation }).textItemTable}>{item.childrenID}</Text></View>
+                        <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{item.name} {item.surname} </Text></View>
+                       
+                    </View>
+                </TouchableOpacity>
         )
     }
 
@@ -153,19 +160,19 @@ const ResultScene = (props) => {
             <Item
                 item={item}
                 index={index}
-                onPress={() => { console.log("index and item", item) ,props.upDateStudentScene(1),props.upDateStudentID(item.childrenID)}}
+                onPress={() => { console.log("index and item", item), props.upDateStudentScene(1), props.upDateStudentID(item.childrenID) }}
             />
         )
     }
 
-    if (studentScene==1 ) {
+    if (studentScene == 1) {
         return (<>
-            <IndividualStudent handleTestID={handleTestID}/>
+            <IndividualStudent handleTestID={handleTestID} />
         </>)
-    } 
-    if (studentScene==2 ){
+    }
+    if (studentScene == 2) {
         return (<>
-            <ResultStudent testId={testId}/>
+            <ResultStudent testId={testId} />
         </>)
     }
     // else is studentScene==0
@@ -213,10 +220,11 @@ const ResultScene = (props) => {
                                     </>
                                     :
                                     <>
+                                        <Text style={styles({ orientation }).textTitleTable}>เลขที่</Text>
+                                        <Text style={styles({ orientation }).textTitleTable}></Text>
                                         <Text style={styles({ orientation }).textTitleTable}>ชื่อ-สกุล</Text>
                                         <Text style={styles({ orientation }).textTitleTable}></Text>
-                                        <Text style={styles({ orientation }).textTitleTable}>วันที่</Text>
-                                        <Text style={styles({ orientation }).textTitleTable}></Text>
+                                        {/* <Text style={styles({ orientation }).textTitleTable}></Text> */}
                                         <Text></Text>
                                     </>
                                 }
@@ -231,8 +239,8 @@ const ResultScene = (props) => {
                                 keyExtractor={(item) => item.childrenID}
                                 extraData={selectedStudent}
                                 horizontal={false}
-                                // onScroll={()=>{console.log("scrolling , ")}}
-                                // scrollEventThrottle={16}
+                            // onScroll={()=>{console.log("scrolling , ")}}
+                            // scrollEventThrottle={16}
                             // numColumns={1}
                             />
 
@@ -303,9 +311,9 @@ const styles = (props) => StyleSheet.create({
         justifyContent: "space-around",
     },
     textTitleTable: {
-        flex:1,
-        textAlign:"center",
-        marginHorizontal:12,
+        flex: 1,
+        textAlign: "center",
+        marginHorizontal: 12,
         color: Color.Black,
         fontSize: Device.fontSizer(FontSize.Body2),
         fontWeight: "bold",
@@ -339,8 +347,8 @@ const mapStateToProps = state => {
     return {
         orientation: state.orientation,
         menuDrawer: state.menuDrawer,
-        studentScene : state.studentScene,
-        studentID : state.studentID,
+        studentScene: state.studentScene,
+        studentID: state.studentID,
     }
 }
 

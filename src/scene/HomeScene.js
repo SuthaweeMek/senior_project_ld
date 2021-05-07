@@ -17,7 +17,8 @@ import {
   Button,
   ImageBackground,
   Image,
-  TouchableOpacity
+  TouchableOpacity,
+  Dimensions
 } from 'react-native';
 import { NativeRouter, Route, Link } from "react-router-native";
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -38,6 +39,7 @@ import Color from '../resource/color';
 import Font from '../resource/font';
 import Device from '../utils/Device'
 import { FontSize, LayoutSize } from '../resource/dimension'
+const width = Dimensions.get('window').width
 
 
 const HomeScene = (props) => {
@@ -234,7 +236,7 @@ const HomeScene = (props) => {
               </>
               :
               // แนวตั้ง
-              <SideMenu menu={NotificationsScreen(props.orientation)} openMenuOffset={220} isOpen={props.menuDrawer} onChange={()=>{props.upDateMenuDrawer(!props.menuDrawer)}}>
+              <SideMenu menu={NotificationsScreen(props.orientation)} openMenuOffset={width/3} isOpen={props.menuDrawer} onChange={()=>{props.upDateMenuDrawer(!props.menuDrawer)}}>
                 {containerScene(props.orientation)}
               </SideMenu>
           }

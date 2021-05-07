@@ -294,9 +294,6 @@ const ResultScene = (props) => {
                                     }}
                                     color={Color.Sub_Surface}
                                 >
-                                    {/* <Text style={styles({ orientation }).textItemTable}>
-                                        ๐ ๐ ๐
-                                    </Text> */}
                                     <Icon
                                         name={"more-horizontal"}
                                         type="feather"
@@ -316,10 +313,11 @@ const ResultScene = (props) => {
                             </View>
                             <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{element.created === undefined ? "Pending" : element.created.split("T")[0]}</Text></View>
                             <View style={styles({ orientation }).itemTable} >
-                                <TouchableOpacity
+                            <TouchableOpacity
                                     onPress={async () => {
                                         setImageList([])
                                         await getTestResult(element.id)
+                                        setChildrenID(element.childrenID.childrenID)
                                         setSelectItem(1)
                                         setSelectTab(0)
                                         setSelectDate(element.created.split("T")[0])

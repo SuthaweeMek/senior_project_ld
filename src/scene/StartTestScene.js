@@ -325,7 +325,9 @@ const styles = (props) => StyleSheet.create({
     },
     ImageOverlay:{
         position:'absolute',
+        bottom :0,
         width: props == "portrait" ? wp('92%'):wp('71%'),
+        height : props =="portrait" ? wp('92%'):wp('25%'),
         alignSelf:"center",
         // marginVertical: 200,
     },
