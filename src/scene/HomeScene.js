@@ -40,6 +40,7 @@ import Font from '../resource/font';
 import Device from '../utils/Device'
 import { FontSize, LayoutSize } from '../resource/dimension'
 const width = Dimensions.get('window').width
+console.log("🚀 ~ file: HomeScene.js ~ line 43 ~ width", width)
 
 
 const HomeScene = (props) => {
@@ -236,7 +237,7 @@ const HomeScene = (props) => {
               </>
               :
               // แนวตั้ง
-              <SideMenu menu={NotificationsScreen(props.orientation)} openMenuOffset={width/3} isOpen={props.menuDrawer} onChange={()=>{props.upDateMenuDrawer(!props.menuDrawer)}}>
+              <SideMenu menu={NotificationsScreen(props.orientation)} openMenuOffset={width<=400?width/2:width/4} isOpen={props.menuDrawer} onChange={()=>{props.upDateMenuDrawer(!props.menuDrawer)}}>
                 {containerScene(props.orientation)}
               </SideMenu>
           }

@@ -318,7 +318,7 @@ const GameSecondScene = (props) => {
       </View>
 
       <View style={styles(orientation).field}>
-        <View style={{left:"30%"}}>
+        <View style={{left:orientation=="landscape"?'30%':null}}>
           <SpriteSheet
             ref={ref => (player = ref)}
             source={spritePlayer}
@@ -454,7 +454,7 @@ const styles = (orientation) => StyleSheet.create({
   enemy:{
     alignItems:"flex-end",
     flex:1,
-    right:"30%"
+    right: orientation=="landscape"?'30%':null
   },
   background: {
     // justifyContent: 'center',
@@ -481,8 +481,8 @@ const styles = (orientation) => StyleSheet.create({
   imageCircle: {
     // width: height / 5,
     // height: height / 5,
-    width : hp('20%'),
-    height : hp('20%'),
+    width : orientation=="landscape"?wp('10%'):wp('20%'),
+    height : orientation=="landscape"?wp('10%'):wp('20%'),
     margin: 10,
     borderRadius: 50
   },
