@@ -75,7 +75,7 @@ const RegistScene = (props) => {
   // console.log("ore",orientation,"style : ",orientation=="portrait" ? "portrait":"landscape"," hp wp",hp(100),"and",wp(100))
   // console.log("orientation ",Device.orientation())
 
-  const [currentStudy, setCurrentStudy] = useState({ key: "1", value: "ประถมศึกษาปีที่ 1" })
+  const [currentStudy, setCurrentStudy] = useState({key: "1", value : 1,text: "ประถมศึกษาปีที่ 1" })
 
   const formatDate = (date) => {
     return String(date.getFullYear()) + "-" + String(date.getMonth() + 1) + "-" + String(date.getDate())
@@ -83,23 +83,23 @@ const RegistScene = (props) => {
 
   const pickerItem = [
     {
-      key: "1", value: "ประถมศึกษาปีที่ 1"
+      key: "1", value : "1",text: "ประถมศึกษาปีที่ 1"
     },
     {
-      key: "2", value: "ประถมศึกษาปีที่ 2"
+      key: "2", value : "2",text: "ประถมศึกษาปีที่ 2"
     },
     {
-      key: "3", value: "ประถมศึกษาปีที่ 3"
+      key: "3", value : "3",text: "ประถมศึกษาปีที่ 3"
     },
-    {
-      key: "4", value: "ประถมศึกษาปีที่ 4"
-    },
-    {
-      key: "5", value: "ประถมศึกษาปีที่ 5"
-    },
-    {
-      key: "6", value: "ประถมศึกษาปีที่ 6"
-    },
+    // {
+    //   key: "4", value : 4,text: "ประถมศึกษาปีที่ 4"
+    // },
+    // {
+    //   key: "5", value : 5,text: "ประถมศึกษาปีที่ 5"
+    // },
+    // {
+    //   key: "6", value : 6,text: "ประถมศึกษาปีที่ 6"
+    // },
   ];
   const checkRegexID = (ID) => {
 
@@ -175,7 +175,7 @@ const RegistScene = (props) => {
             surname: surname,
             birthday: formatDate(currentDate),
             gender : gender=="male" ? "m":"f",
-            education: currentStudy.key,
+            education: currentStudy.value,
             is_student: registTypeSelect == "student" ? 1 : 0
           })
         })

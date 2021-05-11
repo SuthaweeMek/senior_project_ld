@@ -202,7 +202,7 @@ const StartTestScene = (props) => {
             let responseJson = await res.json();
             console.log(responseJson)
             if (res.status == 200) {
-                props.upDateTestId(responseJson.id)
+                props.upDateTestId(responseJson.test.id)
                 props.upDateVocabIds(responseJson.wordIds.map((number)=>(("0" + number.id).slice(-2))))
                 props.upDateScene(3)
             }

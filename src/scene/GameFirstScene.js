@@ -52,7 +52,7 @@ console.log("is tablet ?", Device.isTablet())
 const GameFirstScene = (props) => {
   //HP Parameters
   const playerHeart = 5
-  const enemyHeart = 1
+  const enemyHeart = 11
   //State
   const [Transition, SetTransition] = useState(1);
   const [fps, setFps] = useState(16);

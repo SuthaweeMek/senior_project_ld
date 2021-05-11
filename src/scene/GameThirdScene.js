@@ -67,7 +67,7 @@ const GameThirdScene = (props) => {
   const backgroundTransition = useRef(new Animated.Value(0)).current;
  
   var orientation = props.orientation
-  const ary_th_vocab = props.vocabIds.map((vocab)=>("th_vocab_"+vocab))
+  let ary_th_vocab = props.vocabIds.map((vocab)=>("th_vocab_"+vocab))
   useEffect(() => {
     playPlayer("idle")
     playEnemy("idle")
@@ -80,7 +80,7 @@ const GameThirdScene = (props) => {
     // ary_th_vocab.push("th_vocab_0")
     // ary_th_vocab.push("th_vocab_0")
     //fortestonly
-    ary_th_vocab.push("th_vocab_end")
+    // ary_th_vocab.push("th_vocab_end")
   }, [])
 
   useEffect(() => {
@@ -381,7 +381,7 @@ const GameThirdScene = (props) => {
         </Animated.View>
         
         <Modal animationType="fade" transparent={true} visible={modalVisible}>
-          <Writing modalState = {modalVisible} closeModal={HandleCloseModal} arrSound={ary_th_vocab} setArrIndex={SetArrayIndex} arrIndex={index} />
+          <Writing modalState = {modalVisible} closeModal={HandleCloseModal} arrSound={[...ary_th_vocab,"th_vocab_end"]} setArrIndex={SetArrayIndex} arrIndex={index} />
         </Modal>
         
       </View>
