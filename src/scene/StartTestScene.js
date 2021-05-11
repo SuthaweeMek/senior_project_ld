@@ -54,7 +54,7 @@ const StartTestScene = (props) => {
     const [surname, setSurname] = useState('')
     const [childrenID, setChildrenID] = useState('HN')
     const [gender, setGender] = useState('m')
-    const [vocabType, setVocabType] = useState({ key: "1", value: "ระดับที่ 1" })
+    const [vocabType, setVocabType] = useState({ key: "1", value: 1 ,text : "ง่าย" })
     const [age, setAge] = useState('')
     const [isChildren, setIsChildren] = useState(false)
     const [negativeModal, setNegativeModal] = useState(false)
@@ -62,19 +62,16 @@ const StartTestScene = (props) => {
     const [titleMessage, setTitleMessage] = useState("")
     const pickerItem = [
         {
-            key: "1", value: "ระดับที่ 1"
+            key: "1", value: 1 ,text : "ง่าย"
         },
         {
-            key: "2", value: "ระดับที่ 2"
+            key: "2", value: 2,text : "ปานกลาง"
         },
         {
-            key: "3", value: "ระดับที่ 3"
+            key: "3", value: 3,text  : "ยาก"
         },
         {
-            key: "4", value: "ระดับที่ 4"
-        },
-        {
-            key: "5", value: "ระดับที่ 5"
+            key: "4", value: 4,text : "รวม"
         },
     ];
     // console.log("what ?", props.orientation == "portrait" ? "true" : "false")
@@ -193,7 +190,7 @@ const StartTestScene = (props) => {
                         "LDResult": 0,
                         "UserID": props.userId,
                         "childrenID": childrenID,
-                        "vocabtype": vocabType.key
+                        "vocabtype": vocabType.value
                     }),
                     headers: {
                         'Accept': 'application/json',

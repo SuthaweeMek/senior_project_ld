@@ -10,36 +10,37 @@ import Device from '../utils/Device';
 
 const PickerCurve = (props) => {
   const [modalVisible, setModalvisible] = useState(false)
-  const [value, setValue] = useState(props.value)
-  orientation = props.orientation
-  size = props.size
-  items = props.items
+  const [selected, setSelected] = useState(props.value)
+  const orientation = props.orientation
+  const size = props.size
+  const items = props.items
 
   useEffect(() => {
-    props.onChangeItem(value)
+    props.onChangeItem(selected)
     setModalvisible(false)
-  }, [value])
+  }, [selected])
 
 
-  const Item = ({ text, onPress }) => (
+  const Item = ({ text, value,onPress }) => (
     <TouchableOpacity onPress={onPress}>
-      <View style={{flexDirection:"row",justifyContent:"center",alignItems:"center"}}>
-        <View style={[styles({ orientation, size }).radio, value.value == text ? { borderColor: Color.Surface } : { borderColor: Color.Gray}]} >
-        <View style={[styles({ orientation, size }).radioInner, value.value == text ? { backgroundColor: Color.Surface } : { backgroundColor: null}]} />
+      <View style={{flexDirection:"row",justifyContent:"flex-start",alignItems:"center"}}>
+        <View style={[styles({ orientation, size }).radio, selected.value == value ? { borderColor: Color.Surface } : { borderColor: Color.Gray}]} >
+        <View style={[styles({ orientation, size }).radioInner, selected.value == value ? { backgroundColor: Color.Surface } : { backgroundColor: null}]} />
         </View>
-        <Text style={[styles({ orientation, size }).textModal, value.value == text ? { color: Color.Cover } : { color: Color.Black }]} >{text}</Text>
+        <Text style={[styles({ orientation, size }).textModal, selected.value == value ? { color: Color.Cover } : { color: Color.Black }]} >{text}</Text>
       </View>
 
     </TouchableOpacity>
   );
 
   const renderItem = ({ item }) => {
-    const color = item === value ? "red" : "blue";
+    const color = item === selected ? "red" : "blue";
     console.log("items is ", item)
     return (
       <Item
-        text={item.value}
-        onPress={() => { setValue(item) }}
+        text={item.text}
+        value={item.value}
+        onPress={() => { setSelected(item) }}
       />
     );
   };
@@ -48,7 +49,7 @@ const PickerCurve = (props) => {
     <View style={styles({ orientation, size }).container}>
       <TouchableOpacity onPress={() => { setModalvisible(true) }}>
         <View style={styles({ orientation, size }).picker}>
-          <Text style={styles({ orientation, size }).itemText}>{value.value}</Text>
+          <Text style={styles({ orientation, size }).itemText}>{selected.text}</Text>
           <Icon
             //reverse
             name={"sort-down"}
@@ -76,7 +77,7 @@ const PickerCurve = (props) => {
               renderItem={renderItem}
               key={item => item.key}
               keyExtractor={item => item.key}
-              extraData={value}
+              extraData={selected}
             />
           </View>
         </View>
