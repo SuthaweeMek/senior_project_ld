@@ -7,9 +7,10 @@ init_state = {
     userId: 0,
     userrole: 'teacher',
     firstname: 'Pending',
-    menuDrawer : false,
-    studentScene:0,
-    studentID:"",
+    menuDrawer: false,
+    studentScene: 0,
+    studentID: "",
+    vocabIds: ['01', '02', '03', '04', '05', '06', '07', '08', '09', '10']
 }
 
 export default Reducer = (state = init_state, action) => {
@@ -63,6 +64,11 @@ export default Reducer = (state = init_state, action) => {
             return {
                 ...state,
                 studentID: action.payload
+            }
+        case 'EDIT_VOCABIDS':
+            return {
+                ...state,
+                vocabIds: action.payload
             }
         default:
             return state

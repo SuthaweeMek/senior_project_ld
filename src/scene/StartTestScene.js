@@ -203,7 +203,8 @@ const StartTestScene = (props) => {
             console.log(responseJson)
             if (res.status == 200) {
                 props.upDateTestId(responseJson.id)
-                props.upDateScene(1)
+                props.upDateVocabIds(responseJson.wordIds.map((number)=>(("0" + number.id).slice(-2))))
+                props.upDateScene(3)
             }
         }
         else {
@@ -409,6 +410,9 @@ const mapDispatchToProps = dispatch => {
         },
         upDateMenuDrawer: (menuDrawer) => {
             dispatch({ type: 'EDIT_DRAWER', payload: menuDrawer })
+        },
+        upDateVocabIds : (vocabIds) => {
+            dispatch({type: 'EDIT_VOCABIDS',payload : vocabIds})
         }
     }
 }

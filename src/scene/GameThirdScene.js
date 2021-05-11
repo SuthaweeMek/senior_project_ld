@@ -25,8 +25,6 @@ import Writing from '../component/writing'
 import Color from '../resource/color';
 import Font from '../resource/font';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp,listenOrientationChange as lor,removeOrientationListener as rol} from '../utils/Device'
-//alphabet
-var ary_th_vocab = Arrays.CreatePlattern("th_vocab_",10)
 //image
 import imageBackground from '../resource/image/LDSpotGameScene1.png'
 import imageHeart from '../resource/image/heartEmpty.png'
@@ -69,14 +67,14 @@ const GameThirdScene = (props) => {
   const backgroundTransition = useRef(new Animated.Value(0)).current;
  
   var orientation = props.orientation
-  
+  const ary_th_vocab = props.vocabIds.map((vocab)=>("th_vocab_"+vocab))
   useEffect(() => {
     playPlayer("idle")
     playEnemy("idle")
   //    //TH_alphabet
   // index ==0 ? Arrays.Shuffle(ary_th_vocab) : null
   // index ==0 ? ary_th_vocab.push("th_vocab_end") : null
-    Arrays.Shuffle(ary_th_vocab)
+    // Arrays.Shuffle(ary_th_vocab)
     //fortestonly
     // ary_th_vocab = []
     // ary_th_vocab.push("th_vocab_0")
@@ -496,7 +494,8 @@ const styles = (orientation) => StyleSheet.create({
 const mapStateToProps = state => {
   return {
       scene: state.scene,
-      orientation : state.orientation
+      orientation : state.orientation,
+      vocabIds : state.vocabIds
   }
 }
 
