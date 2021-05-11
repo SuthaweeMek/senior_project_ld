@@ -214,13 +214,13 @@ const StartTestScene = (props) => {
                 }
                 <ScrollView>
                     <View style={styles(props.orientation).containerChart} onLayout={(e) => { setCardWidth(e.nativeEvent.layout.width) }}>
-                        <View>
+                        <View >
                             {statGender ?
                                 <>
                                     <Text style={[styles(props.orientation).fontStat]} >จำนวนเพศที่ใช้แอปพลิเคชัน</Text>
                                     <PieChart
                                         data={statGender}
-                                        width={cardWidth / 2}
+                                        width={width/3 }
                                         height={hp('15%')}
                                         chartConfig={chartConfig}
                                         accessor={"population"}
@@ -233,8 +233,6 @@ const StartTestScene = (props) => {
                                 //ตรงนี้รอใส่ loading
                                 : null}
                         </View>
-
-
                     </View>
                     <View style={styles(props.orientation).containerChart} >
                         <View >
@@ -349,21 +347,9 @@ const styles = (props) => StyleSheet.create({
     containerChart: {
         flex: 1,
         justifyContent: 'flex-start',
-        //width: width / 1.8,
+        flexWrap :'wrap',
         flexDirection: 'row',
-        //margin: height - (height * 0.9),
-        //marginVertical: hp("3%"),
-        // marginRight: props == "portrait" ? null:hp("3%"),
-        // paddingHorizontal: wp("4%"),
-        // paddingTop: hp("8%"),
         backgroundColor: Color.White,
-        // borderTopRightRadius:50,
-        // borderBottomRightRadius:50,
-        // borderRadius: LayoutSize.ContainerRadius,
-        //justifyContent: 'center', 
-        //alignItems: 'center'
-        //flex: 1 1 auto, 
-        //marginTop: 22
     },
     piechart: {
         justifyContent: 'flex-start',
