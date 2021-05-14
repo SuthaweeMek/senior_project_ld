@@ -51,7 +51,7 @@ console.log("is tablet ?", Device.isTablet())
 //const spriteSize = height
 const GameFirstScene = (props) => {
   //HP Parameters
-  const playerHeart = 5
+  const playerHeart = 3
   const enemyHeart = 1
   //State
   const [Transition, SetTransition] = useState(1);
