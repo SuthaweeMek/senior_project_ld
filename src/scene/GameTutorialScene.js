@@ -22,23 +22,23 @@ import Orientation from 'react-native-orientation';
 import Device from '../utils/Device';
 import Rand from '../utils/Rand';
 import Arrays from '../utils/Array'
-import Writing from '../component/writing'
+import Writing from '../component/tutorial'
 import Color from '../resource/color';
 import Font from '../resource/font';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientationChange as lor, removeOrientationListener as rol } from '../utils/Device'
 //alphabet
-var ary_th_alphabet = Arrays.CreatePlattern("th_alphabet_", 44)
+const ary_th_tutorial = ['th_alphabet_01','th_alphabet_02','th_vowel_01','th_vocab_01','th_alphabet_end']
 //image
 import imageBackground from '../resource/image/LDSpotGameScene1.png'
 import imageHeart from '../resource/image/heartEmpty.png'
 import imagePlayer from '../resource/image/player_circle.png'
-import imageEnemy from '../resource/image/enemy1_circle.png'
-import imageGameSceneBG1 from '../resource/games/LDSpotGameSceneBG1.png'
-import imageGameSceneFG1 from '../resource/games/LDSpotGameSceneFG1.png'
+import imageEnemy from '../resource/image/enemy0_circle.png'
+import imageGameSceneBG0 from '../resource/games/LDSpotGameSceneBG0.png'
+import imageGameSceneFG0 from '../resource/games/LDSpotGameSceneFG0.png'
 
 //sprite
 import spritePlayer from '../resource/sprite_sheet/player_character.png'
-import spriteEnemy from '../resource/sprite_sheet/enemy1_character.png'
+import spriteEnemy from '../resource/sprite_sheet/enemy0_character.png'
 import spriteEffect1 from '../resource/sprite_sheet/effect1.png'
 
 //dimesions
@@ -51,8 +51,8 @@ console.log("is tablet ?", Device.isTablet())
 //const spriteSize = height
 const GameFirstScene = (props) => {
   //HP Parameters
-  const playerHeart = 3
-  const enemyHeart = 11
+  const playerHeart = 5
+  const enemyHeart = 1
   //State
   const [Transition, SetTransition] = useState(1);
   const [fps, setFps] = useState(16);
@@ -77,12 +77,6 @@ const GameFirstScene = (props) => {
   useEffect(() => {
     playPlayer("idle")
     playEnemy("idle")
-
-    //TH_alphabet
-    // index ==0 ? Arrays.Shuffle(ary_th_alphabet) : null
-    // ary_th_alphabet.includes("th_alphabet_end") ? null : ary_th_alphabet.push("th_alphabet_end")
-    Arrays.Shuffle(ary_th_alphabet)
-    ary_th_alphabet.push("th_alphabet_end")
   }, [])
 
   useEffect(() => {
@@ -174,8 +168,8 @@ const GameFirstScene = (props) => {
     ).start();
     //setLoop(true)
     playPlayer('walk')
-    console.log("END SCENE 1")
-    setTimeout(() => props.upDateScene(2),
+    console.log("END SCENE 0")
+    setTimeout(() => props.upDateScene(1),
       5000
     )
 
@@ -313,10 +307,10 @@ const GameFirstScene = (props) => {
     <View style={styles(orientation).container}>
       <StatusBar hidden={true} />
       <Modal animationType="fade" transparent={true} visible={modalVisible} >
-        <Writing modalState={modalVisible} closeModal={HandleCloseModal} arrSound={ary_th_alphabet} setArrIndex={SetArrayIndex} arrIndex={index} />
+        <Writing modalState={modalVisible} closeModal={HandleCloseModal} arrSound={ary_th_tutorial} setArrIndex={SetArrayIndex} arrIndex={index} />
       </Modal>
       <Animated.View style={[styles(orientation).fadingContainer, { left: backgroundTransition }]}>
-        <Image source={imageGameSceneBG1} resizeMode="stretch" style={[styles(orientation).background]} />
+        <Image source={imageGameSceneBG0} resizeMode="stretch" style={[styles(orientation).background]} />
       </Animated.View>
       <View style={styles(orientation).statusHP} >
         <View style={{ flexDirection: 'row' }}>
@@ -378,8 +372,8 @@ const GameFirstScene = (props) => {
             width={wp('15%')}
             imageStyle={{ marginTop: -1 }}
             animations={{
-              idle: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-              attacked: Array.from({ length: 5 }, (v, i) => i + 16),
+              idle: [0],
+              attacked: Array.from({ length: 5 }, (v, i) => i + 1),
               die: Array.from({ length: 18 }, (v, i) => i + 36)
             }}
           />
@@ -387,7 +381,7 @@ const GameFirstScene = (props) => {
 
 
       </View>
-      <Image source={imageGameSceneFG1} resizeMode="stretch" style={[styles(orientation).foreground]} />
+      <Image source={imageGameSceneFG0} resizeMode="stretch" style={[styles(orientation).foreground]} />
 
 
 

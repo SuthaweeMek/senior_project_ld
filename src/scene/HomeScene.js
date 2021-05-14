@@ -237,7 +237,7 @@ const HomeScene = (props) => {
               </>
               :
               // แนวตั้ง
-              <SideMenu menu={NotificationsScreen(props.orientation)} openMenuOffset={width<=400?width/2:width/4} isOpen={props.menuDrawer} onChange={()=>{props.upDateMenuDrawer(!props.menuDrawer)}}>
+              <SideMenu menu={NotificationsScreen(props.orientation)} openMenuOffset={width<=400?width/1.25:width/4} isOpen={props.menuDrawer} onChange={()=>{props.upDateMenuDrawer(!props.menuDrawer)}}>
                 {containerScene(props.orientation)}
               </SideMenu>
           }

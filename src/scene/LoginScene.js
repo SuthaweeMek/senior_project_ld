@@ -158,7 +158,7 @@ const LoginScene = (props) => {
                             </Text>
               <InputBoxLogin text={username} onChangeText={handleUser} placeholder="Username" icon="user" size={{ hp: hp('6%'), wp: wp('90%') }} />
               <InputBoxLogin text={password} onChangeText={handlePassword} placeholder="Password" icon="key" size={{ hp: hp('6%'), wp: wp('90%') }} password={true} />
-              <Text style={styles(props.orientation).fontForget} onPress={() => { console.log("do something1") }}>ลืมรหัสผ่าน</Text>
+              {/* <Text style={styles(props.orientation).fontForget} onPress={() => { console.log("do something1") }}>ลืมรหัสผ่าน</Text> */}
               <View style={styles(props.orientation).btnContainer}>
                 <ButtonCurveLogin onPress={onPress} text="เข้าสู่ระบบ" size={{ hp: hp('6%'), wp: wp('90%') }} />
               </View>

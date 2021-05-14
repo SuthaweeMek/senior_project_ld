@@ -52,7 +52,7 @@ console.log("Device height = ", height, " and width = ", width)
 //const spriteSize = height
 const GameSecondScene = (props) => {
   //HP Parameters
-  const playerHeart = 5
+  const playerHeart = 3
   const enemyHeart = 9
   //State
   const [Transition, SetTransition] = useState(1);

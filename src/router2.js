@@ -17,6 +17,7 @@ import GameSecondScene from './scene/GameSecondScene';
 import GameThirdScene from './scene/GameThirdScene';
 import LoginScene from './scene/LoginScene'
 import RegistScene from './scene/RegistScene'
+import GameTutorialScene from './scene/GameTutorialScene'
 //import TestSprite from './scene/TestSprite'
 import {
     SafeAreaView,
@@ -48,7 +49,8 @@ const Router2Component = (props) => {
                                 props.scene == 2 ? <Redirect to="/gameSecondScene"></Redirect> :
                                     props.scene == 3 ? <Redirect to="/gameThirdScene"></Redirect> :
                                         props.scene == 4 ? <Redirect to="/home "></Redirect> :
-                                            props.scene == 5 ? <Redirect to="/registScene"></Redirect> : null
+                                            props.scene == 5 ? <Redirect to="/registScene"></Redirect> :
+                                                props.scene == 6 ? <Redirect to="/gameTutorialScene"></Redirect> : null
                 }
                 <Route exact path="/home" render={props => <HomeScene />} />
                 <Route path="/login" render={props => <LoginScene />} />
@@ -56,6 +58,7 @@ const Router2Component = (props) => {
                 <Route path="/gameSecondScene" render={props => <GameSecondScene />} />
                 <Route path="/gameThirdScene" render={props => <GameThirdScene />} />
                 <Route path="/registScene" render={props => <RegistScene />} />
+                <Route path="/gameTutorialScene" render={props => <GameTutorialScene />} />
             </React.Fragment>
         </NativeRouter>
 
