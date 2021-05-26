@@ -161,7 +161,7 @@ const GameSecondScene = (props) => {
     Animated.timing(
       backgroundTransition,
       {
-        toValue: -width,
+        toValue: -wp('100%'),
         duration: 5000,
         useNativeDriver:false
       }

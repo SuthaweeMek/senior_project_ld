@@ -203,8 +203,13 @@ const StartTestScene = (props) => {
             console.log(responseJson)
             if (res.status == 200) {
                 props.upDateTestId(responseJson.test.id)
+                console.log("responseJson.test.Round > 0",responseJson.test.Round > 0)
                 props.upDateVocabIds(responseJson.wordIds.map((number)=>(("0" + number.id).slice(-2))))
-                props.upDateScene(6)
+                if(responseJson.test.Round > 0){
+                    props.upDateScene(1)
+                }else{
+                    props.upDateScene(6)
+                }
             }
         }
         else {

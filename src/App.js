@@ -14,7 +14,7 @@ import { Provider } from 'react-redux'; // <----
 import { createStore } from 'redux';    // <----
 import Reducer from './Reducer'
 const App = () => {
-
+console.disableYellowBox = true;
 
 
   const store = createStore(Reducer);     // <----
