@@ -1,6 +1,5 @@
-import React, { Component,useState,useRef,useEffect } from 'react';
-import { TextInput,Dimensions,StyleSheet, View,Text,TouchableOpacity,Animated} from 'react-native';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from '../utils/Device';
+import React, { useState,useRef,useEffect } from 'react';
+import { TextInput,StyleSheet, View,Animated} from 'react-native';
 import Device from '../utils/Device';
 import {FontSize, LayoutSize} from '../resource/dimension'
 import { Icon } from 'react-native-elements'
@@ -63,7 +62,6 @@ const inputbox = (props) => {
             placeholderAnimation(clicked=true),text =="" ? setHolderColor(Color.Background):null}
           }
           onBlur = {()=>{
-            // setClickInput({borderColor: Color.Background,borderBottomWidth: 2}) ,
             placeholderAnimation(clicked=true),text =="" ? setClickInput({borderColor: Color.Cover,borderBottomWidth: 1}):setClickInput({borderColor: Color.Background,borderBottomWidth: 1}) ,
             placeholderAnimation(clicked=false), text =="" ? setHolderColor(Color.Cover):setHolderColor(Color.Background)}
           }
@@ -83,7 +81,6 @@ const styles = (props) => StyleSheet.create({
     justifyContent:"flex-start",
     alignItems:"center",
     width: props.size.wp,
-    // backgroundColor:"green",
 },
   container2 :{
     flexDirection:"column",
@@ -92,32 +89,23 @@ const styles = (props) => StyleSheet.create({
 
 },
   textHolder : {
-    // paddingLeft: 10,
     fontFamily:"EkkamaiNew-Regular",
     fontSize: Device.fontSizer(FontSize.Subtitle1),
     position:"absolute",
     color:Color.Cover,
     height: LayoutSize.InputHeight,
     textAlignVertical:"center",
-    // width: props.size.wp,
 },
 
   inputIcon: {
     paddingHorizontal:LayoutSize.InputPaddingHorizontal,
     alignSelf:"center",
-    // backgroundColor:"green"
 },
   textinput:{ 
     fontFamily:"EkkamaiNew-Regular",
-    // alignSelf:"flex-end",
     fontSize: Device.fontSizer(FontSize.Subtitle1),
     width: props.size.wp,
-    // backgroundColor:"red",
-    //marginTop : -10,
-    //paddingTop :-5,
-    // paddingLeft: 10,
     color: Color.Black,
-    // textAlignVertical:"center",
     },
 })
 

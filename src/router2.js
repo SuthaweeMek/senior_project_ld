@@ -6,11 +6,9 @@
  * @flow strict-local
  */
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import { useHistory } from "react-router-dom";
-
-import WritingScene from './scene/WritingScene'
 import HomeScene from './scene/HomeScene'
 import GameFirstScene from './scene/GameFirstScene';
 import GameSecondScene from './scene/GameSecondScene';
@@ -18,26 +16,11 @@ import GameThirdScene from './scene/GameThirdScene';
 import LoginScene from './scene/LoginScene'
 import RegistScene from './scene/RegistScene'
 import GameTutorialScene from './scene/GameTutorialScene'
-//import TestSprite from './scene/TestSprite'
-import {
-    SafeAreaView,
-    StyleSheet,
-    ScrollView,
-    View,
-    Text,
-    StatusBar,
-    Button,
-    ImageBackground,
-    Image
-} from 'react-native';
-import { NativeRouter, Route, Link, Redirect } from "react-router-native";
-import LocalStorage from './utils/LocalStorage'
+import { NativeRouter, Route, Redirect } from "react-router-native";
 import { connect } from 'react-redux';
 
 const Router2Component = (props) => {
-    //console.log(props.scene)
     let history = useHistory();
-
     return (
         <NativeRouter>
             <React.Fragment>
@@ -61,10 +44,7 @@ const Router2Component = (props) => {
                 <Route path="/gameTutorialScene" render={props => <GameTutorialScene />} />
             </React.Fragment>
         </NativeRouter>
-
     );
-
-
 }
 
 const mapStateToProps = state => {
@@ -73,7 +53,6 @@ const mapStateToProps = state => {
         scene: state.scene
     }
 }
-
 
 const mapDispatchToProps = dispatch => {
     return {

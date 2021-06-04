@@ -15,27 +15,18 @@ import {
   View,
   Text,
   StatusBar,
-  Button,
-  ImageBackground,
   Image,
-  Alert,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
   Keyboard,
-  TextInput,
   Platform,
-  Dimensions,
   Animated,
   TouchableOpacity,
 } from 'react-native';
-import logo from '../resource/image/logo.png'
-import { NativeRouter, Route, Link } from "react-router-native";
-import backgroundLogin from '../resource/image/backgroundLogin.png'
-import Router from '../router'
+import { NativeRouter } from "react-router-native";
 import Orientation from 'react-native-orientation';
 import ButtonCurveLogin from '../component/buttonCurve.js';
 import InputBoxLogin from '../component/inputboxLogin';
-import AsyncStorage from '@react-native-community/async-storage'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientationChange as lor, removeOrientationListener as rol } from '../utils/Device'
 import Device from '../utils/Device'
 import { connect } from 'react-redux';
@@ -49,13 +40,9 @@ import imageRegistTypeStudent from '../resource/image/registTypeStudent.png'
 import PositiveModal from '../component/positiveModal'
 import NegativeModal from '../component/negativeModal'
 import { FontSize, LayoutSize } from '../resource/dimension'
-// // dimesions
-// width = Device.isPortrait() ? Dimensions.get('window').height : Dimensions.get('window').width //1:4.65
-// height = Device.isPortrait() ? Dimensions.get('window').width : Dimensions.get('window').height //1:4.65  
 
 
 const RegistScene = (props) => {
-  const [token, setToken] = useState('5')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [password2, setPassword2] = useState('')
@@ -72,8 +59,6 @@ const RegistScene = (props) => {
   const [errorMessage, setErrorMessage] = useState("")
   const moveAnim = useRef(new Animated.Value(-25)).current  // Initial value for top : 0
   const fadeAnim = useRef(new Animated.Value(0)).current // Initial value for fontSize: 28
-  // console.log("ore",orientation,"style : ",orientation=="portrait" ? "portrait":"landscape"," hp wp",hp(100),"and",wp(100))
-  // console.log("orientation ",Device.orientation())
 
   const [currentStudy, setCurrentStudy] = useState({key: "1", value : 1,text: "ประถมศึกษาปีที่ 1" })
 
@@ -91,15 +76,6 @@ const RegistScene = (props) => {
     {
       key: "3", value : "3",text: "ประถมศึกษาปีที่ 3"
     },
-    // {
-    //   key: "4", value : 4,text: "ประถมศึกษาปีที่ 4"
-    // },
-    // {
-    //   key: "5", value : 5,text: "ประถมศึกษาปีที่ 5"
-    // },
-    // {
-    //   key: "6", value : 6,text: "ประถมศึกษาปีที่ 6"
-    // },
   ];
   const checkRegexID = (ID) => {
 
@@ -109,19 +85,16 @@ const RegistScene = (props) => {
     switch (stateRegist) {
       case 2:
         if (username == "") {
-          console.log("username is empty")
           setErrorMessage("username is empty")
           setNegativeModal(true)
           break
         }
         if (password == "" || password2 == "") {
-          console.log("password is empty")
           setErrorMessage("Password is Empty")
           setNegativeModal(true)
           break
         }
         if (password != password2) {
-          console.log("Passwords are not the same")
           setErrorMessage("Password are not same")
           setNegativeModal(true)
           break
@@ -130,32 +103,27 @@ const RegistScene = (props) => {
         break
       case 3:
         if (idnumber == "" && registTypeSelect == "student" ) {
-          console.log("idnumber is empty")
           setErrorMessage("ChildrenID is Empty")
           setNegativeModal(true)
           break
         }
       
         if (!checkRegexID(idnumber) && registTypeSelect == "student" ) {
-          console.log("ID IS WRONG FORMAT")
           setErrorMessage("ChildrenID Wrong Format")
           setNegativeModal(true)
           break
         }
         if (name == "") {
-          console.log("name is empty")
           setErrorMessage("Name is Empty")
           setNegativeModal(true)
           break
         }
         if (surname == "") {
-          console.log("surname is empty")
           setErrorMessage("Surname is Empty")
           setNegativeModal(true)
           break
         }
         if (currentDate == null) {
-          console.log("currentDate is empty")
           setErrorMessage("CurrentDate is Empty")
           setNegativeModal(true)
           break
@@ -193,7 +161,6 @@ const RegistScene = (props) => {
             setErrorMessage("UserID นี้มีแล้วครับ")
             setNegativeModal(true)
           }
-          console.log('error: ', responseJson);
         }
         break
     }
@@ -239,7 +206,6 @@ const RegistScene = (props) => {
 
 
   useEffect(() => {
-    console.log(stateregist)
     switch (stateregist) {
       case 1:
         setStepcolor([{ backgroundColor: Color.Gray }, { backgroundColor: Color.Gray }])
@@ -253,8 +219,6 @@ const RegistScene = (props) => {
     }
   }, [stateregist])
   useEffect(() => {
-    // console.log("test",props.upDateOrientation)
-
     lor(props.upDateOrientation)
     Device.isTablet() ? null : Orientation.lockToPortrait();
     Animated.parallel([
@@ -282,9 +246,7 @@ const RegistScene = (props) => {
       <PositiveModal modalVisible={positiveModal} onChangeVisible={handleModalPositive} title={"Register Success"} text={"สมัครสมาชิกสำเร็จ กดตกลงเพื่อไปหน้า Login"} />
       <NegativeModal modalVisible={negativeModal} onChangeVisible={handleModalNegative} title={"Register Failed"} text={errorMessage} />
 
-      {/* <ImageBackground source={backgroundLogin} style={styles(props.orientation).background} resizeMode={"stretch"}> */}
       <KeyboardAvoidingView
-        // behavior={props.orientation=="landscape"? Platform.OS === "ios" ? "padding" : "height": Platform.OS === "ios" ? "padding" : "height"}
         behavior={Platform.OS === "ios" ? "padding" : ""}
         style={styles(props.orientation).container}
       >
@@ -379,16 +341,12 @@ const RegistScene = (props) => {
                     <Text style={[styles(props.orientation).textTitle]} >ข้อมูลส่วนตัว</Text>
 
                     {registTypeSelect == "student" ?
-                      // <View style={{ flexDirection: "row" }}>
                       <>
                         <InputBoxLogin text={idnumber} maxLength={10} onChangeText={handleID} placeholder="HNXXXXXXXX (Children Id)" icon="id-card" size={{ hp: hp('6%'), wp: wp('80%') }} />
                         <InputBoxLogin text={name} onChangeText={handleName} placeholder="Name" icon="user" size={{ hp: hp('6%'), wp: wp('80%') }} />
-                        {/* <View style={{ width: wp('2%') }}></View> */}
                         <InputBoxLogin text={surname} onChangeText={handleSurname} placeholder="Surname" icon="user-friends" size={{ hp: hp('6%'), wp: wp('80%') }} />
-                        {/* // </View> */}
                       </>
                       :
-                      //Personel
                       <>
                         <InputBoxLogin text={name} onChangeText={handleName} placeholder="Name" icon="user" size={{ hp: hp('6%'), wp: wp('80%') }} />
                         <InputBoxLogin text={surname} onChangeText={handleSurname} placeholder="Surname" icon="user-friends" size={{ hp: hp('6%'), wp: wp('80%') }} />
@@ -415,11 +373,6 @@ const RegistScene = (props) => {
                               <Text style={[styles(props.orientation).textRadio, gender == 'female' ? { color: Color.Cover } : { color: Color.Black }]} >หญิง</Text>
                             </View>
                           </TouchableOpacity>
-
-                          {/* <TouchableOpacity>
-                            <View />
-                            <Text>หญิง</Text>
-                          </TouchableOpacity> */}
                         </View>
                       </View>
                       : null}
@@ -510,11 +463,9 @@ const styles = (props) => StyleSheet.create({
   },
   inner: {
     flex: 1,
-    // fontSize: 50,
     backgroundColor: Color.Background,
   },
   containerFill: {
-    // flex: 2,
     height: hp('90%'),
     flexDirection: 'column',
     margin: hp("3%"),
@@ -531,8 +482,6 @@ const styles = (props) => StyleSheet.create({
   },
   circleStepProgressBar: {
     borderRadius: wp('2%'),
-    // borderWidth:1,
-    // borderColor:Color.Surface,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: Color.Background
@@ -554,21 +503,16 @@ const styles = (props) => StyleSheet.create({
   },
   containerInfo: {
     flexDirection: props == "portrait" ? "column" : "row",
-    // alignItems: "center",
     marginBottom: 8,
     width: "100%"
-    // alignSelf: "flex-start",
-    // paddingLeft: wp("6%")
   },
   textInfo: {
     fontSize: Device.fontSizer(FontSize.Body1),
-    // paddingLeft: 12,
     fontFamily: Font.Regular,
     paddingLeft: wp("6%"),
   },
   textRadio: {
     fontSize: Device.fontSizer(FontSize.Body1),
-    // paddingLeft: 12,
     fontFamily: Font.Regular,
     paddingLeft: 8,
   },
@@ -578,7 +522,6 @@ const styles = (props) => StyleSheet.create({
     borderColor: Color.Gray,
     borderWidth: LayoutSize.RadioBorderWidth,
     borderRadius: LayoutSize.RadioRadius,
-    // marginRight: 24,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -594,13 +537,9 @@ const styles = (props) => StyleSheet.create({
     margin: 12,
     height: props == "portrait" ? wp('30%') : wp('20%'),
     width: props == "portrait" ? wp('30%') : wp('20%'),
-    // flexDirection:"row",
-    // borderColor : Color.Surface,
     backgroundColor: Color.Background,
     borderWidth: 2,
     borderRadius: wp('2%'),
-    // justifyContent:"flex-start",
-    // alignItems:"center",
     justifyContent: "center",
     alignItems: "center",
   },

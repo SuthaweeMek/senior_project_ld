@@ -254,8 +254,6 @@ const ResultStudent = (props) => {
             <View style={styles({ orientation }).containerResult}>
                 <View style={styles({ orientation }).appBars} >
                     <TouchableOpacity onPress={() => {
-                        // setSelectItem(0)
-                        // setTestId(-1)
                         props.upDateStudentScene(1)
                     }} >
                         <Icon
@@ -330,16 +328,12 @@ const ResultStudent = (props) => {
 const styles = (props) => StyleSheet.create({
     containerResult: {
         flex: 1,
-        //width: width / 1.8,
         flexDirection: 'column',
-        //margin: height - (height * 0.9),
         marginVertical: hp("3%"),
         marginRight: props.orientation == "portrait" ? null : hp("3%"),
         paddingHorizontal: wp("4%"),
         paddingTop: hp("8%"),
         backgroundColor: Color.White,
-        // borderTopRightRadius:50,
-        // borderBottomRightRadius:50,
         borderRadius: LayoutSize.ContainerRadius,
     },
     appBars: {
@@ -349,8 +343,6 @@ const styles = (props) => StyleSheet.create({
     headerText: {
         color: Color.Black,
         fontSize: props.orientation == "portrait" ? Device.fontSizer(FontSize.H6) : Device.fontSizer(FontSize.H6),
-        // marginTop: 40,
-        // marginBottom: 30,
         marginVertical: 12,
         alignSelf: "flex-start",
 
@@ -363,18 +355,14 @@ const styles = (props) => StyleSheet.create({
         fontFamily: Font.Bold,
     },
     containerinfoPersonal: {
-        // flex: 1.5,
         flexDirection: 'row',
         justifyContent: "flex-start",
         marginHorizontal: "5%",
-        // backgroundColor: Color.Black,
         padding: "2%"
     },
     textInfoPersonal: {
-        // marginBottom: "1.5%",
         lineHeight: 24,
         color: Color.Black,
-        // fontSize: props.orientation == "portrait" ? wp("2%") : wp("1.5%"),
         fontSize: Device.fontSizer(FontSize.Body1),
         fontFamily: Font.Regular,
     },
@@ -403,7 +391,6 @@ const styles = (props) => StyleSheet.create({
         borderTopStartRadius: LayoutSize.ContainerRadius
     },
     fontSelectTab: {
-        // color: selectTab == 0 ? "black" : 'rgba(142,142,142,1)', 
         color: Color.Black,
         fontSize: Device.fontSizer(FontSize.BUTTON),
         fontFamily: Font.Bold
@@ -419,14 +406,11 @@ const styles = (props) => StyleSheet.create({
     },
     centeredView: {
         flex: 1,
-        // width: wp('15%'),
-        // height:hp('15%'),
         backgroundColor: '#00000030',
         justifyContent: "center",
         alignItems: "center",
     },
     modalView: {
-        // margin: 20,
         backgroundColor: Color.White,
         borderRadius: LayoutSize.ModalRadius,
         padding: LayoutSize.ModalPadding,
@@ -470,12 +454,7 @@ const styles = (props) => StyleSheet.create({
         textAlign: "center",
     },
     imageResult: {
-        // color: "white",
-        // width: wp('20%'),
-        // flex:2,
         padding: "1%",
-        // borderRightWidth:0.5,
-        // borderLeftWidth:0.5,
         borderBottomWidth: 0.5,
     },
     textResult: {

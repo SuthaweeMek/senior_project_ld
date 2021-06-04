@@ -29,14 +29,11 @@ import {
   Animated,
 } from 'react-native';
 import logo from '../resource/image/logo.png'
-import { NativeRouter, Route, Link } from "react-router-native";
-import backgroundLogin from '../resource/image/backgroundLogin.png'
-import Router from '../router'
+import { NativeRouter } from "react-router-native";
 import Orientation from 'react-native-orientation';
 import ButtonCurveLogin from '../component/buttonCurve.js';
 import InputBoxLogin from '../component/inputboxLogin';
 import LocalStorage from '../utils/LocalStorage'
-import AsyncStorage from '@react-native-community/async-storage'
 import NegativeModal from '../component/negativeModal'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientationChange as lor, removeOrientationListener as rol } from '../utils/Device'
 import Device from '../utils/Device'
@@ -44,24 +41,16 @@ import { connect } from 'react-redux';
 import {FontSize} from '../resource/dimension'
 import Color from '../resource/color'
 import Font from '../resource/font'
-// //dimesions
-// width = Device.isPortrait() ? Dimensions.get('window').height : Dimensions.get('window').width //1:4.65
-// height = Device.isPortrait() ? Dimensions.get('window').width : Dimensions.get('window').height //1:4.65  
+
 
 const LoginScene = (props) => {
-  const [token, setToken] = useState('5')
   const [username, setUsername] = useState('admin')
   const [password, setPassword] = useState('1234')
-  const [orientation, setOrientation] = useState(Device.isPortrait() ? "portrait" : "landscape")
   const [negativeModal, setNegativeModal] = useState(false)
   const [errorMessage, setErrorMessage] = useState("")
   const [titleMessage, setTitleMessage] = useState("")
   const moveAnim = useRef(new Animated.Value(-25)).current  // Initial value for top : 0
   const fadeAnim = useRef(new Animated.Value(0)).current // Initial value for fontSize: 28
-  // console.log("ore",orientation,"style : ",orientation=="portrait" ? "portrait":"landscape"," hp wp",hp(100),"and",wp(100))
-  console.log("orientation ",Device.fontSizer(24))
-
-  console.log(props.firstname)
   const onPress = async () => {
 
     let res = await fetch(`${HOSTNAME}/api/token/`, {
@@ -98,7 +87,6 @@ const LoginScene = (props) => {
         setErrorMessage("ลองตรวจสอบ Username และ Password นะครับ")
       }
       setNegativeModal(true)
-      console.log('error: ', responseJson);
     }
   }
 
@@ -114,8 +102,6 @@ const LoginScene = (props) => {
   }
 
   useEffect(() => {
-    // console.log("testtttttttttt",props.upDateOrientation)
-
     lor(props.upDateOrientation)
     Device.isTablet() ? Orientation.unlockAllOrientations() : Orientation.lockToPortrait();
     Animated.parallel([
@@ -140,9 +126,7 @@ const LoginScene = (props) => {
 
     <NativeRouter>
       <StatusBar translucent={false} barStyle={"dark-content"} backgroundColor={Color.Transparent} />
-      {/* <ImageBackground source={backgroundLogin} style={styles(props.orientation).background} resizeMode={"stretch"}> */}
       <KeyboardAvoidingView
-        // behavior={props.orientation=="landscape"? Platform.OS === "ios" ? "padding" : "height": Platform.OS === "ios" ? "padding" : "height"}
         behavior={Platform.OS === "ios" ? "padding" : null}
         style={styles(props.orientation).container}
       >
@@ -158,7 +142,6 @@ const LoginScene = (props) => {
                             </Text>
               <InputBoxLogin text={username} onChangeText={handleUser} placeholder="Username" icon="user" size={{ hp: hp('6%'), wp: wp('90%') }} />
               <InputBoxLogin text={password} onChangeText={handlePassword} placeholder="Password" icon="key" size={{ hp: hp('6%'), wp: wp('90%') }} password={true} />
-              {/* <Text style={styles(props.orientation).fontForget} onPress={() => { console.log("do something1") }}>ลืมรหัสผ่าน</Text> */}
               <View style={styles(props.orientation).btnContainer}>
                 <ButtonCurveLogin onPress={onPress} text="เข้าสู่ระบบ" size={{ hp: hp('6%'), wp: wp('90%') }} />
               </View>

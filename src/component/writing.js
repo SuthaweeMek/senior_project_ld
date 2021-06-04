@@ -6,15 +6,12 @@
  * @flow strict-local
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { HOSTNAME } from "@env"
 import {
   StyleSheet,
   View,
-  Text,
-  StatusBar,
   Button,
-  Modal,
   Dimensions,
   ImageBackground,
   TouchableOpacity,
@@ -44,7 +41,6 @@ const writing = (props) => {
   collect = props.collecting
   filename = props.name
   var orientation = props.orientation
-  console.log("array sound = ", ary_sound)
   //hook
   useEffect(() => {
     lor(props.upDateOrientation)
@@ -59,12 +55,8 @@ const writing = (props) => {
       return;
     }
     // loaded successfully
-    //console.log('duration in seconds: ' + whoosh.getDuration() + 'number of channels: ' + whoosh.getNumberOfChannels());
     if (ary_sound[index].includes("th_alphabet")) {
-      console.log("colect :", collect)
-
       collect == true ? multiplier = 1 : multiplier = 4;
-      console.log("multiplier :", multiplier, "index : ", index)
       if (index == multiplier || index == multiplier * 2 || index == multiplier * 3 || index == multiplier * 4 || index == multiplier * 5
         || index == multiplier * 6 || index == multiplier * 7 || index == multiplier * 8 || index == multiplier * 9 || index == multiplier * 10
         || index == multiplier * 11) {
@@ -119,17 +111,7 @@ const writing = (props) => {
         play()
       }
     }
-
-    // Play the sound with an onEnd callback
-    // whoosh.play((success) => {
-    //   if (success) {
-    //     console.log('successfully finished playing');
-    //   } else {
-    //     console.log('playback failed due to audio decoding errors');
-    //   }
-    // });
   });
-  //console.log("/n HEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE m",props.modalState)
   const play = () => {
     sound.play((success) => {
       if (success) {
@@ -139,8 +121,6 @@ const writing = (props) => {
       }
     });
   };
-
-  console.log("Alphabet : ", ary_sound[index])
   const canvasRef = React.createRef()
   const Undo = () => {
     canvasRef.current.undo()
@@ -170,7 +150,6 @@ const writing = (props) => {
         },
       }
     );
-    let responseJson = await res.json();
     if (res.ok) {
       console.log('Upload Successful');
     }
@@ -180,9 +159,7 @@ const writing = (props) => {
     }
   }
   const Save = () => {
-    console.log("YES");
     canvasRef.current.save('jpg', false, 'RNSketchCanvas', ary_sound[index] + "_" + filename, true, false, false)
-    console.log("check")
     canvasRef.current.getBase64("jpg", false, false, false, false, CheckCallback)
     Clear()
     if (index < ary_sound.length - 1) {
@@ -201,12 +178,6 @@ const writing = (props) => {
     }
 
   }
-
-  const Upload = () => {
-    console.log("YES");
-    //ImageScene("test", "moo");
-  }
-
 
   return (
     <View style={styles(orientation).container}>
@@ -264,11 +235,6 @@ const writing = (props) => {
             strokeWidth={3}
             ref={canvasRef}
             onSketchSaved={(success, path) => { console.log("filePath : ", path, "success or not : ", success) }}
-            // localSourceImage={{
-            //   filename: 'image.png',  // e.g. 'image.png' or '/storage/sdcard0/Pictures/image.png'
-            //   directory: 'SketchCanvas.MAIN_BUNDLE', // e.g. SketchCanvas.MAIN_BUNDLE or '/storage/sdcard0/Pictures/'
-            //   mode: 'AspectFill'
-            // }}
             savePreference={{
 
               folder: 'RNSketchCanvas',
@@ -285,33 +251,8 @@ const writing = (props) => {
           />
         </ImageBackground>
         <View style={{ flexDirection: 'row', justifyContent: "flex-end" }}>
-          {/* <Button onPress={
-              props.closeModal
-            } title="Close"
-              color="#841123"
-            /> */}
-          {/* <Button
-              onPress={Undo}
-              title="Undo"
-              color="#841584"
-              accessibilityLabel="Learn more about this purple button"
-            /> */}
-
-
-          {/* <Button
-              onPress={Upload}
-              title="Upload"
-              color="#639584"
-              accessibilityLabel="Learn more about this purple button"
-            /> */}
         </View>
-
       </View>
-      {/* <Button onPress={() => {
-        setModalVisible(true);
-      }} title="Modal"
-        color="#841123" /> */}
-
     </View>
   );
 
@@ -319,10 +260,8 @@ const writing = (props) => {
 
 const styles = (orientation) => StyleSheet.create({
   container: {
-    //flex: 1, justifyContent: 'center', alignItems: 'center', 
     flex: 1,
     justifyContent: "center",
-    //marginTop: 22
   },
   centeredView: {
     flex: 1,
@@ -348,15 +287,10 @@ const styles = (orientation) => StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     resizeMode: 'center',
-    //backgroundColor:"blue",
-    //alignItems: "center",
     marginHorizontal: orientation == 'portrait' ? wp('15%') : wp('33%'),
     marginTop: 50,
     paddingTop: 50,
     paddingBottom: hp('8%'),
-    // paddingHorizontal :50,
-    // paddingBottom : 50,
-    //alignSelf:"center",
     justifyContent: "center"
   },
 });

@@ -7,8 +7,7 @@
  */
 
 import React from 'react'
-import { Text, View, TouchableOpacity, Dimensions, StyleSheet } from 'react-native'
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from '../utils/Device';
+import { Text, View, TouchableOpacity, StyleSheet } from 'react-native'
 import Color from '../resource/color'
 import Device from '../utils/Device'
 import {FontSize,LayoutSize} from '../resource/dimension'
@@ -16,7 +15,6 @@ import { connect } from 'react-redux';
 
 
 const ButtonCurve = ({ text, onPress ,orientation,size}) => {
-  // console.log("ButtonCurve : size = ",FontSize.BUTTON)
   return (
     <TouchableOpacity onPress={onPress} >
       <View style={styles({orientation,size}).btnStyle}>
@@ -29,9 +27,7 @@ const ButtonCurve = ({ text, onPress ,orientation,size}) => {
 const styles = (props)  =>  StyleSheet.create({
 
   btnStyle: {
-    // backgroundColor: '#66b4c1',
     backgroundColor : Color.Surface,
-    //paddingVertical: 10,
     height: LayoutSize.ButtonHeight,
     width: props.size.wp,
     minWidth : LayoutSize.ButtonMinWidth,
@@ -51,13 +47,8 @@ const styles = (props)  =>  StyleSheet.create({
     flex:1,
     height:18,
     color: Color.White,
-    // height: hp('6%'),
-    // width: wp('90%'),
-    // fontSize: props.orientation=="portrait"?wp("3%"):wp("2%"),
     fontSize : Device.fontSizer(FontSize.BUTTON),
-    //backgroundColor:"red",
     fontFamily: 'EkkamaiNew-Bold',
-    //textTransform: 'uppercase',
     textAlignVertical :'center',
     textAlign: 'center',
   }

@@ -9,31 +9,22 @@
 import React, { useState, useEffect } from 'react';
 import {HOSTNAME} from '@env'
 import {
-    SafeAreaView,
     StyleSheet,
-    ScrollView,
     View,
     Text,
-    StatusBar,
-    Button,
-    ImageBackground,
     Image,
     Alert,
     TextInput,
     TouchableOpacity,
-    TouchableHighlight,
     FlatList,
     Modal,
     Dimensions,
 } from 'react-native';
-import { NativeRouter, Route, Link, Redirect } from "react-router-native";
-import imageAlphabet from '../resource/image/alphabet.jpg';
 import Pagination from '../component/pagination'
 import Device from '../utils/Device';
 import Color from '../resource/color';
 import Font from '../resource/font';
 import { connect } from 'react-redux';
-import SelectionInput from '../component/picker';
 import { Icon } from 'react-native-elements'
 import LocalStorage from '../utils/LocalStorage'
 import DeviceInfo from 'react-native-device-info';
@@ -45,8 +36,6 @@ import { FontSize, LayoutSize } from '../resource/dimension'
 width = Device.isPortrait() ? Dimensions.get('screen').height : Dimensions.get('screen').width //1:4.65
 height = Device.isPortrait() ? Dimensions.get('screen').width : Dimensions.get('screen').height //1:4.65
 
-const DATA = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"]
-const DATA2 = ["1", "2", "3", "4"]
 const ResultScene = (props) => {
     var orientation = props.orientation
     const paginationSplit = DeviceInfo.isTablet() == true ? 5 : 4
@@ -144,7 +133,6 @@ const ResultScene = (props) => {
     }
         , [])
 
-    // useEffect(()=>{setReportList},[orientation])
     const mapNumberToLabel = {
         0: "รอคุณหมอ",
         1: "เขียนถูก",
@@ -158,7 +146,6 @@ const ResultScene = (props) => {
 
 
     const handleEditPrediction = async (item) => {
-        console.log(editPrediction)
         let res = await fetch(`${HOSTNAME}/classifications/edit/prediction/`, {
             method: 'POST',
             headers: {
@@ -171,17 +158,13 @@ const ResultScene = (props) => {
                 prediction: editPrediction,
             })
         })
-        let responseJson = await res.json();
         if (res.ok) {
-
             alert("Edit Success")
             queryImage()
             getTestResult(testId)
-            console.log("checkedit", responseJson)
         }
         else {
             alert("Edit Failed")
-            console.log('error: ', responseJson);
         }
     }
 
@@ -252,19 +235,17 @@ const ResultScene = (props) => {
                     resizeMode: 'contain',
                 }} />
             </TouchableOpacity>
-            {console.log("test ", selectedModalId, "and", index)}
         </View>
         )
     }
 
 
     const renderItem = ({ item, index }) => {
-        //const backgroundColor = item === selectedId ? "#6e3b6e" : "#f9c2ff";
         return (
             <Item
                 item={item}
                 index={index}
-                onPress={() => { console.log("index and item", item), setSelectedModalId({ index, item }), setModalEditVisible(true), setEditPrediction(item.prediction) }}
+                onPress={() => { setSelectedModalId({ index, item }), setModalEditVisible(true), setEditPrediction(item.prediction) }}
             />
         )
     }
@@ -527,7 +508,7 @@ const ResultScene = (props) => {
                         {/* <Text style={styles({ orientation }).headerText}>ผลลัพธ์</Text> */}
                         {props.orientation == 'portrait' ?
                             <View style={styles({ orientation }).appBars} >
-                                <TouchableOpacity onPress={() => { props.upDateMenuDrawer(true), console.log("moo", props.menuDrawer) }}>
+                                <TouchableOpacity onPress={() => { props.upDateMenuDrawer(true) }}>
                                     <Icon
                                         //reverse
                                         name={"bars"}
@@ -600,23 +581,17 @@ const styles = (props) => StyleSheet.create({
     },
     containerResult: {
         flex: 1,
-        //width: width / 1.8,
         flexDirection: 'column',
-        //margin: height - (height * 0.9),
         marginVertical: hp("3%"),
         marginRight: props.orientation == "portrait" ? null : hp("3%"),
         paddingHorizontal: wp("4%"),
         paddingTop: hp("8%"),
         backgroundColor: Color.White,
-        // borderTopRightRadius:50,
-        // borderBottomRightRadius:50,
         borderRadius: LayoutSize.ContainerRadius,
     },
     headerText: {
         color: Color.Black,
         fontSize: props.orientation == "portrait" ? Device.fontSizer(FontSize.H6) : Device.fontSizer(FontSize.H6),
-        // marginTop: 40,
-        // marginBottom: 30,
         marginVertical: 12,
         alignSelf: "flex-start",
 
@@ -632,7 +607,6 @@ const styles = (props) => StyleSheet.create({
         borderColor: Color.Sub_Surface,
         borderWidth: 2,
         alignSelf: 'flex-end',
-        // marginRight: "5%",
         paddingHorizontal: LayoutSize.InputPaddingLeft,
         fontSize: Device.fontSizer(FontSize.Subtitle1),
         fontFamily: Font.Regular,
@@ -641,7 +615,6 @@ const styles = (props) => StyleSheet.create({
     table: {
         flex: 1,
         margin: "5%",
-        // backgroundColor: 'red'
     },
     containerTitleTable: {
         margin: "1%",
@@ -659,11 +632,8 @@ const styles = (props) => StyleSheet.create({
     containerItemTable: {
         alignSelf: 'stretch',
         flexDirection: 'row',
-        // flex:1,
         height: 52,
         alignItems: 'center',
-        // marginTop: "2%",
-        // paddingBottom: "1%",
         borderBottomColor: Color.Gray,
         borderBottomWidth: 1,
     },
@@ -684,17 +654,12 @@ const styles = (props) => StyleSheet.create({
         fontSize: Device.fontSizer(FontSize.Body2)
     },
     containerPagination: {
-        // margin : 16,
         marginVertical: 16,
-        // flexDirection: DeviceInfo.isTablet()==true ? "row":"column",
         flexDirection: "row",
         justifyContent: "center",
-        // backgroundColor:"blue",
-        // alignSelf:"flex-start",
     },
     buttonPagination: {
         backgroundColor: Color.Sub_Surface,
-        // padding: 8,
         borderRadius: LayoutSize.PaginationBorderRadius,
         alignItems: "center",
         justifyContent: "center",
@@ -720,18 +685,14 @@ const styles = (props) => StyleSheet.create({
         fontFamily: Font.Bold,
     },
     containerinfoPersonal: {
-        // flex: 1.5,
         flexDirection: 'row',
         justifyContent:"flex-start",
         marginHorizontal: "5%",
-        // backgroundColor: Color.Black,
         padding: "2%"
     },
     textInfoPersonal: {
-        // marginBottom: "1.5%",
         lineHeight : 24,
         color: Color.Black,
-        // fontSize: props.orientation == "portrait" ? wp("2%") : wp("1.5%"),
         fontSize : Device.fontSizer(FontSize.Body1),
         fontFamily: Font.Regular,
     },
@@ -766,7 +727,6 @@ const styles = (props) => StyleSheet.create({
         borderTopStartRadius: LayoutSize.ContainerRadius
     },
     fontSelectTab: {
-        // color: selectTab == 0 ? "black" : 'rgba(142,142,142,1)', 
         color: Color.Black,
         fontSize: Device.fontSizer(FontSize.BUTTON),
         fontFamily: Font.Bold
@@ -781,12 +741,7 @@ const styles = (props) => StyleSheet.create({
         backgroundColor: Color.Sub_Background,
     },
     imageResult: {
-        // color: "white",
-        // width: wp('20%'),
-        // flex:2,
         padding: "1%",
-        // borderRightWidth:0.5,
-        // borderLeftWidth:0.5,
         borderBottomWidth: 0.5,
     },
     textResult: {
@@ -796,14 +751,11 @@ const styles = (props) => StyleSheet.create({
 
     centeredView: {
         flex: 1,
-        // width: wp('15%'),
-        // height:hp('15%'),
         backgroundColor: '#00000030',
         justifyContent: "center",
         alignItems: "center",
     },
     modalView: {
-        // margin: 20,
         backgroundColor: Color.White,
         borderRadius: LayoutSize.ModalRadius,
         padding: LayoutSize.ModalPadding,

@@ -10,25 +10,17 @@ import React, { useEffect, useState } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
-  ScrollView,
   View,
   Text,
   StatusBar,
-  Button,
-  ImageBackground,
   Image,
   TouchableOpacity,
   Dimensions
 } from 'react-native';
 import { NativeRouter, Route, Link } from "react-router-native";
-import { createDrawerNavigator } from '@react-navigation/drawer';
-import { NavigationContainer } from '@react-navigation/native';
-// const Drawer = createDrawerNavigator();
 import SideMenu from 'react-native-side-menu'
 
-import backgroundMenu from '../resource/image/backgroundMenu.png';
 import imageProfile from '../resource/image/logo.png';
-import WritingScene from './WritingScene'
 const image = { uri: "https://reactjs.org/logo-og.png" };
 import Router from '../router'
 import { connect } from 'react-redux';
@@ -40,22 +32,17 @@ import Font from '../resource/font';
 import Device from '../utils/Device'
 import { FontSize, LayoutSize } from '../resource/dimension'
 const width = Dimensions.get('window').width
-console.log("🚀 ~ file: HomeScene.js ~ line 43 ~ width", width)
 
 
 const HomeScene = (props) => {
   userrole = props.userrole
-  console.log("checkname", props.firstname)
   useEffect(() => {
     lor(props.upDateOrientation)
     return rol()
   }
     , [])
   const [onClick, setOnclick] = useState("test_scene")
-  // console.log("test", Color.White)
-
   props.upDateText("testtext")
-
   const containerScene = ({ navigation }) => {
     return (
       <View style={styles(props.orientation).containerContent}>
@@ -175,15 +162,11 @@ const HomeScene = (props) => {
 
   function NotificationsScreen({ navigation }) {
     return (
-      //<Link to="/result"/>
-      // <View style={{width:wp('100%'),height:hp('100%')}}>
         HomeScreen(props.orientation)
-      // </View>
     );
   }
   const newStyle = (fromscene) => {
     var new_style = {}
-    // console.log("onClick vs fromscene",onClick , "and ", fromscene,": ",onClick==fromscene)
     const menu_clicked = {
       BG: { backgroundColor: Color.White, borderColor: Color.White, },
       LG: { logocolor: Color.Background },
@@ -228,7 +211,6 @@ const HomeScene = (props) => {
 
         <View style={styles(props.orientation).container}>
 
-          {/* <ImageBackground source={backgroundMenu} style={styles.backgroundMenu}> */}
           {
             props.orientation == "landscape" ?
               <>
@@ -241,9 +223,6 @@ const HomeScene = (props) => {
                 {containerScene(props.orientation)}
               </SideMenu>
           }
-
-          {/* </ImageBackground> */}
-          {/* { containerScene(props.orientation)} */}
         </View>
       </SafeAreaView>
     </NativeRouter>
@@ -252,17 +231,11 @@ const HomeScene = (props) => {
 
 const styles = (props) => StyleSheet.create({
   container: {
-    //flex:1,
-    //justifyContent: 'center', 
-    //alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: Color.Background,
-    // width : wp("25%"),
     height: hp("100%")
-    //flex: 1 1 auto,
-    //marginTop: 22
   },
   containerMenu: {
 
@@ -270,9 +243,7 @@ const styles = (props) => StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'flex-end',
-    // backgroundColor:"green",
     width: props=="portrait" ? null : wp("19%"),
-    // height : hp ("100%")
   },
   containerMenuProfile: {
     flex: 3,
@@ -283,7 +254,6 @@ const styles = (props) => StyleSheet.create({
   fontMenuProfile: {
     color: Color.White,
     fontSize: Device.fontSizer(FontSize.H5),
-    // fontWeight: "bold",
     paddingTop: 16,
     alignItems: 'center',
     fontFamily: Font.Bold,
@@ -295,7 +265,6 @@ const styles = (props) => StyleSheet.create({
     width: props=="portrait"?153:wp("16%"),
     textAlignVertical: "auto",
     fontFamily: Font.Regular,
-    // paddingLeft: 5,
   },
   containerMenuContent: {
     marginTop: 10,
@@ -304,18 +273,14 @@ const styles = (props) => StyleSheet.create({
     alignItems: 'flex-start',
   },
   containerMenuContentRow: {
-    // marginVertical: 12,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    // alignSelf:"flex-start",
-    // alignSelf: 'center',
     flexDirection: 'row',
     height: LayoutSize.MenuHeight,
     width: props=="portrait"?LayoutSize.MenuWidth:wp("16%"),
     paddingLeft: LayoutSize.MunuPaddingLeft,
     borderTopLeftRadius: wp("16%") / 2,
     borderBottomLeftRadius: wp("16%") / 2,
-    // borderWidth: 2,
   },
   containerMenuFooter: {
     flex: 1,
@@ -326,21 +291,13 @@ const styles = (props) => StyleSheet.create({
   },
   containerContent: {
     flex: 2,
-    // backgroundColor:"white"
   },
   backgroundMenu: {
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    // flex: 1,
-    // resizeMode: "cover",
   },
   imageProfile: {
     width: wp('10%'),
     height: wp('11%'),
     resizeMode: 'stretch'
-    // borderRadius: wp('11%') / 2,
-    // borderColor: Color.White,
-    // borderWidth: 3,
   },
   icon: {
     height: LayoutSize.MunuIcon,
@@ -349,9 +306,6 @@ const styles = (props) => StyleSheet.create({
     justifyContent: 'center'
   },
   link: {
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    // alignSelf:'center',
     flexDirection: 'row',
     marginVertical: 4,
     borderTopLeftRadius: wp("16%") / 2,

@@ -29,7 +29,6 @@ export const LayoutSize = {
     ModalRadius:16,
 
     MenuHeight : 48,
-    // MenuWidth : 153,
     MenuWidth : 153,
     MunuPaddingLeft :8,
     MunuIcon :24,

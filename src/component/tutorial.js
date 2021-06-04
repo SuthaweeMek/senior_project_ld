@@ -28,7 +28,6 @@ import imageBook from '../resource/image/booksmall.png';
 import Sound from 'react-native-sound'
 import { Icon } from 'react-native-elements'
 import Color from '../resource/color'
-import LocalStorage from '../utils/LocalStorage'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientationChange as lor, removeOrientationListener as rol } from '../utils/Device'
 import imagePlayer from '../resource/image/player_circle.png'
 
@@ -43,14 +42,12 @@ const writing = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [textModal, setTextModal] = useState(1)
   const [modal2Visible, setModal2Visible] = useState(false);
-  const [isClicked, setIsClicked] = useState(1)
   //set ary_sound , vowel , vocab
   ary_sound = props.arrSound
   index = props.arrIndex
   collect = props.collecting
   filename = props.name
   var orientation = props.orientation
-  console.log("array sound = ", ary_sound)
   //hook
   useEffect(() => {
     lor(props.upDateOrientation)
@@ -71,10 +68,7 @@ const writing = (props) => {
       return;
     }
     // loaded successfully
-    //console.log('duration in seconds: ' + whoosh.getDuration() + 'number of channels: ' + whoosh.getNumberOfChannels());
-    console.log("colect :", collect)
     collect == true ? multiplier = 1 : multiplier = 4;
-    console.log("multiplier :", multiplier, "index : ", index)
     if (textModal > 6) {
       if (index == multiplier || index == multiplier * 2 || index == multiplier * 3 || index == multiplier * 4 || index == multiplier * 5
         || index == multiplier * 6 || index == multiplier * 7 || index == multiplier * 8 || index == multiplier * 9 || index == multiplier * 10
@@ -92,16 +86,7 @@ const writing = (props) => {
         play()
       }
     }
-    // Play the sound with an onEnd callback
-    // whoosh.play((success) => {
-    //   if (success) {
-    //     console.log('successfully finished playing');
-    //   } else {
-    //     console.log('playback failed due to audio decoding errors');
-    //   }
-    // });
   });
-  //console.log("/n HEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE m",props.modalState)
   const play = () => {
     sound.play((success) => {
       if (success) {
@@ -111,51 +96,11 @@ const writing = (props) => {
       }
     });
   };
-
-  console.log("Alphabet : ", ary_sound[index])
   const canvasRef = React.createRef()
-  const Undo = () => {
-    canvasRef.current.undo()
-  }
   const Clear = () => {
     canvasRef.current.clear()
   }
-  // const CheckCallback = async (success, base64) => {
-  //   var image = `data:image/png;base64,` + base64
-  //   const data = new FormData();
-  //   data.append('prediction', 0);
-  //   data.append('ImageName', image);
-  //   data.append('label', ary_sound[index - 1])
-  //   data.append('TestID', props.testId)
-  //   data.append('labelimage', "no")
-  //   data.append('predictionprob', 0);
-  //   //Please change file upload URL
-  //   let res = await fetch(
-  //     `${HOSTNAME}/classifications/`,
-  //     {
-  //       method: 'post',
-  //       body: data,
-  //       headers: {
-  //         'Accept': 'application/json',
-  //         'Content-Type': 'multipart/form-data; ',
-  //         'Authorization': 'Bearer ' + await LocalStorage.readData("token")
-  //       },
-  //     }
-  //   );
-  //   let responseJson = await res.json();
-  //   if (res.ok) {
-  //     console.log('Upload Successful');
-  //   }
-  //   else {
-  //     //if no file selected the show alert
-  //     console.log('Please Select File first');
-  //   }
-  // }
   const Save = () => {
-    console.log("YES");
-    // canvasRef.current.save('jpg', false, 'RNSketchCanvas', ary_sound[index] + "_" + filename, true, false, false)
-    // console.log("check")
-    // canvasRef.current.getBase64("jpg", false, false, false, false, CheckCallback)
     Clear()
     if (index < ary_sound.length - 1) {
       sound.release();
@@ -172,11 +117,6 @@ const writing = (props) => {
 
     }
 
-  }
-
-  const Upload = () => {
-    console.log("YES");
-    //ImageScene("test", "moo");
   }
 
   const DialogModal1 = (text) => (
@@ -325,23 +265,10 @@ const writing = (props) => {
                   <Button
                     onPress={Save}
                     title="ส่งคำตอบ"
-                    // color={Color.Yellow}  
                     accessibilityLabel="Learn more about this purple button"
                   />
                 </View>
               }
-              {/* <Button
-                onPress={play}
-                title="play"
-                color="#841584"
-                accessibilityLabel="Learn more about this purple button"
-              />   */}
-              {/* <Button
-              onPress={Clear}
-              title="clear"
-              color="#191584"
-              accessibilityLabel="Learn more about this purple button"
-            /> */}
             </View>
             <View style={{ position: 'absolute', bottom: 0, paddingBottom: hp('8%'), width: '100%', height: '100%', display: 'flex', justifyContent: 'space-between', }}>
               <View style={{ borderColor: Color.Gray, borderBottomWidth: 2 }} />
@@ -355,24 +282,16 @@ const writing = (props) => {
               strokeWidth={3}
               ref={canvasRef}
               onStrokeEnd={() => {
-                console.log("🚀 ~ file: tutorial.js ~ line 369 ~ writing ~ textModal", textModal)
                 if (textModal == 2) {
                   setTextModal(3);
                   setModalVisible(true)
-                  // setIsClicked(2)
                 }
                 else if (textModal == 4) {
                   setTextModal(5);
                   setModalVisible(true)
-                  // setIsClicked(3)
                 }
               }}
               onSketchSaved={(success, path) => { console.log("filePath : ", path, "success or not : ", success) }}
-              // localSourceImage={{
-              //   filename: 'image.png',  // e.g. 'image.png' or '/storage/sdcard0/Pictures/image.png'
-              //   directory: 'SketchCanvas.MAIN_BUNDLE', // e.g. SketchCanvas.MAIN_BUNDLE or '/storage/sdcard0/Pictures/'
-              //   mode: 'AspectFill'
-              // }}
               savePreference={{
 
                 folder: 'RNSketchCanvas',
@@ -389,37 +308,10 @@ const writing = (props) => {
             />
           </ImageBackground>
           <View style={{ flexDirection: 'row', justifyContent: "flex-end" }}>
-            {/* <Button onPress={
-              props.closeModal
-            } title="Close"
-              color="#841123"
-            /> */}
-            {/* <Button
-              onPress={Undo}
-              title="Undo"
-              color="#841584"
-              accessibilityLabel="Learn more about this purple button"
-            /> */}
-
-
-            {/* <Button
-              onPress={Upload}
-              title="Upload"
-              color="#639584"
-              accessibilityLabel="Learn more about this purple button"
-            /> */}
           </View>
-
         </View>
-        {/* <Button onPress={() => {
-        setModalVisible(true);
-      }} title="Modal"
-        color="#841123" /> */}
-
       </View>
       {DialogModal1("เอะ !! เมื่อกี้เสียงอะไรนะ ลองกดที่ปุ่มรูปลำโพงเพื่อฟังเสียง")}
-      {/* {DialogModal2("เอะ !! เมื่อกี้เสียงอะไรนะ ลองกดที่ปุ่มรูปลำโพงเพื่อฟังเสียง")} */}
-
     </>
   );
 
@@ -436,10 +328,8 @@ const styles = (orientation) => StyleSheet.create({
     position: "absolute",
   },
   container: {
-    //flex: 1, justifyContent: 'center', alignItems: 'center', 
     flex: 1,
     justifyContent: "center",
-    //marginTop: 22
   },
   centeredView: {
     flex: 1,
@@ -471,22 +361,16 @@ const styles = (orientation) => StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     resizeMode: 'center',
-    //backgroundColor:"blue",
-    //alignItems: "center",
     marginHorizontal: orientation == 'portrait' ? wp('15%') : wp('33%'),
     marginTop: 50,
     paddingTop: 50,
     paddingBottom: hp('8%'),
-    // paddingHorizontal :50,
-    // paddingBottom : 50,
-    //alignSelf:"center",
     justifyContent: "center"
   },
   modalCenteredView: {
     flex: 1,
     justifyContent: "flex-end",
     marginTop: 22,
-    // zIndex:20
   },
   dialogModalView: {
     flexDirection: 'row',

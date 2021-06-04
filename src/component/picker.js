@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Modal, Text, TouchableOpacity, TouchableWithoutFeedback, FlatList } from "react-native";
-import { Picker } from '@react-native-picker/picker';
 import { connect } from 'react-redux'
 import Color from '../resource/color'
 import { Icon } from 'react-native-elements'
@@ -35,7 +34,6 @@ const PickerCurve = (props) => {
 
   const renderItem = ({ item }) => {
     const color = item === selected ? "red" : "blue";
-    console.log("items is ", item)
     return (
       <Item
         text={item.text}
@@ -88,24 +86,6 @@ const PickerCurve = (props) => {
 }
 
 const styles = (props) => StyleSheet.create({
-  container: {
-    // paddingHorizontal: 12,
-    // flex:1,
-    // justifyContent: "center",
-    // alignContent:"center",
-    // alignItems:"center",
-    // alignSelf:"center",
-    // height: height/20,
-    // width: width/6,
-    // marginTop:10, 
-    // paddingBottom:30,
-    // marginLeft:70,
-    // marginRight:70,
-    // borderRadius: 8,
-    // alignItems: "center", 
-    // borderColor: 'gray', 
-    // borderWidth: 0.5
-  },
   picker: {
     flexDirection: "row",
     borderColor: Color.Surface,
@@ -115,17 +95,10 @@ const styles = (props) => StyleSheet.create({
     paddingHorizontal : LayoutSize.PickerPaddingHorizontal,
     height: LayoutSize.PickerHeight,
     borderRadius: LayoutSize.PickerRadius,
-    // justifyContent:"flex-start",
-    // alignItems:"center",
     justifyContent: "center",
     alignItems: "center",
   },
   icon: {
-    // backgroundColor:"red",
-    // alignItems:"flex-end",
-    // justifyContent:"flex-end",
-    //  alignSelf:"flex-end",
-    // alignContent:"flex-end",
     paddingLeft: 12,
     height: props.size.hp,
   },
@@ -137,36 +110,24 @@ const styles = (props) => StyleSheet.create({
     justifyContent: "center",
     alignContent: "center",
     alignItems: "center",
-    // flexWrap:"wrap",
-    // alignSelf:"center",
-    // padding:wp("3%"),
-    // margin:hp("10%"),
     position: "absolute",
     alignSelf: 'flex-end',
     zIndex: 1,
     backgroundColor: "#00000080",
     width: wp("100%"),
     height: hp("100%"),
-    //backgroundColor:"red"
   },
   innerModal: {
     justifyContent: "center",
-    //  alignContent:"center",
     alignItems: "center",
-    // flexWrap:"wrap",
-    // alignSelf:"center",
-    // padding:wp("3%"),
-    // margin:hp("10%"),
     flex: 1,
   },
   infoModal: {
     zIndex: 2,
     backgroundColor: Color.White,
     width: props.orientation == "portrait" ? hp("30%") : hp("40%"),
-    // alignSelf:"center",
     alignItems: "center",
     justifyContent: "center",
-    //height:hp('50%'),
     margin: hp('3%'),
     padding: hp('3%'),
     borderRadius: hp('3%')

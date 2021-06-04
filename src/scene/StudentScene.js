@@ -9,24 +9,13 @@
 import React, { useState, useEffect } from 'react';
 import { HOSTNAME } from "@env"
 import {
-    SafeAreaView,
     StyleSheet,
-    ScrollView,
     View,
     Text,
-    StatusBar,
-    Button,
-    ImageBackground,
-    Image,
-    Alert,
     TextInput,
     TouchableOpacity,
-    TouchableHighlight,
     FlatList,
-    Modal,
-    Dimensions,
 } from 'react-native';
-import Pagination from '../component/pagination';
 import Arrays from '../utils/Array'
 import Device from '../utils/Device';
 import Color from '../resource/color';
@@ -36,7 +25,6 @@ import { Icon } from 'react-native-elements'
 import LocalStorage from '../utils/LocalStorage'
 import DeviceInfo from 'react-native-device-info';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientationChange as lor, removeOrientationListener as rol } from '../utils/Device'
-import { Picker } from '@react-native-picker/picker';
 import { FontSize, LayoutSize } from '../resource/dimension'
 
 //component
@@ -44,26 +32,13 @@ import IndividualStudent from '../component/individualStudent'
 import ResultStudent from '../component/resultStudent'
 
 
-// //dimesions
-// width = Device.isPortrait() ? Dimensions.get('screen').height : Dimensions.get('screen').width //1:4.65
-// height = Device.isPortrait() ? Dimensions.get('screen').width : Dimensions.get('screen').height //1:4.65
-
-const DATA = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"]
-var DATA2 = []
 const ResultScene = (props) => {
     var orientation = props.orientation
     let studentScene = props.studentScene
-    let studentID = props.studentID
-    DATA2 = Arrays.CreatePlattern("test", 1000)
-    const paginationSplit = DeviceInfo.isTablet() == true ? 5 : 4
-
     const [search, setSearch] = useState("");
     const [reportList, setReportList] = useState([1, 2, 3, 4, 5]);
-    const [imageList, setImageList] = useState([]);
-    // const [studentScene , setSelectItem] = useState(0)
     const [testId, setTestId] = useState([-1, ,]);
     const [selectedStudent, setSelectedStudent] = useState("")
-    // const [selectedModalId, setSelectedModalId] = useState({ index: 0, item: "panding" });
 
     const queryStudent = async () => {
         if (search == "") {
@@ -83,7 +58,6 @@ const ResultScene = (props) => {
                 .then((responseJson) => {
                     setReportList(responseJson.student)
                 }).catch((error) => {
-                    console.log('error: ' + error);
                 });
         }
         else {
@@ -103,24 +77,15 @@ const ResultScene = (props) => {
                 .then((responseJson) => {
                     setReportList(responseJson.student)
                 }).catch((error) => {
-                    console.log('error: ' + error);
                 });
         }
     }
     useEffect(() => {
-        // console.log("setSelectItem",studentScene )
         lor(props.upDateOrientation)
         return rol()
     }
         , [props.orientation])
 
-    // useEffect(()=>{setReportList},[orientation])
-    const mapNumberToLabel = {
-        0: "รอคุณหมอ",
-        1: "เขียนถูก",
-        2: "เขียนผิด",
-        3: "กลับด้าน",
-    }
     useEffect(() => {
         queryStudent()
     }, [])
@@ -155,12 +120,11 @@ const ResultScene = (props) => {
     }
 
     const renderItem = ({ item, index }) => {
-        //const backgroundColor = item === selectedId ? "#6e3b6e" : "#f9c2ff";
         return (
             <Item
                 item={item}
                 index={index}
-                onPress={() => { console.log("index and item", item), props.upDateStudentScene(1), props.upDateStudentID(item.childrenID) }}
+                onPress={() => { props.upDateStudentScene(1), props.upDateStudentID(item.childrenID) }}
             />
         )
     }
@@ -182,10 +146,9 @@ const ResultScene = (props) => {
             <>
                 <View style={styles({ orientation }).container}>
                     <View style={styles({ orientation }).containerResult}>
-                        {/* <Text style={styles({ orientation }).headerText}>ผลลัพธ์</Text> */}
                         {props.orientation == 'portrait' ?
                             <View style={styles({ orientation }).appBars} >
-                                <TouchableOpacity onPress={() => { props.upDateMenuDrawer(true), console.log("moo", props.menuDrawer) }}>
+                                <TouchableOpacity onPress={() => { props.upDateMenuDrawer(true) }}>
                                     <Icon
                                         //reverse
                                         name={"bars"}
@@ -224,24 +187,16 @@ const ResultScene = (props) => {
                                         <Text style={styles({ orientation }).textTitleTable}></Text>
                                         <Text style={styles({ orientation }).textTitleTable}>ชื่อ-สกุล</Text>
                                         <Text style={styles({ orientation }).textTitleTable}></Text>
-                                        {/* <Text style={styles({ orientation }).textTitleTable}></Text> */}
                                         <Text></Text>
                                     </>
                                 }
                             </View>
-                            {/* <ScrollView>
-                                {itemList}
-                            </ScrollView> */}
                             <FlatList
                                 data={reportList}
                                 renderItem={renderItem}
-                                // keyExtractor={(item) => String(item.childrenID)}
                                 keyExtractor={(item) => item.childrenID}
                                 extraData={selectedStudent}
                                 horizontal={false}
-                            // onScroll={()=>{console.log("scrolling , ")}}
-                            // scrollEventThrottle={16}
-                            // numColumns={1}
                             />
 
                         </View>
@@ -262,23 +217,17 @@ const styles = (props) => StyleSheet.create({
     },
     containerResult: {
         flex: 1,
-        //width: width / 1.8,
         flexDirection: 'column',
-        //margin: height - (height * 0.9),
         marginVertical: hp("3%"),
         marginRight: props.orientation == "portrait" ? null : hp("3%"),
         paddingHorizontal: wp("4%"),
         paddingTop: hp("8%"),
         backgroundColor: Color.White,
-        // borderTopRightRadius:50,
-        // borderBottomRightRadius:50,
         borderRadius: LayoutSize.ContainerRadius,
     },
     headerText: {
         color: Color.Black,
         fontSize: props.orientation == "portrait" ? Device.fontSizer(FontSize.H6) : Device.fontSizer(FontSize.H6),
-        // marginTop: 40,
-        // marginBottom: 30,
         marginVertical: 12,
         alignSelf: "flex-start",
 
@@ -294,7 +243,6 @@ const styles = (props) => StyleSheet.create({
         borderColor: Color.Sub_Surface,
         borderWidth: 2,
         alignSelf: 'flex-end',
-        // marginRight: "5%",
         paddingHorizontal: LayoutSize.InputPaddingLeft,
         fontSize: Device.fontSizer(FontSize.Subtitle1),
         fontFamily: Font.Regular,
@@ -303,7 +251,6 @@ const styles = (props) => StyleSheet.create({
     table: {
         flex: 1,
         margin: "5%",
-        // backgroundColor: 'red'
     },
     containerTitleTable: {
         margin: "1%",
@@ -322,11 +269,8 @@ const styles = (props) => StyleSheet.create({
     containerItemTable: {
         alignSelf: 'stretch',
         flexDirection: 'row',
-        // flex:1,
         height: 52,
         alignItems: 'center',
-        // marginTop: "2%",
-        // paddingBottom: "1%",
         borderBottomColor: Color.Gray,
         borderBottomWidth: 1,
     },

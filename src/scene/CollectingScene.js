@@ -1,18 +1,11 @@
-import React, { useCallback,useRef, useState, useEffect ,componentDidMount} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  SafeAreaView,
   View,
-  Button,
   TextInput,
-  KeyboardAvoidingView,
-  ImageBackground,
   Modal,
-  Animated,
-  Image,
   Text,
   StyleSheet,
   Dimensions,
-  Switch
 } from 'react-native';
 import Orientation from 'react-native-orientation';
 import Device from '../utils/Device';
@@ -30,9 +23,6 @@ var ary_th_vocab = Arrays.CreatePlattern("th_vocab_",10)
 width = Device.isPortrait() ? Dimensions.get('screen').height : Dimensions.get('screen').width //1:4.65
 height = Device.isPortrait() ? Dimensions.get('screen').width : Dimensions.get('screen').height //1:4.65
 
-console.log("is tablet ?",Device.isTablet())
-console.log("Device height = ", height, " and width = ", width)
-
 //const spriteSize = height
 const CollectingScene = (props) => {
   //State
@@ -42,11 +32,6 @@ const CollectingScene = (props) => {
 
 
   useEffect(() => {
-    // Arrays.Shuffle(ary_th_alphabet)
-    // Arrays.Shuffle(ary_th_vowel)
-    // Arrays.Shuffle(ary_th_vocab)
-
-    //ary_th_alphabet.push("th_alphabet_end")
     ary_all = ary_th_alphabet.concat(ary_th_vowel).concat(ary_th_vocab)
     ary_all.push("th_vocab_end")
 
@@ -65,13 +50,11 @@ const CollectingScene = (props) => {
   };
 
   const HandleCloseModal = () => {
-    console.log("modal closed")
     setModalVisible(false)
   }
 
   const SetArrayIndex = () =>{
-    console.log("index : ",index)
-    index <= ary_all.length-1 ?setIndex(index+1) : console.log("end jaaaaa")
+    index <= ary_all.length-1 ?setIndex(index+1) : console.log("end")
 
   }
 
@@ -112,11 +95,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "white",
     flexDirection: "column"
-    //justifyContent: 'center', 
-    //alignItems: 'center',
-    //backgroundColor : "gray"
-    //flex: 1 1 auto,
-    //marginTop: 22
   },
   font:{
     padding:30,
@@ -129,12 +107,10 @@ const styles = StyleSheet.create({
   },
   field: {
     flex: 1,
-    //backgroundColor:"red",
     top: 7,
     zIndex: 2,
     flexDirection: 'row',
     alignItems: 'flex-end',
-    //justifyContent: 'space-around'
   },
   effect:{
     transform: [{ rotate: '-90deg'},{scale: 1}],
@@ -147,22 +123,14 @@ const styles = StyleSheet.create({
     right:"50%"
   },
   background: {
-    // justifyContent: 'center',
-    // alignItems: 'center',
     flex: 1,
-    //resizeMode: "cover",
     position: "absolute",
     left: 0,
     width: width*2,
     height: height,
   },
   foreground: {
-    // justifyContent: 'center',
-    // alignItems: 'center',
-
-    // resizeMode: "cover",
     left :0,
-    //backgroundColor: 'black',
     justifyContent: 'flex-end',
     width: width * 2,
     height: height / 4.26,

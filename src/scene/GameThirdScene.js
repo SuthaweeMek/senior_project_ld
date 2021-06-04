@@ -43,14 +43,11 @@ import spriteEffect1 from '../resource/sprite_sheet/effect1.png'
 width = Device.isPortrait() ? Dimensions.get('screen').height : Dimensions.get('screen').width //1:4.65
 height = Device.isPortrait() ? Dimensions.get('screen').width : Dimensions.get('screen').height //1:4.65
 
-console.log("is tablet ?",Device.isTablet())
-console.log("Device height = ", height, " and width = ", width)
-
 //const spriteSize = height
 const GameThirdScene = (props) => {
   //HP Parameters
   const playerHeart = 3
-  const enemyHeart = 5
+  const enemyHeart = 1
   //State
   const [Transition, SetTransition] = useState(1);
   const [fps, setFps] = useState(16);
@@ -71,16 +68,6 @@ const GameThirdScene = (props) => {
   useEffect(() => {
     playPlayer("idle")
     playEnemy("idle")
-  //    //TH_alphabet
-  // index ==0 ? Arrays.Shuffle(ary_th_vocab) : null
-  // index ==0 ? ary_th_vocab.push("th_vocab_end") : null
-    // Arrays.Shuffle(ary_th_vocab)
-    //fortestonly
-    // ary_th_vocab = []
-    // ary_th_vocab.push("th_vocab_0")
-    // ary_th_vocab.push("th_vocab_0")
-    //fortestonly
-    // ary_th_vocab.push("th_vocab_end")
   }, [])
 
   useEffect(() => {
@@ -91,7 +78,6 @@ const GameThirdScene = (props) => {
     playPlayer("idle")
     playEnemy("idle")
     if(enemyHeartEmpty == enemyHeart ){
-      console.log("The enemy is dead")
       Animated.timing(
         enemyFade,
         {
@@ -110,8 +96,6 @@ const GameThirdScene = (props) => {
           setLoop(true)
           playPlayer("idle")
           playEnemy("idle")
-          //clearInterval(interval)
-          //play('idle')
         }
         return () => clearInterval(interval)
       }, time);
@@ -124,7 +108,6 @@ const GameThirdScene = (props) => {
   useEffect(() => {
     // code to run on component mount
     var multiplier = 2;
-    console.log("index = ",index)
     if(index == multiplier || index == multiplier*2 || index == multiplier*3 || index == multiplier*4 || index == multiplier*5 
       || index == multiplier*6 || index == multiplier*7 || index == multiplier*8 || index == multiplier*9 || index == multiplier*10
       ){
@@ -139,7 +122,6 @@ const GameThirdScene = (props) => {
       fps: Number(fps),
       loop: loop,
       resetAfterFinish: resetAfterFinish,
-      onFinish: () => console.log('Player Play')
     });
   };
 
@@ -149,7 +131,6 @@ const GameThirdScene = (props) => {
       fps: Number(fps),
       loop: loop,
       resetAfterFinish: resetAfterFinish,
-      onFinish: () => console.log('Effect Play')  
     });
   };
 
@@ -159,7 +140,6 @@ const GameThirdScene = (props) => {
       fps: Number(fps),
       loop: loop,
       resetAfterFinish: resetAfterFinish,
-      onFinish: () => console.log('Enemy Play')
     });
   };
 
@@ -175,25 +155,11 @@ const GameThirdScene = (props) => {
     ).start();
     //setLoop(true)
     playPlayer('walk')
-    console.log("END SCENE 3")
     setTimeout(() => {Orientation.unlockAllOrientations();
       props.upDateScene(0)},
     5000
     )
     
-    // const interval = setInterval(() => {
-    //   setBackgroundTransition({ left: -speed })
-
-    //   loop = loop + 1
-    //   speed = speed + 5
-
-    //   //console.log('This 1 second',-speed)//-Dimensions.get('window').width
-    //   if (speed >= width) {
-    //     clearInterval(interval)
-    //     play('idle')
-    //   }
-    //   return () => clearInterval(interval)
-    // }, time);
 
   };
 
@@ -202,8 +168,6 @@ const GameThirdScene = (props) => {
     const time = 1000 // 1 second per loop
     const effectArrays = [["redstart","redidle","redend"],["bluestart","blueidle","blueend"]];
     const effectProb = Rand.Int(0,2) //random 0 , 1
-    //mummy.stop(() => console.log('stopped'));
-    console.log("effect1 ",effectArrays[effectProb][0],"effect2 ",effectArrays[effectProb][1],"effect3 ",effectArrays[effectProb][2])
     playPlayer('attack')
     const interval = setInterval(() => {
       loop = loop + 1
@@ -259,21 +223,12 @@ const GameThirdScene = (props) => {
     }, time);
 
   };
-  const modalOpen = () => {
-    // Will change fadeAnim value to 1 in 5 seconds
-    setModalVisible(true)
-    // return (
-    //   <Writing modal={true}/>
-    // );
-  };
 
   const HandleCloseModal = () => {
-    console.log("modal closed")
     setModalVisible(false)
   }
 
   const SetArrayIndex = () =>{
-    console.log("index : ",index,"ary size ",ary_th_vocab.length)
     setIndex(index+1)
   }
 
@@ -281,7 +236,6 @@ const GameThirdScene = (props) => {
      const fadeAnim = useRef(new Animated.Value(0)).current  // Initial value for opacity: 0
   
     // React.useEffect(() => {
-      console.log("fadeAnim = ",props)
       Animated.timing(
         fadeAnim,
         {
@@ -428,13 +382,7 @@ const GameThirdScene = (props) => {
 const styles = (orientation) => StyleSheet.create({
   container: {
     flex: 1,
-    //backgroundColor: "green",
     flexDirection: "column"
-    //justifyContent: 'center', 
-    //alignItems: 'center',
-    //backgroundColor : "gray"
-    //flex: 1 1 auto,
-    //marginTop: 22
   },
   statusHP: {
     flexDirection: 'row',
@@ -442,13 +390,11 @@ const styles = (orientation) => StyleSheet.create({
   },
   field: {
     flex: 1,
-    //backgroundColor:"red",
     top: hp('1%'),
     zIndex : 3,
     elevation: (Platform.OS === 'android') ? 3 : 0,
     flexDirection: 'row',
     alignItems: 'flex-end',
-    //justifyContent: 'space-around'
   },
   effect:{
     transform: [{ rotate: '-90deg'},{scale: 1}],
@@ -462,22 +408,14 @@ const styles = (orientation) => StyleSheet.create({
     right:orientation=="landscape"?'30%':null
   },
   background: {
-    // justifyContent: 'center',
-    // alignItems: 'center',
     flex: 1,
     justifyContent: 'flex-end',
-    // resizeMode: "cover",
-    //backgroundColor:"red",
     position: "absolute",
     left: 0,
     width: wp('200%'),
     height: hp('100%'),
   },
   foreground: {
-    // justifyContent: 'center',
-    // alignItems: 'center',
-
-    // resizeMode: "cover",
     backgroundColor: Color.Black,
     justifyContent: 'flex-end',
     width: wp('200'),

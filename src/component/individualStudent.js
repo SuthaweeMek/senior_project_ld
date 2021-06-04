@@ -117,7 +117,6 @@ const IndividualStudent = (props) => {
                         <>
                             <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{index + 1}</Text></View>
                             <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{item.testId} - {studentID}</Text></View>
-                            {/* <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}></Text></View> */}
                             <View style={styles({ orientation }).itemTable} ><Text style={styles({ orientation }).textItemTable}>{item.createdAt === undefined ? "Pending" : item.createdAt.split("T")[0]}</Text></View>
                             <View style={styles({ orientation }).itemTable} >
                                 <TouchableOpacity

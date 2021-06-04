@@ -1,16 +1,11 @@
-import React, { useState,useEffect } from "react";
-import { FlatList, SafeAreaView, StatusBar, StyleSheet, Text, TouchableOpacity,Dimensions } from "react-native";
+import React, { useEffect } from "react";
+import { FlatList, SafeAreaView, StyleSheet, Text, TouchableOpacity } from "react-native";
 import Device from '../utils/Device';
 import Color from '../resource/color';
 import Font from '../resource/font';
 import {connect} from 'react-redux';
 import { FontSize, LayoutSize } from '../resource/dimension'
 
-import { widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientationChange as lor, removeOrientationListener as rol } from '../utils/Device'
-
-
-const DATA3 = [["1","2","3","4","5","6","7","8","9","10"],["11","12","13","14","15","16","17","18","19","20"]]
-const DATA2 = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"]
 var DATA = []
 var page 
 
@@ -73,14 +68,12 @@ const Pagination = (props) => {
 
 const styles=(props) => StyleSheet.create({
   container: {
-    // marginTop: StatusBar.currentHeight || 0,
     flex:1,
     justifyContent:"center",
     alignItems:"center",
   },
   item: {
     borderRadius: LayoutSize.PaginationBorderRadius,
-    // padding: 20,
     marginVertical: 8,
     marginHorizontal: props.orientation=="portrait" ? 6 :18,
     width : LayoutSize.PaginationWidth,

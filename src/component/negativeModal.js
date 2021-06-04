@@ -4,7 +4,6 @@ import {
   Modal,
   StyleSheet,
   Text,
-  TouchableHighlight,
   View,
   TouchableOpacity,
 } from "react-native";
@@ -17,7 +16,6 @@ import {FontSize, LayoutSize} from '../resource/dimension'
 import Device from '../utils/Device';
 
 const negativeModal = (props) => {
-  // const [modalVisible, setModalVisible] = useState(false);
   var modalVisible = props.modalVisible
   const title = props.title
   const text = props.text
@@ -78,7 +76,6 @@ const styles = ({ orientation }) => StyleSheet.create({
   centeredView: {
     width: wp('100%'),
     height: hp('100%'),
-    // backgroundColor:"red",
     position: 'absolute',
     justifyContent: "center",
     alignItems: "center",
@@ -87,9 +84,6 @@ const styles = ({ orientation }) => StyleSheet.create({
     flex: 0.5,
     margin: 20,
     borderRadius: LayoutSize.ModalRadius,
-    //margin: 35,
-    // justifyContent: "center",
-    // alignItems: "center",
     aspectRatio : 5/6,
     shadowColor: "#000",
     shadowOffset: {

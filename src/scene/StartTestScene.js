@@ -9,30 +9,18 @@
 import React, { useState, useEffect } from 'react';
 import {HOSTNAME} from "@env"
 import {
-    SafeAreaView,
     StyleSheet,
-    ScrollView,
     View,
     Text,
-    StatusBar,
-    Button,
-    ImageBackground,
     Image,
     Dimensions,
     TouchableOpacity,
-    Alert
 } from 'react-native';
-import { NativeRouter, Route, Link } from "react-router-native";
-import backgroundLogin from '../resource/image/backgroundLogin.png'
 import imageOverlay from '../resource/image/LDSpotOverlay.png'
-import Router from '../router'
 import ButtonCurve from '../component/buttonCurve.js';
 import InputBoxLogin from '../component/inputboxLogin';
 import { connect } from 'react-redux';
-import InputBox from '../component/inputBox';
 import SelectionInput from '../component/picker';
-import Orientation from 'react-native-orientation';
-// import ButtonStart from '../component/buttonStart';
 import Device from '../utils/Device';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientationChange as lor, removeOrientationListener as rol } from '../utils/Device'
 import Color from '../resource/color';
@@ -45,8 +33,6 @@ import { FontSize, LayoutSize } from '../resource/dimension'
 width = Device.isPortrait() ? Dimensions.get('screen').height : Dimensions.get('screen').width //1:4.65
 height = Device.isPortrait() ? Dimensions.get('screen').width : Dimensions.get('screen').height //1:4.65
 
-console.log("is tablet ?", Device.isTablet())
-console.log("Device height = ", height, " and width = ", width)
 
 const StartTestScene = (props) => {
 
@@ -74,10 +60,6 @@ const StartTestScene = (props) => {
             key: "4", value: 4,text : "รวม"
         },
     ];
-    // console.log("what ?", props.orientation == "portrait" ? "true" : "false")
-    // console.log(props.orientation)
-    // console.log(childrenID)
-    // console.log(gender)
     const queryChildren = async () => {
         if (childrenID.length == 10) {
             let res = await fetch(
@@ -146,9 +128,7 @@ const StartTestScene = (props) => {
 
     useEffect(() => {
         lor(props.upDateOrientation)
-        console.log(props.userrole)
         if (props.userrole == 'student') {
-            console.log('check')
             queryChildrenById()
         }
         return (rol())
@@ -159,15 +139,11 @@ const StartTestScene = (props) => {
 
     }
         , [childrenID])
-    const handleName = (text) => {
-        setName(text)
-    }
     const handleChildrenID = async (text) => {
         setChildrenID(text)
 
     }
     const handleKey = (text) => {
-        console.log("level = == = ", text)
         setVocabType(text)
     }
     const handleAge = (text) => {
@@ -200,10 +176,8 @@ const StartTestScene = (props) => {
                 }
             );
             let responseJson = await res.json();
-            console.log(responseJson)
             if (res.status == 200) {
                 props.upDateTestId(responseJson.test.id)
-                console.log("responseJson.test.Round > 0",responseJson.test.Round > 0)
                 props.upDateVocabIds(responseJson.wordIds.map((number)=>(("0" + number.id).slice(-2))))
                 if(responseJson.test.Round > 0){
                     props.upDateScene(1)
@@ -224,9 +198,8 @@ const StartTestScene = (props) => {
             <View style={styles(props.orientation).containerStartTest} >
                 {props.orientation == 'portrait' ?
                     <View style={styles(props.orientation).appBars} >
-                        <TouchableOpacity onPress={() => { props.upDateMenuDrawer(true), console.log("moo", props.menuDrawer) }}>
+                        <TouchableOpacity onPress={() => { props.upDateMenuDrawer(true) }}>
                             <Icon
-                                //reverse
                                 name={"bars"}
                                 type='font-awesome'
                                 color={Color.Black}
@@ -268,33 +241,17 @@ const StartTestScene = (props) => {
 const styles = (props) => StyleSheet.create({
     container: {
         flex: 1,
-        // justifyContent: 'flex-start', 
-        // alignItems: 'flex-start',
-        // alignSelf:"flex-start",
-        //flexDirection: 'row',
-        // marginVertical:20,
-        // marginHorizontal:40,
         backgroundColor: Color.Background
-        //flex: 1 1 auto,
-        //marginTop: 22
     },
     containerStartTest: {
         flex: 1,
-        //width: width / 1.8,
         flexDirection: 'column',
-        //margin: height - (height * 0.9),
         marginVertical: hp("3%"),
         marginRight: props == "portrait" ? null:hp("3%"),
         paddingHorizontal: wp("4%"),
         paddingTop: hp("8%"),
         backgroundColor: Color.White,
-        // borderTopRightRadius:50,
-        // borderBottomRightRadius:50,
         borderRadius: LayoutSize.ContainerRadius,
-        //justifyContent: 'center', 
-        //alignItems: 'center'
-        //flex: 1 1 auto, 
-        //marginTop: 22
     },
     appBars:{
         flexDirection: 'row' ,
@@ -304,9 +261,6 @@ const styles = (props) => StyleSheet.create({
         flexDirection: 'column',
         backgroundColor: Color.white,
         justifyContent: 'space-around',
-        //alignItems: 'center',
-        //flex: 1 1 auto,
-        //marginTop: 22
     },
 
     containerMenuProfile: {
@@ -316,13 +270,11 @@ const styles = (props) => StyleSheet.create({
     },
     StartPosition: {
         flex: 1,
-        // alignSelf: "center",
         marginTop: 12,
         padding: 24,
         borderTopLeftRadius: LayoutSize.ContainerRadius,
         borderTopRightRadius: LayoutSize.ContainerRadius,
         justifyContent: "flex-start",
-        // alignSelf:"flex-end",
         alignItems: props == "portrait" ? "center" : "flex-start",
         backgroundColor: Color.Sub_Background
     },
@@ -332,18 +284,11 @@ const styles = (props) => StyleSheet.create({
         width: props == "portrait" ? wp('92%'):wp('71%'),
         height : props =="portrait" ? wp('92%'):wp('25%'),
         alignSelf:"center",
-        // marginVertical: 200,
     },
     Picker: {
         flexDirection: "row",
-        //  alignContent:"center",
-        //  justifyContent:"center",
         padding: 12,
         alignSelf: "center",
-        // alignItems:"center",
-        // justifyContent:"flex-end",
-        // alignItems: "flex-end",
-        // backgroundColor:"red",
     },
     buttonStart: {
         height: hp('6%'),
@@ -353,33 +298,22 @@ const styles = (props) => StyleSheet.create({
     fontStartTest: {
         color: Color.Black,
         fontSize: props == "portrait" ? Device.fontSizer(FontSize.H6) : Device.fontSizer(FontSize.H6) ,
-        // marginTop: 40,
-        // marginBottom: 30,
         marginVertical: 12,
         alignSelf: "flex-start",
 
         fontFamily: Font.Bold,
     },
     fontStartTestInput: {
-        // color: 'black',
         fontSize: Device.fontSizer(FontSize.H5),
-        // marginLeft: 70,
-        // marginTop: 10,
         marginVertical: 12,
-        // alignItems: 'center',
         alignSelf: 'flex-start',
         fontFamily: Font.Bold,
-        // justifyContent: 'center'
     },
     fontStartTestInfo: {
-        // color: 'black',t
         fontSize: Device.fontSizer(FontSize.Body1),
-        // marginLeft: 70,
-        // marginTop: 10,
         marginVertical: 8,
 
         fontFamily: Font.Regular,
-        // justifyContent: 'center'
     },
     background: {
         justifyContent: 'center',

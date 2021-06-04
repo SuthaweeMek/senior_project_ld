@@ -9,47 +9,24 @@
 import React, { useState, useEffect } from 'react';
 import { HOSTNAME } from "@env"
 import {
-    SafeAreaView,
     StyleSheet,
     ScrollView,
     View,
     Text,
-    StatusBar,
-    Button,
-    ImageBackground,
-    Image,
     Dimensions,
-    TouchableOpacity,
-    Alert
 } from 'react-native';
-import { NativeRouter, Route, Link } from "react-router-native";
-import backgroundLogin from '../resource/image/backgroundLogin.png'
-import imageOverlay from '../resource/image/LDSpotOverlay.png'
-import Router from '../router'
-import ButtonCurve from '../component/buttonCurve.js';
-import InputBoxLogin from '../component/inputboxLogin';
 import { connect } from 'react-redux';
-import InputBox from '../component/inputBox';
-import SelectionInput from '../component/picker';
-import Orientation from 'react-native-orientation';
-// import ButtonStart from '../component/buttonStart';
 import Device from '../utils/Device';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientationChange as lor, removeOrientationListener as rol } from '../utils/Device'
 import Color from '../resource/color';
 import Font from '../resource/font';
-import NegativeModal from '../component/negativeModal'
 import LocalStorage from '../utils/LocalStorage'
-import { Icon } from 'react-native-elements'
 import { FontSize, LayoutSize } from '../resource/dimension'
 
 
 import {
-    LineChart,
     BarChart,
     PieChart,
-    ProgressChart,
-    ContributionGraph,
-    StackedBarChart
 } from "react-native-chart-kit";
 
 width = Device.isPortrait() ? Dimensions.get('screen').height : Dimensions.get('screen').width //1:4.65
@@ -83,17 +60,14 @@ const StartTestScene = (props) => {
             else throw new Error(response.status);
         })
             .then((responseJson) => {
-                // console.log("responseJson ", responseJson)
                 setStat(responseJson)
                 intitialState(responseJson)
             }).catch((error) => {
                 setStat({})
-                console.log('error: ' + error);
             });
     }
 
     const intitialState = (stat) => {
-        console.log("stat", stat)
         setStatGender([
             {
                 name: "ชาย",
@@ -353,44 +327,20 @@ const styles = (props) => StyleSheet.create({
     },
     piechart: {
         justifyContent: 'flex-start',
-
-        // alignItems: 'flex-start',
-        //alignSelf: 'flex-start',
-        //flexDirection: 'row',
-        // marginVertical:20,
-        // marginHorizontal:40,
-        //flex: 1 1 auto,
-        //marginTop: 22
     },
     container: {
         flex: 1,
-        // justifyContent: 'flex-start', 
-        // alignItems: 'flex-start',
-        // alignSelf:"flex-start",
-        //flexDirection: 'row',
-        // marginVertical:20,
-        // marginHorizontal:40,
         backgroundColor: Color.Background
-        //flex: 1 1 auto,
-        //marginTop: 22
     },
     containerStartTest: {
         flex: 1,
-        //width: width / 1.8,
         flexDirection: 'column',
-        //margin: height - (height * 0.9),
         marginVertical: hp("3%"),
         marginRight: props == "portrait" ? null : hp("3%"),
         paddingHorizontal: wp("4%"),
         paddingTop: hp("8%"),
         backgroundColor: Color.White,
-        // borderTopRightRadius:50,
-        // borderBottomRightRadius:50,
         borderRadius: LayoutSize.ContainerRadius,
-        //justifyContent: 'center', 
-        //alignItems: 'center'
-        //flex: 1 1 auto, 
-        //marginTop: 22
     },
     appBars: {
         flexDirection: 'row',
@@ -400,9 +350,6 @@ const styles = (props) => StyleSheet.create({
         flexDirection: 'column',
         backgroundColor: Color.white,
         justifyContent: 'space-around',
-        //alignItems: 'center',
-        //flex: 1 1 auto,
-        //marginTop: 22
     },
 
     containerMenuProfile: {
@@ -412,13 +359,11 @@ const styles = (props) => StyleSheet.create({
     },
     StartPosition: {
         flex: 1,
-        // alignSelf: "center",
         marginTop: 12,
         padding: 24,
         borderTopLeftRadius: LayoutSize.ContainerRadius,
         borderTopRightRadius: LayoutSize.ContainerRadius,
         justifyContent: "flex-start",
-        // alignSelf:"flex-end",
         alignItems: props == "portrait" ? "center" : "flex-start",
         backgroundColor: Color.Sub_Background
     },
@@ -426,18 +371,11 @@ const styles = (props) => StyleSheet.create({
         position: 'absolute',
         width: props == "portrait" ? wp('92%') : wp('71%'),
         alignSelf: "center",
-        // marginVertical: 200,
     },
     Picker: {
         flexDirection: "row",
-        //  alignContent:"center",
-        //  justifyContent:"center",
         padding: 12,
         alignSelf: "center",
-        // alignItems:"center",
-        // justifyContent:"flex-end",
-        // alignItems: "flex-end",
-        // backgroundColor:"red",
     },
     buttonStart: {
         height: hp('6%'),
@@ -447,8 +385,6 @@ const styles = (props) => StyleSheet.create({
     fontStartTest: {
         color: Color.Black,
         fontSize: Device.fontSizer(FontSize.H6),
-        // marginTop: 40,
-        // marginBottom: 30,
         marginVertical: 12,
         alignSelf: "flex-start",
 
@@ -465,31 +401,20 @@ const styles = (props) => StyleSheet.create({
     fontStat2: {
         color: Color.Black,
         fontSize: Device.fontSizer(FontSize.H6),
-        // margin: 'auto',
         marginLeft: 30,
         marginVertical: 6,
         fontFamily: Font.Bold,
     },
     fontStartTestInput: {
-        // color: 'black',
         fontSize: Device.fontSizer(FontSize.H5),
-        // marginLeft: 70,
-        // marginTop: 10,
         marginVertical: 12,
-        // alignItems: 'center',
         alignSelf: 'flex-start',
         fontFamily: Font.Bold,
-        // justifyContent: 'center'
     },
     fontStartTestInfo: {
-        // color: 'black',t
         fontSize: Device.fontSizer(FontSize.Body1),
-        // marginLeft: 70,
-        // marginTop: 10,
         marginVertical: 8,
-
         fontFamily: Font.Regular,
-        // justifyContent: 'center'
     },
     background: {
         justifyContent: 'center',

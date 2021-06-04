@@ -1,36 +1,21 @@
-import React, { useCallback, useRef, useState, useEffect, componentDidMount } from 'react';
+import React, {  useRef, useState, useEffect } from 'react';
 import {
-  SafeAreaView,
   View,
-  Button,
-  TextInput,
-  KeyboardAvoidingView,
-  ImageBackground,
   Modal,
   Animated,
   Image,
-  Text,
   StyleSheet,
-  Dimensions,
   StatusBar,
-  Switch
 } from 'react-native';
 import { connect } from 'react-redux';
 import SpriteSheet from 'rn-sprite-sheet'
 import StatusHP from '../component/statusHP'
-import Orientation from 'react-native-orientation';
-import Device from '../utils/Device';
 import Rand from '../utils/Rand';
-import Arrays from '../utils/Array'
 import Writing from '../component/tutorial'
-import Color from '../resource/color';
-import Font from '../resource/font';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp, listenOrientationChange as lor, removeOrientationListener as rol } from '../utils/Device'
 //alphabet
 const ary_th_tutorial = ['th_alphabet_01','th_alphabet_02','th_vowel_01','th_vocab_01','th_alphabet_end']
 //image
-import imageBackground from '../resource/image/LDSpotGameScene1.png'
-import imageHeart from '../resource/image/heartEmpty.png'
 import imagePlayer from '../resource/image/player_circle.png'
 import imageEnemy from '../resource/image/enemy0_circle.png'
 import imageGameSceneBG0 from '../resource/games/LDSpotGameSceneBG0.png'
@@ -41,12 +26,6 @@ import spritePlayer from '../resource/sprite_sheet/player_character.png'
 import spriteEnemy from '../resource/sprite_sheet/enemy0_character.png'
 import spriteEffect1 from '../resource/sprite_sheet/effect1.png'
 
-//dimesions
-// width = Device.isPortrait() ? Dimensions.get('screen').height : Dimensions.get('screen').width //1:4.65
-// height = Device.isPortrait() ? Dimensions.get('screen').width : Dimensions.get('screen').height //1:4.65
-
-console.log("is tablet ?", Device.isTablet())
-// console.log("Device height = ", height, " and width = ", width)
 
 //const spriteSize = height
 const GameFirstScene = (props) => {
@@ -54,7 +33,6 @@ const GameFirstScene = (props) => {
   const playerHeart = 3
   const enemyHeart = 1
   //State
-  const [Transition, SetTransition] = useState(1);
   const [fps, setFps] = useState(16);
   const [loop, setLoop] = useState(false);
   const [resetAfterFinish, setResetAfterFinish] = useState(false);
@@ -70,7 +48,6 @@ const GameFirstScene = (props) => {
 
   var orientation = props.orientation
   useEffect(()=>{
-    // Orientation.lockToPortrait();
     lor(props.upDateOrientation)
     return rol()
   },[])
@@ -87,7 +64,6 @@ const GameFirstScene = (props) => {
     playPlayer("idle")
     playEnemy("idle")
     if (enemyHeartEmpty == enemyHeart) {
-      console.log("The enemy is dead")
       Animated.timing(
         enemyFade,
         {
@@ -117,7 +93,6 @@ const GameFirstScene = (props) => {
   useEffect(() => {
     // code to run on component mount
     var multiplier = 4;
-    console.log("index = ", index)
     if (index == multiplier || index == multiplier * 2 || index == multiplier * 3 || index == multiplier * 4 || index == multiplier * 5
       || index == multiplier * 6 || index == multiplier * 7 || index == multiplier * 8 || index == multiplier * 9 || index == multiplier * 10
       || index == multiplier * 11) {
@@ -132,7 +107,6 @@ const GameFirstScene = (props) => {
       fps: Number(fps),
       loop: loop,
       resetAfterFinish: resetAfterFinish,
-      onFinish: () => console.log('Player Play')
     });
   };
 
@@ -142,7 +116,6 @@ const GameFirstScene = (props) => {
       fps: Number(fps),
       loop: loop,
       resetAfterFinish: resetAfterFinish,
-      onFinish: () => console.log('Effect Play')
     });
   };
 
@@ -152,7 +125,6 @@ const GameFirstScene = (props) => {
       fps: Number(fps),
       loop: loop,
       resetAfterFinish: resetAfterFinish,
-      onFinish: () => console.log('Enemy Play')
     });
   };
 
@@ -166,27 +138,10 @@ const GameFirstScene = (props) => {
       }
 
     ).start();
-    //setLoop(true)
     playPlayer('walk')
-    console.log("END SCENE 0")
     setTimeout(() => props.upDateScene(1),
       5000
     )
-
-    // const interval = setInterval(() => {
-    //   setBackgroundTransition({ left: -speed })
-
-    //   loop = loop + 1
-    //   speed = speed + 5
-
-    //   //console.log('This 1 second',-speed)//-Dimensions.get('window').width
-    //   if (speed >= width) {
-    //     clearInterval(interval)
-    //     play('idle')
-    //   }
-    //   return () => clearInterval(interval)
-    // }, time);
-
   };
 
   Attack = () => {
@@ -194,8 +149,6 @@ const GameFirstScene = (props) => {
     const time = 1000 // 1 second per loop
     const effectArrays = [["redstart", "redidle", "redend"], ["bluestart", "blueidle", "blueend"]];
     const effectProb = Rand.Int(0, 2) //random 0 , 1
-    //mummy.stop(() => console.log('stopped'));
-    console.log("effect1 ", effectArrays[effectProb][0], "effect2 ", effectArrays[effectProb][1], "effect3 ", effectArrays[effectProb][2])
     playPlayer('attack')
     const interval = setInterval(() => {
       loop = loop + 1
@@ -251,56 +204,14 @@ const GameFirstScene = (props) => {
     }, time);
 
   };
-  const modalOpen = () => {
-    // Will change fadeAnim value to 1 in 5 seconds
-    setModalVisible(true)
-    // return (
-    //   <Writing modal={true}/>
-    // );
-  };
-
   const HandleCloseModal = () => {
-    console.log("modal closed")
     setModalVisible(false)
   }
 
   const SetArrayIndex = () => {
-    console.log("index : ", index)
     setIndex(index + 1)
 
   }
-
-  const FadeInView = (props) => {
-    const fadeAnim = useRef(new Animated.Value(0)).current  // Initial value for opacity: 0
-
-    // React.useEffect(() => {
-    console.log("fadeAnim = ", props)
-    Animated.timing(
-      fadeAnim,
-      {
-        toValue: wp('100%'),
-        duration: 2000,
-        useNativeDriver: false
-      }
-    ).start();
-    // }, [fadeAnim])
-
-    return (
-      <Animated.View                 // Special animatable View
-        style={{
-          ...props.style,
-          left: fadeAnim,         // Bind opacity to animated value
-        }}
-      >
-        {props.children}
-      </Animated.View>
-
-    );
-  }
-
-
-
-
   return (
     // <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
     // resizeMode cover stretch
@@ -424,13 +335,7 @@ const GameFirstScene = (props) => {
 const styles = (orientation) => StyleSheet.create({
   container: {
     flex: 1,
-    //backgroundColor: "green",
     flexDirection: "column"
-    //justifyContent: 'center', 
-    //alignItems: 'center',
-    //backgroundColor : "gray"
-    //flex: 1 1 auto,
-    //marginTop: 22
   },
   statusHP: {
     flexDirection: 'row',
@@ -438,14 +343,11 @@ const styles = (orientation) => StyleSheet.create({
   },
   field: {
     flex: 1,
-    //backgroundColor:"red",
     elevation: (Platform.OS === 'android') ? 3 : 0,
     top: hp('1%'),
     zIndex: 3,
     flexDirection: 'row',
     alignItems: 'flex-end',
-    // right : '30%'
-    //justifyContent: 'space-around'
   },
   effect: {
     transform: [{ rotate: '-90deg' }, { scale: 1 }],
@@ -460,33 +362,18 @@ const styles = (orientation) => StyleSheet.create({
     right : orientation=="landscape"?'30%':null
   },
   background: {
-    // justifyContent: 'center',
-    // alignItems: 'center',
     flex: 1,
-    //resizeMode: "cover",
     position: "absolute",
     left: 0,
     width: wp('200%'),
     height: hp('100%'),
   },
   foreground: {
-    // justifyContent: 'center',
-    // alignItems: 'center',
-    // position: 'absolute',
-
-    // resizeMode: "cover",
-    // float : true,
     zIndex: -1,
-    // left :0,
-    //backgroundColor: 'black',
-    // justifyContent: 'flex-end',
     width: wp('200'),
-    // height: height / 4.26,
     height: hp('23%')
   },
   imageCircle: {
-    // width: height / 5,
-    // height: height / 5,
     width : orientation=="landscape"?wp('10%'):wp('20%'),
     height : orientation=="landscape"?wp('10%'):wp('20%'),
     margin: 10,
